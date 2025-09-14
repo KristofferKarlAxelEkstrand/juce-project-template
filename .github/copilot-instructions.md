@@ -1,134 +1,254 @@
-# JUCE Audio Development Environment
+# DSP-JUCE Development Environment
 
-This repository is a modern JUCE 8.0.9 audio development environment designed for creating professional audio plugins,
-instruments, and effects with CMake build system integration.
+**ALWAYS follow these instructions first and fallback to search or bash commands only when you
+encounter unexpected information that does not match the info here.**
 
-## Core Development Principles
+This repository is a modern JUCE 8.0.9 audio development environment for creating professional
+audio applications with CMake build system integration.
 
-- **Modern JUCE Architecture**: Focus on JUCE 8.0.9+ features and best practices
-- **Plugin-First Design**: Prioritize audio plugin development (VST3, AU, AAX, Standalone)
-- **Performance Focused**: Optimize for real-time audio processing and low latency
-- **Cross-Platform Compatibility**: Support Windows, macOS, and Linux development
-- **Professional Quality**: Follow industry standards for audio plugin development
+## Working Effectively
+
+### Bootstrap and Build Process
+
+**CRITICAL TIMING NOTE:** Build processes take significant time. **NEVER CANCEL** any build commands.
+
+1. **Install Linux Dependencies (Ubuntu/Debian only):**
+
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev \
+                           libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev \
+                           libgl1-mesa-dev libcurl4-openssl-dev libwebkit2gtk-4.1-dev pkg-config
+   ```
+
+2. **Install NPM Dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+   - Takes ~10 seconds
+   - Required for documentation linting only
+
+3. **Configure Build:**
+
+   ```bash
+   cmake --preset=default
+   ```
+
+   - **NEVER CANCEL:** Takes 90+ seconds to complete. Set timeout to 180+ seconds.
+   - Downloads JUCE 8.0.9 automatically via FetchContent
+   - May show CMake internal error but generates working Makefiles
+
+4. **Build Application:**
+
+   ```bash
+   cmake --build --preset=default
+   ```
+
+   - **NEVER CANCEL:** Takes 2+ minutes to complete. Set timeout to 300+ seconds.
+   - **KNOWN ISSUE:** Build currently fails at linking step due to Sheenbidi object file issue
+   - **Status:** Compiles successfully but linking fails - this is a known JUCE/CMake issue
+
+### Current Build Status
+
+**BUILD FAILS** - The application compiles all JUCE modules successfully but fails at the final linking step:
+
+```text
+/usr/bin/ld: cannot find CMakeFiles/SimpleJuceApp.dir/_deps/juce-src/modules/juce_graphics/juce_graphics_Sheenbidi.c.o: No such file or directory
+```
+
+**DO NOT** attempt to "fix" this issue as part of normal development work. This is a JUCE
+framework build system issue that requires investigation by JUCE experts.
+
+### Validation and Testing
+
+Since the build currently fails, **DO NOT** attempt to run the application. Instead:
+
+1. **Validate Dependencies:**
+
+   ```bash
+   ./scripts/validate-setup.sh
+   ```
+
+   - Checks all required tools and dependencies
+   - Runs in ~30 seconds
+
+2. **Test Documentation:**
+
+   ```bash
+   npm test
+   ```
+
+   - Runs markdown linting
+   - Takes ~5 seconds
+   - Always run before committing changes
+
+3. **Code Formatting:**
+
+   ```bash
+   clang-format -i src/*.cpp src/*.h
+   ```
 
 ## Project Structure
 
-- **Root**: Contains CMakeLists.txt using JUCE 8.0.9 with FetchContent approach
-- **src/**: Audio source code directory
-  - `Main.cpp`: Application entry point and main window setup
-  - `MainComponent.h/cpp`: Core audio component with real-time processing
-- **build/**: CMake build output directory (auto-generated)
-- **.github/**: Development environment customization
-  - `copilot-instructions.md`: This file - JUCE development guidance
-  - `prompts/`: Audio development prompt templates
-  - `instructions/`: File-specific coding standards and practices
+```text
+dsp-juce/
+├── src/                     # JUCE application source code
+│   ├── Main.cpp            # Application entry point and window management
+│   ├── MainComponent.h     # Audio component interface
+│   └── MainComponent.cpp   # Real-time audio processing with DSP
+├── .github/                # GitHub configuration and instructions
+├── CMakeLists.txt          # Modern CMake with JUCE 8.0.9 FetchContent
+├── CMakePresets.json       # Cross-platform build presets
+├── package.json           # NPM tooling for documentation linting
+├── scripts/               # Setup validation scripts
+└── build/                 # Auto-generated build directory (ignored by git)
+```
 
-## Build System
+## Key Technologies
 
-Always run commands in this exact order:
+- **JUCE 8.0.9:** Modern audio framework with real-time DSP capabilities
+- **CMake 3.22+:** Cross-platform build system with FetchContent for dependencies
+- **C++20:** Modern language features with RAII and smart pointers
+- **Real-time Audio:** Thread-safe audio processing with proper buffer management
 
-1. `cmake --preset=default` (configure build using CMakePresets.json)
-2. `cmake --build --preset=default` (build using MSVC on Windows)
-3. Run executable from `build/Debug/SimpleJuceApp.exe`
+## Development Workflow
 
-**Key Points:**
+### Before Making Changes
 
-- Never use manual JUCE cloning - the project uses CMake FetchContent to automatically download JUCE 8.0.9
-- Build system supports multiple plugin formats: VST3, AU, AAX, Standalone
-- CMake handles all JUCE module linking and platform-specific configurations
-- Cross-platform builds supported (Windows, macOS, Linux)
+1. **Always validate current state:**
 
-## Audio Development Methodology
+   ```bash
+   ./scripts/validate-setup.sh
+   npm test
+   ```
 
-### Design Phase (Audio-First)
+2. **Understand the build limitation:**
+   - The project compiles but does not currently produce a working executable
+   - Focus on code quality, structure, and documentation
+   - Test changes through compilation only
 
-Before implementing any audio feature:
+### Making Changes
 
-1. **Audio Requirements**: Define sample rates, buffer sizes, latency requirements
-2. **DSP Architecture**: Plan signal flow, processing chains, and algorithms
-3. **Real-Time Constraints**: Consider thread safety and real-time audio processing
-4. **Plugin Format Requirements**: Understand VST3, AU, AAX specifications
-5. **Performance Profiling**: Plan for CPU usage and memory allocation patterns
+1. **Follow JUCE patterns** in MainComponent.h/cpp:
+   - Real-time safe audio processing in `getNextAudioBlock()`
+   - Thread-safe parameter handling between GUI and audio threads
+   - Proper resource management in `prepareToPlay()` and `releaseResources()`
 
-### Implementation Phase (Real-Time Focus)
+2. **Always format code:**
 
-1. **Audio Thread Safety**: Implement lock-free programming patterns
-2. **Buffer Management**: Proper audio buffer handling and processing
-3. **Parameter Automation**: Smooth parameter changes without clicks/pops
-4. **State Management**: Plugin state saving/loading and preset management
-5. **GUI-Audio Separation**: Decouple UI from audio processing threads
+   ```bash
+   clang-format -i src/*.cpp src/*.h
+   ```
 
-### Testing Phase (Audio Quality)
+3. **Validate changes compile:**
 
-1. **Audio Unit Testing**: Verify DSP algorithms and signal processing
-2. **Real-Time Performance**: Test under various buffer sizes and sample rates
-3. **Plugin Validation**: Test in multiple DAWs and host applications
-4. **Cross-Platform Testing**: Validate on Windows, macOS, and Linux
-5. **Stress Testing**: CPU load, memory usage, and stability under load
+   ```bash
+   cmake --preset=default  # 90+ seconds, NEVER CANCEL
+   cmake --build --preset=default  # 2+ minutes, NEVER CANCEL, will fail at linking but validates compilation
+   ```
 
-## JUCE Development Standards
+### Code Quality Standards
 
-### Audio Programming Best Practices
+- **Real-Time Safety:** No dynamic memory allocation in audio callbacks
+- **Thread Safety:** Use atomic operations for parameter access between threads  
+- **Modern C++20:** Use auto, constexpr, smart pointers, structured bindings
+- **JUCE Conventions:** Follow camelCase for methods, PascalCase for classes
+- **Documentation:** Add Doxygen-style comments for public APIs
 
-- **Real-Time Safety**: Avoid memory allocation, file I/O, or blocking operations in audio threads
-- **Thread Safety**: Use atomic operations and lock-free programming for audio parameter access
-- **Performance Focus**: Optimize for low CPU usage and minimal memory footprint
-- **JUCE Conventions**: Follow JUCE coding standards and naming conventions
-- **Modern C++**: Use C++20 features and RAII patterns
+## Common Tasks and Outputs
 
-### Plugin Development Guidelines
+### Repository Root Contents
 
-When creating JUCE plugins:
+```text
+ls -la /home/runner/work/dsp-juce/dsp-juce
+total 100
+drwxr-xr-x 11 runner runner  4096 Sep 14 17:26 .
+drwxr-xr-x  3 runner runner  4096 Sep 14 17:26 ..
+-rw-r--r--  1 runner runner   602 Sep 14 17:26 .clang-format
+drwxr-xr-x  8 runner runner  4096 Sep 14 17:26 .git
+drwxr-xr-x  6 runner runner  4096 Sep 14 17:26 .github
+-rw-r--r--  1 runner runner   177 Sep 14 17:26 .gitignore
+drwxr-xr-x  2 runner runner  4096 Sep 14 17:26 .husky
+-rw-r--r--  1 runner runner   285 Sep 14 17:26 .markdownlint-cli2.jsonc
+-rw-r--r--  1 runner runner   151 Sep 14 17:26 .prettierignore.example
+-rw-r--r--  1 runner runner   151 Sep 14 17:26 .prettierrc.example
+drwxr-xr-x  2 runner runner  4096 Sep 14 17:26 .vscode
+-rw-r--r--  1 runner runner  4272 Sep 14 17:26 CMakeLists.txt
+-rw-r--r--  1 runner runner  1795 Sep 14 17:26 CMakePresets.json
+-rw-r--r--  1 runner runner  8358 Sep 14 17:26 README.md
+drwxr-xr-x  4 runner runner  4096 Sep 14 17:26 docs
+-rw-r--r--  1 runner runner 15621 Sep 14 17:26 package-lock.json
+-rw-r--r--  1 runner runner   529 Sep 14 17:26 package.json
+drwxr-xr-x  2 runner runner  4096 Sep 14 17:26 scripts
+drwxr-xr-x  2 runner runner  4096 Sep 14 17:26 src
+```
 
-1. **AudioProcessor Subclass**: Implement proper processBlock, prepareToPlay, and releaseResources
-2. **Parameter Management**: Use AudioParameterFloat, AudioParameterChoice for automatable parameters
-3. **Editor Components**: Separate GUI logic from audio processing completely
-4. **State Management**: Implement getStateInformation and setStateInformation properly
-5. **Format Compatibility**: Test across VST3, AU, AAX, and Standalone formats
+### Source Code Structure
 
-### Code Quality Requirements
+```text
+ls -la src/
+total 20
+drwxr-xr-x 2 runner runner 4096 Sep 14 17:26 .
+drwxr-xr-x 11 runner runner 4096 Sep 14 17:26 ..
+-rw-r--r-- 1 runner runner 2737 Sep 14 17:26 Main.cpp
+-rw-r--r-- 1 runner runner 3814 Sep 14 17:26 MainComponent.cpp
+-rw-r--r-- 1 runner runner 1560 Sep 14 17:26 MainComponent.h
+```
 
-- **Real-Time Constraints**: No dynamic allocation in audio callbacks
-- **JUCE Module Usage**: Properly link and use JUCE modules (audio_processors, gui_basics, etc.)
-- **Memory Management**: Use JUCE's reference counting and smart pointers
-- **Cross-Platform Code**: Ensure compatibility across Windows, macOS, and Linux
-- **Professional Audio Standards**: Follow industry best practices for plugin development
+### Build Process Output (Expected)
 
-## Technology Context
+- **CMake Configuration:** 90+ seconds, generates build files despite internal error message
+- **Compilation:** 2+ minutes, compiles all JUCE modules successfully
+- **Linking:** Fails with Sheenbidi object file error (known issue)
+- **Overall Time:** 3-4 minutes total for full build attempt
 
-This project demonstrates modern JUCE development practices:
+### NPM Commands Output
 
-- JUCE Framework 8.0.9 (latest stable)
-- CMake with FetchContent for dependency management
-- Visual Studio Build Tools / MSVC compiler
-- Git with proper .gitignore excluding build artifacts
-- VS Code integration via CMake Tools extension
+```bash
+npm test
+> dsp-juce-docs@1.0.0 test
+> npm run lint:md
 
-## JUCE Module Integration
+> dsp-juce-docs@1.0.0 lint:md  
+> markdownlint-cli2 "**/*.md" "#node_modules" "#build"
 
-The project uses these core JUCE modules:
+markdownlint-cli2 v0.18.1 (markdownlint v0.38.0)
+Summary: 0 error(s)
+```
 
-- **juce_gui_basics**: GUI components and windowing
-- **juce_audio_utils**: High-level audio utilities and AudioAppComponent
-- **juce_audio_processors**: Plugin hosting and AudioProcessor base class
-- **juce_audio_devices**: Audio device management and I/O
-- **juce_dsp**: Digital signal processing utilities and algorithms
+## Troubleshooting
 
-## Audio Development Examples
+### CMake Configuration Issues
 
-When working with JUCE audio development:
+- **Error:** "CMAKE_C_COMPILE_OBJECT variable not set"
+- **Status:** Known issue, build files are generated correctly despite this error
+- **Action:** Continue with build process
 
-1. **Plugin Creation**: Use juce_add_plugin() in CMake for VST3/AU/AAX formats
-2. **DSP Implementation**: Implement processBlock() for real-time audio processing
-3. **UI Development**: Create AudioProcessorEditor subclasses for plugin interfaces
-4. **Parameter Management**: Use AudioProcessor::addParameter() for automatable controls
-5. **State Handling**: Implement getStateInformation() and setStateInformation() properly
+### Build Linking Failure
 
-## Audio Development Anti-Patterns
+- **Error:** "cannot find juce_graphics_Sheenbidi.c.o"
+- **Status:** Known JUCE framework issue affecting this environment
+- **Action:** Focus on compilation validation, not executable creation
 
-- Allocating memory in processBlock() or other real-time contexts
-- Using blocking operations (file I/O, network) in audio threads
-- Ignoring sample rate changes in prepareToPlay()
+### Missing Dependencies (Linux)
+
+- Install all packages in the bootstrap section
+- Run `./scripts/validate-setup.sh` to verify installation
+- Missing packages will cause CMake configuration to fail
+
+### Documentation Linting Failures
+
+- Always run `npm test` before committing
+- Fix issues with `npm run lint:md:fix`
+- Common issues: trailing whitespace, heading levels
+
+## JUCE Development Anti-Patterns
+
+- Allocating memory in `getNextAudioBlock()` or other real-time contexts
+- Using blocking operations (file I/O, network) in audio threads  
+- Ignoring sample rate changes in `prepareToPlay()`
 - Creating audio dropouts through inefficient processing
 - Not handling buffer size variations properly
 - Mixing GUI and audio thread operations without proper synchronization
@@ -138,7 +258,7 @@ When working with JUCE audio development:
 A successful JUCE audio project should:
 
 - Process audio without dropouts or glitches
-- Handle all standard sample rates (44.1kHz to 192kHz+)
+- Handle all standard sample rates (44.1kHz to 192kHz+)  
 - Work with various buffer sizes (32 to 2048 samples)
 - Load properly in major DAWs (Reaper, Pro Tools, Logic, Cubase)
 - Pass real-time safety validation tools
