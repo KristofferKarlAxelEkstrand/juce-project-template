@@ -1,0 +1,96 @@
+name: CI Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  lint:
+    name: Lint Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Run markdown linting
+      run: npm test
+
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        build_type: [Debug, Release]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Linux dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          libasound2-dev \
+          libx11-dev \
+          libxcomposite-dev \
+          libxcursor-dev \
+          libxinerama-dev \
+          libxrandr-dev \
+          libfreetype6-dev \
+          libfontconfig1-dev \
+          libgl1-mesa-dev \
+          libxext-dev
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
+
+    - name: Test (Linux/macOS)
+      if: runner.os != 'Windows'
+      working-directory: ${{github.workspace}}/build
+      run: |
+        # For now, just verify the binary was created
+        if [ -f "SimpleJuceApp_artefacts/${{matrix.build_type}}/SimpleJuceApp" ]; then
+          echo "✅ Build successful - binary created"
+        else
+          echo "❌ Build failed - binary not found"
+          exit 1
+        fi
+
+    - name: Test (Windows)
+      if: runner.os == 'Windows'
+      working-directory: ${{github.workspace}}/build
+      run: |
+        # For now, just verify the binary was created
+        if (Test-Path "SimpleJuceApp_artefacts/${{matrix.build_type}}/SimpleJuceApp.exe") {
+          Write-Host "✅ Build successful - binary created"
+        } else {
+          Write-Host "❌ Build failed - binary not found"
+          exit 1
+        }
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      if: matrix.build_type == 'Release'
+      with:
+        name: SimpleJuceApp-${{ matrix.os }}
+        path: |
+          ${{github.workspace}}/build/SimpleJuceApp_artefacts/Release/
+        retention-days: 30

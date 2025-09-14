@@ -1,126 +1,280 @@
-# Simple JUCE Project
+# Modern JUCE Audio Development Project
 
-A clean, simple JUCE development setup for Visual Studio Code that automatically downloads JUCE and doesn't
-clutter your git repository.
+A modern, well-documented JUCE 8.0.9 audio application demonstrating best practices for C++20, CMake, and real-time
+audio processing.
 
-## What This Is
+## 🎯 Project Overview
 
-- **One simple CMakeLists.txt** that handles everything
-- **JUCE is fetched automatically** - never added to your git repo
-- **Minimal setup** - just source files and configuration
-- **Modern CMake** with FetchContent for clean dependency management
+This project showcases professional JUCE development patterns:
 
-## Prerequisites
+- **Modern C++20** with smart pointers, constexpr, and structured bindings
+- **JUCE 8.0.9** with latest framework features and DSP modules
+- **Cross-platform CMake** with preset configurations for all platforms
+- **Professional build system** with CI/CD, static analysis, and security scanning
+- **Clean architecture** separating GUI and audio processing threads
 
-- **Visual Studio Build Tools 2022** (with C++ workload)
+## 🚀 Quick Start
+
+### Prerequisites
+
 - **CMake 3.22+**
-- **Visual Studio Code** with C++ and CMake extensions
+- **C++20 compatible compiler** (GCC 10+, Clang 10+, MSVC 2019+)
+- **Platform-specific dependencies**:
 
-## Quick Start
+**Linux:**
 
-1. **Open this folder in VS Code**
-2. **Press Ctrl+Shift+P** and run "CMake: Configure" (or it auto-configures)
-3. **Press F7** to build
-4. **Run** the built app: `build/SimpleJuceApp_artefacts/Debug/Simple JUCE App.exe`
+```bash
+sudo apt-get install libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev \
+                     libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev
+```
 
-That's it! JUCE downloads automatically on first configure.
+**macOS:**
 
-1. **Set up JUCE framework:**
+```bash
+# Xcode command line tools required
+xcode-select --install
+```
 
-    **Windows:**
+**Windows:**
 
-    ```batch
-    setup-juce.bat
-    ```
+- Visual Studio 2019+ with C++ workload
+- Or Visual Studio Build Tools 2019+
 
-    **Linux/Mac:**
+### Building
 
-    ```bash
-    chmod +x setup-juce.sh
-    ./setup-juce.sh
-    ```
+1. **Clone and configure:**
 
-    **Manual setup:**
+   ```bash
+   git clone <repository-url>
+   cd dsp-juce
+   cmake --preset=default
+   ```
 
-    ```bash
-    git clone --recurse-submodules https://github.com/juce-framework/JUCE.git
-    ```
+2. **Build:**
 
-2. **Build a project:**
+   ```bash
+   cmake --build --preset=default
+   ```
 
-    ```bash
-    cd MyJuceApp
-    mkdir build && cd build
-    cmake ..
-    cmake --build . --config Debug
-    ```
+3. **Run:**
+   - **Linux/macOS:** `./build/SimpleJuceApp_artefacts/Debug/SimpleJuceApp`
+   - **Windows:** `build\SimpleJuceApp_artefacts\Debug\SimpleJuceApp.exe`
 
-## Projects
+### Alternative Build Methods
 
-### MyJuceApp
+**Platform-specific presets:**
 
-- Basic JUCE audio application
-- Demonstrates GUI and audio processing
-- Executable output in `build/MyJuceApp_artefacts/Debug/`
+```bash
+# Linux/macOS Release build
+cmake --preset=release
+cmake --build --preset=release
 
-### MyJucePlugin
+# Windows Visual Studio
+cmake --preset=vs2022
+cmake --build --preset=vs2022-release
 
-- Audio plugin template (VST3, AU, Standalone)
-- Ready for DAW integration
-- Plugin output in `build/MyJucePlugin_artefacts/`
+# Ninja build (if available)
+cmake --preset=ninja
+cmake --build --preset=ninja
+```
 
-## Development Environment
-
-### VS Code Extensions
-
-- C/C++ Extension Pack
-- CMake Tools
-- CMake Language Support
-
-### Build System
-
-- CMake-based build system
-- Cross-platform compatibility
-- Visual Studio, MinGW, or Clang compiler support
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```text
 dsp-juce/
-├── JUCE/                   # JUCE framework (auto-downloaded)
-├── MyJuceApp/             # Basic audio application
-│   ├── Source/
-│   ├── .vscode/          # VS Code configuration
-│   └── CMakeLists.txt
-├── MyJucePlugin/          # Audio plugin template
-│   ├── Source/
-│   └── CMakeLists.txt
-├── setup-juce.sh         # Linux/Mac setup script
-├── setup-juce.bat        # Windows setup script
-└── .gitignore            # Excludes build files and JUCE
+├── src/                     # Source code
+│   ├── Main.cpp            # Application entry and window management
+│   ├── MainComponent.h     # Audio component interface
+│   └── MainComponent.cpp   # Audio processing implementation
+├── .github/                # GitHub configuration
+│   ├── workflows/          # CI/CD pipelines
+│   ├── dependabot.yml     # Automated dependency updates
+│   └── instructions/       # Development guidelines
+├── docs/                   # Documentation
+├── build/                  # Build output (auto-generated)
+├── CMakeLists.txt         # Main CMake configuration
+├── CMakePresets.json      # Cross-platform build presets
+├── .clang-format          # Code formatting rules
+└── README.md              # This file
 ```
 
-## Why JUCE is Excluded from Git
+## 🎛️ Features
 
-- **Size**: JUCE is ~267MB with thousands of files
-- **External Dependency**: Maintained separately by JUCE team
-- **Version Control**: Use setup scripts for consistent versions
-- **Clean Repository**: Focus on your audio code, not framework code
+### Audio Processing
 
-## Troubleshooting
+- **Real-time sine wave synthesis** with configurable frequency
+- **DSP processing chain** using JUCE's modern `juce::dsp` modules
+- **Thread-safe parameter control** between GUI and audio threads
+- **Professional audio quality** with proper buffering and sample rate handling
 
-### Common Issues
+### User Interface
 
-1. **CMake not found**: Install CMake and add to PATH
-2. **Compiler not found**: Install Visual Studio Build Tools or MinGW
-3. **JUCE missing**: Run the setup script first
+- **Frequency control:** 50Hz - 5kHz with logarithmic scaling
+- **Gain control:** 0.0 - 1.0 linear gain
+- **Real-time responsiveness** with immediate audio parameter updates
+- **Modern visual design** with gradients and proper spacing
 
-### Getting Help
+### Code Quality
+
+- **Modern C++20 patterns** with constexpr, auto, and structured bindings
+- **RAII memory management** with smart pointers and JUCE's lifecycle
+- **Thread safety** using JUCE's message manager for parameter updates
+- **Comprehensive documentation** with Doxygen-style comments
+
+## 🔧 Development
+
+### Code Formatting
+
+```bash
+# Format all source files
+clang-format -i src/*.cpp src/*.h
+```
+
+### Documentation Linting
+
+```bash
+# Install dependencies
+npm install
+
+# Run markdown linting
+npm test
+
+# Fix formatting issues
+npm run lint:md:fix
+```
+
+### Static Analysis
+
+The project includes CodeQL security scanning and will run automatically on push/PR.
+
+## 🧪 Testing & Quality Assurance
+
+### Continuous Integration
+
+- **Multi-platform builds** (Ubuntu, Windows, macOS)
+- **Multiple configurations** (Debug, Release)
+- **Automated testing** with binary verification
+- **Security scanning** with CodeQL
+- **Dependency updates** via Dependabot
+
+### Local Testing
+
+```bash
+# Verify build works
+cmake --preset=default
+cmake --build --preset=default
+
+# Test documentation
+npm test
+```
+
+## 📚 JUCE Concepts Demonstrated
+
+### Modern JUCE Patterns
+
+- **AudioAppComponent** for simple audio applications
+- **juce::dsp modules** for professional DSP processing
+- **ProcessSpec** for configuring DSP chains
+- **JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR** for memory safety
+
+### Audio Processing Best Practices
+
+- **Thread separation** between GUI and audio processing
+- **Proper resource management** in prepareToPlay/releaseResources
+- **Real-time safe operations** avoiding allocations in audio callback
+- **Parameter smoothing** for click-free audio changes
+
+### CMake Integration
+
+- **FetchContent** for automatic JUCE download
+- **Modern target-based** CMake with proper visibility
+- **Cross-platform configuration** with conditional compilation
+- **Professional build settings** with warnings and optimizations
+
+## 🤝 Contributing
+
+1. **Fork the repository**
+2. **Create a feature branch:** `git checkout -b feature/amazing-feature`
+3. **Follow code standards:** Use `.clang-format` and add documentation
+4. **Write tests** if adding new functionality
+5. **Commit changes:** `git commit -m 'Add amazing feature'`
+6. **Push to branch:** `git push origin feature/amazing-feature`
+7. **Open a Pull Request**
+
+### Development Guidelines
+
+- **Follow modern C++20 practices**
+- **Add comprehensive documentation** for public APIs
+- **Ensure thread safety** in audio processing code
+- **Test on multiple platforms** before submitting
+- **Follow JUCE conventions** for naming and architecture
+
+## 📄 License
+
+This project is open source. JUCE has its own licensing terms - see [JUCE website](https://juce.com/get-juce) for details.
+
+## 🎓 Learning Resources
 
 - [JUCE Documentation](https://docs.juce.com/)
 - [JUCE Forum](https://forum.juce.com/)
 - [JUCE GitHub](https://github.com/juce-framework/JUCE)
+- [Modern CMake Guide](https://cliutils.gitlab.io/modern-cmake/)
+- [C++20 Features](https://en.cppreference.com/w/cpp/20)
 
-## License
+## 🚨 Troubleshooting
 
-Your audio projects are under your chosen license. JUCE has its own licensing terms.
+### Build Issues
+
+**CMake not found:**
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install cmake
+
+# macOS
+brew install cmake
+
+# Windows: Download from cmake.org
+```
+
+**Compiler not found:**
+
+```bash
+# Ubuntu/Debian
+sudo apt-get install build-essential
+
+# Windows: Install Visual Studio or Build Tools
+```
+
+**JUCE dependencies missing (Linux):**
+
+```bash
+sudo apt-get install libasound2-dev libx11-dev libxcomposite-dev \
+                     libxcursor-dev libxinerama-dev libxrandr-dev \
+                     libfreetype6-dev libfontconfig1-dev
+```
+
+### Runtime Issues
+
+**No audio output:**
+
+- Check system audio settings
+- Verify audio device permissions
+- Try different sample rates/buffer sizes
+
+**Application crashes:**
+
+- Check console output for JUCE assertions
+- Verify all dependencies are installed
+- Try Debug build for better error information
+
+### Getting Help
+
+1. **Check the troubleshooting section above**
+2. **Search existing issues** in the repository
+3. **Ask on JUCE Forum** for JUCE-specific questions
+4. **Create an issue** with detailed error information
+
+---
+
+*This project demonstrates modern JUCE development practices and serves as a foundation for professional audio applications.*

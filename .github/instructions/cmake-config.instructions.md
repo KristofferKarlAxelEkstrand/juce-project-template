@@ -4,7 +4,8 @@ applyTo: '**/CMakeLists.txt,*.cmake'
 
 # CMake Configuration Instructions
 
-Use modern CMake 3.18+ practices with proper JUCE integration. Focus on maintainable, cross-platform build configurations.
+Use modern CMake 3.22+ practices with proper JUCE integration. Focus on maintainable, cross-platform build
+configurations with C++20 support.
 
 ## Modern CMake Practices
 
