@@ -1,0 +1,11 @@
+# Prettier ignore file (if using Prettier for non-markdown files)
+# Exclude markdown files since we use markdownlint-cli2
+*.md
+
+# Build outputs
+build/
+_deps/
+node_modules/
+
+# JUCE generated files
+JUCE/

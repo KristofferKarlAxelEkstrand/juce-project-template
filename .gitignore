@@ -1,0 +1,77 @@
+# JUCE Framework (external dependency - never commit)
+JUCE/
+_deps/
+**/JUCE/
+**/_deps/
+
+# Build directories
+build/
+*/build/
+**/build/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.cmake
+!CMakeLists.txt
+
+# Visual Studio files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.pdb
+
+# Compiled binaries
+*.exe
+*.dll
+*.lib
+*.a
+*.so
+*.dylib
+
+# JUCE generated files
+**/JuceLibraryCode/
+**/*_artefacts/
+
+# IDE specific files
+#.vscode/settings.json
+#.vscode/launch.json
+#.vscode/tasks.json
+#.vscode/.ropeproject
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Plugin builds
+*.vst3
+*.au
+*.aax
+
+# Node.js dependencies (for documentation tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backup files
+*~
+*.bak
+*.swp
+*.swo
