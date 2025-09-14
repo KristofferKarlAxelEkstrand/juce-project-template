@@ -74,7 +74,7 @@ Before implementing any audio feature:
 - **Thread Safety**: Use atomic operations and lock-free programming for audio parameter access
 - **Performance Focus**: Optimize for low CPU usage and minimal memory footprint
 - **JUCE Conventions**: Follow JUCE coding standards and naming conventions
-- **Modern C++**: Use C++17 features and RAII patterns
+- **Modern C++**: Use C++20 features and RAII patterns
 
 ### Plugin Development Guidelines
 

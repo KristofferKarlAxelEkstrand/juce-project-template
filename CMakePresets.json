@@ -4,18 +4,68 @@
 		{
 			"name": "default",
 			"displayName": "Default Build",
+			"generator": "Unix Makefiles",
+			"binaryDir": "${sourceDir}/build",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "release",
+			"displayName": "Release Build",
+			"generator": "Unix Makefiles",
+			"binaryDir": "${sourceDir}/build/release",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "vs2022",
+			"displayName": "Visual Studio 2022",
 			"generator": "Visual Studio 17 2022",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			},
 			"architecture": {
 				"value": "x64",
 				"strategy": "external"
 			},
-			"binaryDir": "${sourceDir}/build"
+			"binaryDir": "${sourceDir}/build/vs2022"
+		},
+		{
+			"name": "ninja",
+			"displayName": "Ninja Build",
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build/ninja",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
 		}
 	],
 	"buildPresets": [
 		{
 			"name": "default",
 			"configurePreset": "default"
+		},
+		{
+			"name": "release",
+			"configurePreset": "release"
+		},
+		{
+			"name": "vs2022-debug",
+			"configurePreset": "vs2022",
+			"configuration": "Debug"
+		},
+		{
+			"name": "vs2022-release",
+			"configurePreset": "vs2022",
+			"configuration": "Release"
+		},
+		{
+			"name": "ninja",
+			"configurePreset": "ninja"
 		}
 	]
 }

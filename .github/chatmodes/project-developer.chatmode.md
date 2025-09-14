@@ -73,7 +73,7 @@ JUCE 8.0.9+.
 
 ### C++ Modern Standards
 
-- **C++17/20 Features**: Use auto, range-based loops, smart pointers, constexpr
+- **C++20 Features**: Use auto, range-based loops, smart pointers, constexpr
 - **RAII Patterns**: Automatic resource management, exception safety
 - **Template Metaprogramming**: Compile-time optimizations, type safety
 - **Standard Library**: Prefer STL containers and algorithms where appropriate

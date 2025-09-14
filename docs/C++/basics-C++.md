@@ -9,7 +9,7 @@ real-time applications. It is the primary language for developing JUCE-based aud
 - **High Performance**: Offers low-level memory manipulation and efficient execution.
 - **Standard Template Library (STL)**: Provides reusable data structures and algorithms.
 - **Cross-Platform**: Code can be compiled and executed on multiple platforms.
-- **Modern Features**: Includes features like smart pointers, lambdas, and concurrency from C++11 onwards.
+- **Modern Features**: Includes features like smart pointers, lambdas, and concurrency from C++20.
 
 ## Why Use C++ for Audio Development?
 
@@ -35,7 +35,7 @@ To start using C++ in JUCE projects:
    - Install a C++ compiler (e.g., GCC, Clang, MSVC).
    - Use an IDE like Visual Studio or CLion.
 2. **Learn Modern C++**:
-   - Focus on C++11/14/17 features.
+   - Focus on C++20 features.
    - Practice RAII (Resource Acquisition Is Initialization) patterns.
 3. **Explore JUCE**:
    - Familiarize yourself with JUCE modules like `juce_audio_processors` and `juce_dsp`.
