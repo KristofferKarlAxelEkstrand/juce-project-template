@@ -43,30 +43,31 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(JUCE)
 
 # Create a simple audio application
-juce_add_gui_app(SimpleJuceApp
+juce_add_plugin(DSPJucePlugin
     VERSION 1.0.0
     COMPANY_NAME "MyCompany"
-    PRODUCT_NAME "Simple JUCE App"
-    BUNDLE_ID com.mycompany.simplejuceapp
+    PRODUCT_NAME "DSP-JUCE Plugin"
+    BUNDLE_ID com.mycompany.dspjuceplugin
     MICROPHONE_PERMISSION_ENABLED TRUE
     MICROPHONE_PERMISSION_TEXT "This app needs microphone access for audio input"
+    PLUGIN_FORMATS VST3 AU Standalone
 )
 
 # Add source files
-target_sources(SimpleJuceApp PRIVATE
+target_sources(DSPJucePlugin PRIVATE
     src/Main.cpp
     src/MainComponent.cpp
     src/MainComponent.h
 )
 
 # Set target properties
-set_target_properties(SimpleJuceApp PROPERTIES
+set_target_properties(DSPJucePlugin PROPERTIES
     CXX_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN TRUE
 )
 
 # Link JUCE modules
-target_link_libraries(SimpleJuceApp PRIVATE
+target_link_libraries(DSPJucePlugin PRIVATE
     juce::juce_audio_basics
     juce::juce_audio_devices
     juce::juce_audio_formats
@@ -82,33 +83,33 @@ target_link_libraries(SimpleJuceApp PRIVATE
 )
 
 # Compile definitions
-target_compile_definitions(SimpleJuceApp PRIVATE
+target_compile_definitions(DSPJucePlugin PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
-    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:SimpleJuceApp,JUCE_PRODUCT_NAME>"
-    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:SimpleJuceApp,JUCE_VERSION>"
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:DSPJucePlugin,JUCE_PRODUCT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:DSPJucePlugin,JUCE_VERSION>"
 )
 
 # Platform-specific settings
 if(WIN32)
-    target_compile_definitions(SimpleJuceApp PRIVATE
+    target_compile_definitions(DSPJucePlugin PRIVATE
         JUCE_WIN32_LEAN_AND_MEAN=1
     )
 elseif(APPLE)
-    target_compile_definitions(SimpleJuceApp PRIVATE
+    target_compile_definitions(DSPJucePlugin PRIVATE
         JUCE_USE_OBJC_ARC=1
     )
 endif()
 
 # Debug-specific settings
-target_compile_definitions(SimpleJuceApp PRIVATE
+target_compile_definitions(DSPJucePlugin PRIVATE
     $<$<CONFIG:Debug>:JUCE_DEBUG=1>
     $<$<CONFIG:Debug>:DEBUG=1>
     $<$<CONFIG:Debug>:_DEBUG=1>
 )
 
 # Release-specific settings  
-target_compile_definitions(SimpleJuceApp PRIVATE
+target_compile_definitions(DSPJucePlugin PRIVATE
     $<$<CONFIG:Release>:JUCE_DEBUG=0>
     $<$<CONFIG:Release>:NDEBUG=1>
 )
