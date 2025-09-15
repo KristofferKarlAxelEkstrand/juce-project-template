@@ -52,12 +52,15 @@ audio applications with CMake build system integration.
 
 ### Current Build Status
 
-**BUILD STATUS VARIES BY PLATFORM**
+#### Build Status Varies by Platform
 
--   **Windows:** The application compiles and links successfully when using the Visual Studio generator (`--preset=vs2022`).
--   **Linux:** The build fails at the final linking step with a "cannot find... Sheenbidi.c.o" error. This is a known JUCE framework build system issue.
+- **Windows:** The application compiles and links successfully when using the
+    Visual Studio generator (`--preset=vs2022`).
+- **Linux:** The build fails at the final linking step with a "cannot find...
+    Sheenbidi.c.o" error. This is a known JUCE framework build system issue.
 
-**DO NOT** attempt to "fix" the Linux linking issue as part of normal development work. This requires investigation by JUCE experts. On Windows, the build is stable.
+**DO NOT** attempt to "fix" the Linux linking issue as part of normal development
+work. This requires investigation by JUCE experts. On Windows, the build is stable.
 
 ### Validation and Testing
 
@@ -106,10 +109,10 @@ dsp-juce/
 
 ## Key Technologies
 
--   **JUCE 8.0.9:** Modern audio framework with real-time DSP capabilities
--   **CMake 3.22+:** Cross-platform build system with FetchContent for dependencies
--   **C++20:** Modern language features with RAII and smart pointers
--   **Real-time Audio:** Thread-safe audio processing with proper buffer management
+- **JUCE 8.0.9:** Modern audio framework with real-time DSP capabilities
+- **CMake 3.22+:** Cross-platform build system with FetchContent for dependencies
+- **C++20:** Modern language features with RAII and smart pointers
+- **Real-time Audio:** Thread-safe audio processing with proper buffer management
 
 ## Development Workflow
 
@@ -150,11 +153,11 @@ dsp-juce/
 
 ### Code Quality Standards
 
--   **Real-Time Safety:** No dynamic memory allocation in audio callbacks
--   **Thread Safety:** Use atomic operations for parameter access between threads
--   **Modern C++20:** Use auto, constexpr, smart pointers, structured bindings
--   **JUCE Conventions:** Follow camelCase for methods, PascalCase for classes
--   **Documentation:** Add Doxygen-style comments for public APIs
+- **Real-Time Safety:** No dynamic memory allocation in audio callbacks
+- **Thread Safety:** Use atomic operations for parameter access between threads
+- **Modern C++20:** Use auto, constexpr, smart pointers, structured bindings
+- **JUCE Conventions:** Follow camelCase for methods, PascalCase for classes
+- **Documentation:** Add Doxygen-style comments for public APIs
 
 ## Common Tasks and Outputs
 
@@ -198,10 +201,10 @@ drwxr-xr-x 11 runner runner 4096 Sep 14 17:26 ..
 
 ### Build Process Output (Expected)
 
--   **CMake Configuration:** 90+ seconds, generates build files despite internal error message
--   **Compilation:** 2+ minutes, compiles all JUCE modules successfully
--   **Linking:** Fails with Sheenbidi object file error (known issue)
--   **Overall Time:** 3-4 minutes total for full build attempt
+- **CMake Configuration:** 90+ seconds, generates build files despite internal error message
+- **Compilation:** 2+ minutes, compiles all JUCE modules successfully
+- **Linking:** Fails with Sheenbidi object file error (known issue)
+- **Overall Time:** 3-4 minutes total for full build attempt
 
 ### NPM Commands Output
 
@@ -221,44 +224,44 @@ Summary: 0 error(s)
 
 ### CMake Configuration Issues
 
--   **Error:** "CMAKE_C_COMPILE_OBJECT variable not set"
--   **Status:** Known issue, build files are generated correctly despite this error
--   **Action:** Continue with build process
+- **Error:** "CMAKE_C_COMPILE_OBJECT variable not set"
+- **Status:** Known issue, build files are generated correctly despite this error
+- **Action:** Continue with build process
 
 ### Build Linking Failure
 
--   **Error:** "cannot find juce_graphics_Sheenbidi.c.o"
--   **Status:** Known JUCE framework issue affecting this environment
--   **Action:** Focus on compilation validation, not executable creation
+- **Error:** "cannot find juce_graphics_Sheenbidi.c.o"
+- **Status:** Known JUCE framework issue affecting this environment
+- **Action:** Focus on compilation validation, not executable creation
 
 ### Missing Dependencies (Linux)
 
--   Install all packages in the bootstrap section
--   Run `./scripts/validate-setup.sh` to verify installation
--   Missing packages will cause CMake configuration to fail
+- Install all packages in the bootstrap section
+- Run `./scripts/validate-setup.sh` to verify installation
+- Missing packages will cause CMake configuration to fail
 
 ### Documentation Linting Failures
 
--   Always run `npm test` before committing
--   Fix issues with `npm run lint:md:fix`
--   Common issues: trailing whitespace, heading levels
+- Always run `npm test` before committing
+- Fix issues with `npm run lint:md:fix`
+- Common issues: trailing whitespace, heading levels
 
 ## JUCE Development Anti-Patterns
 
--   Allocating memory in `getNextAudioBlock()` or other real-time contexts
--   Using blocking operations (file I/O, network) in audio threads
--   Ignoring sample rate changes in `prepareToPlay()`
--   Creating audio dropouts through inefficient processing
--   Not handling buffer size variations properly
--   Mixing GUI and audio thread operations without proper synchronization
+- Allocating memory in `getNextAudioBlock()` or other real-time contexts
+- Using blocking operations (file I/O, network) in audio threads
+- Ignoring sample rate changes in `prepareToPlay()`
+- Creating audio dropouts through inefficient processing
+- Not handling buffer size variations properly
+- Mixing GUI and audio thread operations without proper synchronization
 
 ## Audio Quality Metrics
 
 A successful JUCE audio project should:
 
--   Process audio without dropouts or glitches
--   Handle all standard sample rates (44.1kHz to 192kHz+)
--   Work with various buffer sizes (32 to 2048 samples)
--   Load properly in major DAWs (Reaper, Pro Tools, Logic, Cubase)
--   Pass real-time safety validation tools
--   Maintain consistent CPU usage under load
+- Process audio without dropouts or glitches
+- Handle all standard sample rates (44.1kHz to 192kHz+)
+- Work with various buffer sizes (32 to 2048 samples)
+- Load properly in major DAWs (Reaper, Pro Tools, Logic, Cubase)
+- Pass real-time safety validation tools
+- Maintain consistent CPU usage under load
