@@ -29,6 +29,11 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
+# Plugin installation directory (optional, for development convenience)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Install prefix" FORCE)
+endif()
+
 # Fetch JUCE automatically (not added to git)
 include(FetchContent)
 FetchContent_Declare(
@@ -42,15 +47,23 @@ FetchContent_Declare(
 # Make JUCE available
 FetchContent_MakeAvailable(JUCE)
 
-# Create a simple audio application
+# Create a JUCE plugin with proper format support
 juce_add_plugin(DSPJucePlugin
     VERSION 1.0.0
     COMPANY_NAME "MyCompany"
     PRODUCT_NAME "DSP-JUCE Plugin"
     BUNDLE_ID com.mycompany.dspjuceplugin
+    PLUGIN_MANUFACTURER_CODE Juce
+    PLUGIN_CODE Dem0
+    FORMATS VST3 Standalone $<$<PLATFORM_ID:Darwin>:AU>
+    IS_SYNTH FALSE
+    NEEDS_MIDI_INPUT FALSE
+    NEEDS_MIDI_OUTPUT FALSE
+    IS_MIDI_EFFECT FALSE
+    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+    COPY_PLUGIN_AFTER_BUILD TRUE
     MICROPHONE_PERMISSION_ENABLED TRUE
     MICROPHONE_PERMISSION_TEXT "This app needs microphone access for audio input"
-    PLUGIN_FORMATS VST3 AU Standalone
 )
 
 # Add source files
@@ -58,6 +71,8 @@ target_sources(DSPJucePlugin PRIVATE
     src/Main.cpp
     src/MainComponent.cpp
     src/MainComponent.h
+    src/PluginEditor.cpp
+    src/PluginEditor.h
 )
 
 # Set target properties
@@ -86,6 +101,7 @@ target_link_libraries(DSPJucePlugin PRIVATE
 target_compile_definitions(DSPJucePlugin PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
+    JUCE_VST3_CAN_REPLACE_VST2=0
     JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:DSPJucePlugin,JUCE_PRODUCT_NAME>"
     JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:DSPJucePlugin,JUCE_VERSION>"
 )
