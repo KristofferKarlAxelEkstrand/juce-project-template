@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Simple JUCE Project
-project(SimpleJuceApp VERSION 1.0.0 LANGUAGES CXX)
+project(SimpleJuceApp VERSION 1.0.0 LANGUAGES C CXX)
 
 # Set C++ standard - using C++20 for modern language features
 set(CMAKE_CXX_STANDARD 20)
