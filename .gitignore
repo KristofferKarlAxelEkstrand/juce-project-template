@@ -3,6 +3,7 @@ JUCE/
 _deps/
 **/JUCE/
 **/_deps/
+!docs/JUCE/
 
 # Build directories
 build/
