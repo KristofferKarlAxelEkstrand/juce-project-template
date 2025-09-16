@@ -1,16 +1,14 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-DSPJuceAudioProcessorEditor::DSPJuceAudioProcessorEditor(DSPJuceAudioProcessor& processor)
-    : AudioProcessorEditor(processor), audioProcessor(processor)
-{
+DSPJuceAudioProcessorEditor::DSPJuceAudioProcessorEditor(DSPJuceAudioProcessor &processor)
+    : AudioProcessorEditor(processor), audioProcessor(processor) {
     setupControls();
     setSize(600, 150);
 }
 
 //==============================================================================
-void DSPJuceAudioProcessorEditor::setupControls()
-{
+void DSPJuceAudioProcessorEditor::setupControls() {
     // Frequency control setup
     addAndMakeVisible(frequencySlider);
     frequencySlider.setRange(MIN_FREQUENCY, MAX_FREQUENCY, 1.0);
@@ -31,9 +29,7 @@ void DSPJuceAudioProcessorEditor::setupControls()
     gainSlider.setRange(MIN_GAIN, MAX_GAIN, 0.01);
     gainSlider.setValue(static_cast<double>(audioProcessor.getGain()));
     gainSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
-    gainSlider.onValueChange = [this] {
-        audioProcessor.setGain(static_cast<float>(gainSlider.getValue()));
-    };
+    gainSlider.onValueChange = [this] { audioProcessor.setGain(static_cast<float>(gainSlider.getValue())); };
 
     addAndMakeVisible(gainLabel);
     gainLabel.setText("Gain", juce::dontSendNotification);
@@ -41,8 +37,7 @@ void DSPJuceAudioProcessorEditor::setupControls()
 }
 
 //==============================================================================
-void DSPJuceAudioProcessorEditor::paint(juce::Graphics& g)
-{
+void DSPJuceAudioProcessorEditor::paint(juce::Graphics &g) {
     // Fill background with default window color
     g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
 
@@ -54,8 +49,7 @@ void DSPJuceAudioProcessorEditor::paint(juce::Graphics& g)
     g.fillRoundedRectangle(bounds.reduced(5.0f), 8.0f);
 }
 
-void DSPJuceAudioProcessorEditor::resized()
-{
+void DSPJuceAudioProcessorEditor::resized() {
     auto bounds = getLocalBounds().reduced(10);
     constexpr int sliderLabelWidth = 80;
     constexpr int sliderHeight = 20;

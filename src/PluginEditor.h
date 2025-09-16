@@ -6,29 +6,28 @@
 
 /**
  * @brief AudioProcessorEditor for the DSP-JUCE plugin
- * 
+ *
  * This editor provides a GUI for controlling the audio processor parameters.
  * It demonstrates modern JUCE patterns including:
  * - Thread-safe parameter control between GUI and audio threads
  * - Modern visual design with gradients and proper spacing
  * - Real-time responsiveness with immediate audio parameter updates
  */
-class DSPJuceAudioProcessorEditor : public juce::AudioProcessorEditor
-{
+class DSPJuceAudioProcessorEditor : public juce::AudioProcessorEditor {
 public:
     //==============================================================================
-    explicit DSPJuceAudioProcessorEditor(DSPJuceAudioProcessor& processor);
+    explicit DSPJuceAudioProcessorEditor(DSPJuceAudioProcessor &processor);
     ~DSPJuceAudioProcessorEditor() override = default;
 
     //==============================================================================
     // Component overrides
-    void paint(juce::Graphics& g) override;
+    void paint(juce::Graphics &g) override;
     void resized() override;
 
 private:
     //==============================================================================
     // Reference to the processor
-    DSPJuceAudioProcessor& audioProcessor;
+    DSPJuceAudioProcessor &audioProcessor;
 
     // GUI Components
     juce::Slider frequencySlider;
