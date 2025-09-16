@@ -1,7 +1,7 @@
 ---
 description: 'Expert technical writer specialized in creating clear, concise, and practical documentation for
     JUCE audio development projects.'
-model: 'GPT 4'
+model: 'GPT-4.1'
 tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
 ---
 

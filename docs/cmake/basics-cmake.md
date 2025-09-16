@@ -1,42 +1,51 @@
-# CMake Basics
+# CMake Build System
 
-CMake is a build system generator that helps manage the build process of software projects. It is widely used
-in C++ projects to simplify the process of compiling and linking code across different platforms and environments.
+CMake generates platform-specific build files from `CMakeLists.txt`.
+This project uses modern CMake 3.22+ features with JUCE integration.
 
-## How CMake Works
+## CMake's Role
 
-1. **CMakeLists.txt**: CMake uses configuration files called `CMakeLists.txt` to define the build process.
-   These files specify the source files, dependencies, and build options.
-2. **Generate Build Files**: CMake generates platform-specific build files (e.g., Makefiles, Visual Studio
-   project files) based on the `CMakeLists.txt` configuration.
-3. **Build the Project**: The generated build files are used by the platform's native build tools (e.g., `make`,
-   `msbuild`) to compile and link the code into an executable or library.
+**Dependency Management**:
 
-## Role of CMake in This Project
+- **FetchContent**: Downloads JUCE 8.0.9 automatically during configure
+- **Zero Dependencies**: No manual JUCE installation required
+- **Version Locking**: Ensures consistent JUCE version across builds
 
-In this JUCE-based audio development project, CMake is used to:
+**Cross-Platform Support**:
 
-- **Manage Dependencies**: Automatically fetch and configure the JUCE framework using CMake's `FetchContent` module.
-- **Cross-Platform Builds**: Generate build files for Windows, macOS, and Linux, ensuring compatibility across platforms.
-- **Plugin Formats**: Configure the project to build audio plugins in multiple formats (VST3, AU, AAX, Standalone).
-- **Simplify Configuration**: Provide a unified and easy-to-maintain build configuration for the entire project.
+- **Windows**: Visual Studio projects (`.sln`, `.vcxproj`)
+- **macOS**: Xcode projects or Unix Makefiles  
+- **Linux**: Unix Makefiles or Ninja builds
+- **Build Presets**: `CMakePresets.json` simplifies configuration
 
-## Key Commands
+## Key CMake Functions Used
 
-- **Configure the Project**:
+**Project Setup**:
 
-    ```bash
-    cmake --preset=default
-    ```
+```cmake
+project(DSPJucePlugin VERSION 1.0.0)
+set(CMAKE_CXX_STANDARD 20)  # Enable C++20 features
+```
 
-    This sets up the build system based on the `CMakeLists.txt` file.
+**JUCE Integration**:
 
-- **Build the Project**:
+```cmake
+# Download JUCE automatically
+FetchContent_Declare(JUCE
+    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+    GIT_TAG 8.0.9)
 
-    ```bash
-    cmake --build --preset=default
-    ```
+# Configure plugin formats and properties
+juce_add_plugin(DSPJucePlugin
+    FORMATS VST3 AU Standalone
+    PRODUCT_NAME "DSP-JUCE Plugin")
+```
 
-    This compiles the code and generates the final executable or plugin files.
+**Modern CMake Benefits**:
 
-CMake ensures that the build process is efficient, consistent, and adaptable to different development environments.
+- **Target-Based**: Clear dependency relationships
+- **Generator Agnostic**: Works with Visual Studio, Xcode, Makefiles, Ninja
+- **Preset System**: Standardized configuration across platforms
+- **IDE Integration**: Native project file generation
+
+Build commands remain simple: `cmake --preset=default && cmake --build --preset=default`

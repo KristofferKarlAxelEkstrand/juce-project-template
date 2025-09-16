@@ -3,6 +3,7 @@
 	"version": "1.0.0",
 	"description": "Documentation and tooling for the dsp-juce project.",
 	"scripts": {
+		"format": "prettier --write \"**/*.md\"",
 		"test": "npm run lint:md",
 		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#build\"",
 		"lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\" \"#build\"",
@@ -11,7 +12,8 @@
 	"devDependencies": {
 		"husky": "^9.1.7",
 		"lint-staged": "^16.1.6",
-		"markdownlint-cli2": "^0.18.1"
+		"markdownlint-cli2": "^0.18.1",
+		"prettier": "^3.6.2"
 	},
 	"lint-staged": {
 		"*.md": [
