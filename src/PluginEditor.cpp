@@ -2,7 +2,7 @@
 
 //==============================================================================
 DSPJuceAudioProcessorEditor::DSPJuceAudioProcessorEditor(DSPJuceAudioProcessor& processor)
-    : AudioProcessorEditor(&processor), audioProcessor(processor)
+    : AudioProcessorEditor(processor), audioProcessor(processor)
 {
     setupControls();
     setSize(600, 150);
