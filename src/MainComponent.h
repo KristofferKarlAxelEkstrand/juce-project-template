@@ -5,7 +5,7 @@
 
 /**
  * @brief AudioProcessor for both plugin and standalone builds
- * 
+ *
  * This processor provides a simple audio synthesizer with frequency and gain controls.
  * It demonstrates modern JUCE patterns including:
  * - Real-time audio processing with juce::dsp modules
@@ -13,8 +13,7 @@
  * - Proper audio resource management
  * - Cross-platform plugin/standalone compatibility
  */
-class DSPJuceAudioProcessor : public juce::AudioProcessor
-{
+class DSPJuceAudioProcessor : public juce::AudioProcessor {
 public:
     //==============================================================================
     DSPJuceAudioProcessor();
@@ -24,12 +23,12 @@ public:
     // AudioProcessor implementation
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-    bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
-    void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) override;
+    bool isBusesLayoutSupported(const BusesLayout &layouts) const override;
+    void processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages) override;
 
     //==============================================================================
     // Editor creation
-    juce::AudioProcessorEditor* createEditor() override;
+    juce::AudioProcessorEditor *createEditor() override;
     bool hasEditor() const override { return true; }
 
     //==============================================================================
@@ -43,13 +42,16 @@ public:
     int getNumPrograms() override { return 1; }
     int getCurrentProgram() override { return 0; }
     void setCurrentProgram(int index) override { juce::ignoreUnused(index); }
-    const juce::String getProgramName(int index) override { juce::ignoreUnused(index); return "Default"; }
-    void changeProgramName(int index, const juce::String& newName) override { juce::ignoreUnused(index, newName); }
+    const juce::String getProgramName(int index) override {
+        juce::ignoreUnused(index);
+        return "Default";
+    }
+    void changeProgramName(int index, const juce::String &newName) override { juce::ignoreUnused(index, newName); }
 
     //==============================================================================
     // State save/restore
-    void getStateInformation(juce::MemoryBlock& destData) override;
-    void setStateInformation(const void* data, int sizeInBytes) override;
+    void getStateInformation(juce::MemoryBlock &destData) override;
+    void setStateInformation(const void *data, int sizeInBytes) override;
 
     //==============================================================================
     // Parameter access (thread-safe)
