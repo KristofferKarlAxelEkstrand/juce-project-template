@@ -40,6 +40,20 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
+    - name: Set build environment variables
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          echo "CMAKE_PRESET=vs2022" >> $GITHUB_ENV
+          echo "BUILD_DIR=${{github.workspace}}/build/vs2022" >> $GITHUB_ENV
+        elif [ "${{matrix.build_type}}" == "Release" ]; then
+          echo "CMAKE_PRESET=release" >> $GITHUB_ENV
+          echo "BUILD_DIR=${{github.workspace}}/build/release" >> $GITHUB_ENV
+        else
+          echo "CMAKE_PRESET=default" >> $GITHUB_ENV
+          echo "BUILD_DIR=${{github.workspace}}/build" >> $GITHUB_ENV
+        fi
+      shell: bash
+
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
       run: |
@@ -61,39 +75,17 @@ jobs:
           build-essential
 
     - name: Configure CMake
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          cmake --preset=vs2022
-        elif [ "${{matrix.build_type}}" == "Release" ]; then
-          cmake --preset=release
-        else
-          cmake --preset=default
-        fi
+      run: cmake --preset=${{ env.CMAKE_PRESET }}
       shell: bash
 
     - name: Build
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          cmake --build build/vs2022 --config ${{matrix.build_type}}
-        elif [ "${{matrix.build_type}}" == "Release" ]; then
-          cmake --build build/release --config Release
-        else
-          cmake --build build --config Debug
-        fi
+      run: cmake --build ${{ env.BUILD_DIR }} --config ${{matrix.build_type}}
       shell: bash
 
     - name: Test (Linux/macOS)
       if: runner.os != 'Windows'
+      working-directory: ${{ env.BUILD_DIR }}
       run: |
-        # Determine working directory based on build type
-        if [ "${{matrix.build_type}}" == "Release" ]; then
-          BUILD_DIR="${{github.workspace}}/build/release"
-        else
-          BUILD_DIR="${{github.workspace}}/build"
-        fi
-        
-        cd "$BUILD_DIR"
-        
         # Check standalone binary path (differs between Linux and macOS)
         if [ "$RUNNER_OS" == "macOS" ]; then
           # macOS creates app bundle
@@ -117,7 +109,7 @@ jobs:
 
     - name: Test (Windows)
       if: runner.os == 'Windows'
-      working-directory: ${{github.workspace}}/build/vs2022
+      working-directory: ${{ env.BUILD_DIR }}
       run: |
         # For now, just verify the binary was created
         if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
@@ -133,8 +125,5 @@ jobs:
       if: matrix.build_type == 'Release'
       with:
         name: DSPJucePlugin-${{ matrix.os }}
-        path: |
-          ${{github.workspace}}/build/DSPJucePlugin_artefacts/Release/
-          ${{github.workspace}}/build/release/DSPJucePlugin_artefacts/Release/
-          ${{github.workspace}}/build/vs2022/DSPJucePlugin_artefacts/Release/
+        path: ${{ env.BUILD_DIR }}/DSPJucePlugin_artefacts/Release/
         retention-days: 30
