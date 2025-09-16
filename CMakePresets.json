@@ -3,11 +3,16 @@
 	"configurePresets": [
 		{
 			"name": "default",
-			"displayName": "Default Build",
+			"displayName": "Default Build (Debug)",
 			"generator": "Unix Makefiles",
 			"binaryDir": "${sourceDir}/build",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
+			},
+			"condition": {
+				"type": "inList",
+				"string": "${hostSystemName}",
+				"list": ["Linux", "Darwin"]
 			}
 		},
 		{
@@ -17,11 +22,16 @@
 			"binaryDir": "${sourceDir}/build/release",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release"
+			},
+			"condition": {
+				"type": "inList",
+				"string": "${hostSystemName}",
+				"list": ["Linux", "Darwin"]
 			}
 		},
 		{
 			"name": "vs2022",
-			"displayName": "Visual Studio 2022",
+			"displayName": "Visual Studio 2022 (Windows)",
 			"generator": "Visual Studio 17 2022",
 			"condition": {
 				"type": "equals",
@@ -36,12 +46,32 @@
 		},
 		{
 			"name": "ninja",
-			"displayName": "Ninja Build",
+			"displayName": "Ninja Build (Debug)",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/ninja",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
 			}
+		},
+		{
+			"name": "ninja-release",
+			"displayName": "Ninja Build (Release)",
+			"generator": "Ninja",
+			"binaryDir": "${sourceDir}/build/ninja-release",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		},
+		{
+			"name": "xcode",
+			"displayName": "Xcode (macOS)",
+			"generator": "Xcode",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Darwin"
+			},
+			"binaryDir": "${sourceDir}/build/xcode"
 		}
 	],
 	"buildPresets": [
@@ -66,6 +96,20 @@
 		{
 			"name": "ninja",
 			"configurePreset": "ninja"
+		},
+		{
+			"name": "ninja-release",
+			"configurePreset": "ninja-release"
+		},
+		{
+			"name": "xcode-debug",
+			"configurePreset": "xcode",
+			"configuration": "Debug"
+		},
+		{
+			"name": "xcode-release",
+			"configurePreset": "xcode",
+			"configuration": "Release"
 		}
 	]
 }

@@ -1,35 +1,62 @@
 #pragma once
 
-#include <juce_audio_utils/juce_audio_utils.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_dsp/juce_dsp.h>
-#include <juce_gui_basics/juce_gui_basics.h>
 
 /**
- * @brief Main audio component demonstrating real-time DSP with JUCE
+ * @brief AudioProcessor for both plugin and standalone builds
  * 
- * This component provides a simple audio synthesizer with frequency and gain controls.
+ * This processor provides a simple audio synthesizer with frequency and gain controls.
  * It demonstrates modern JUCE patterns including:
  * - Real-time audio processing with juce::dsp modules
  * - Thread-safe parameter handling between GUI and audio threads
  * - Proper audio resource management
+ * - Cross-platform plugin/standalone compatibility
  */
-class MainComponent : public juce::AudioAppComponent
+class DSPJuceAudioProcessor : public juce::AudioProcessor
 {
 public:
     //==============================================================================
-    MainComponent();
-    ~MainComponent() override;
+    DSPJuceAudioProcessor();
+    ~DSPJuceAudioProcessor() override = default;
 
     //==============================================================================
-    // AudioAppComponent overrides
-    void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
-    void getNextAudioBlock(const juce::AudioSourceChannelInfo &bufferToFill) override;
+    // AudioProcessor implementation
+    void prepareToPlay(double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
+    bool isBusesLayoutSupported(const BusesLayout& layouts) const override;
+    void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages) override;
 
     //==============================================================================
-    // Component overrides
-    void paint(juce::Graphics &g) override;
-    void resized() override;
+    // Editor creation
+    juce::AudioProcessorEditor* createEditor() override;
+    bool hasEditor() const override { return true; }
+
+    //==============================================================================
+    // Program and state management
+    const juce::String getName() const override { return "DSP-JUCE Plugin"; }
+    bool acceptsMidi() const override { return false; }
+    bool producesMidi() const override { return false; }
+    bool isMidiEffect() const override { return false; }
+    double getTailLengthSeconds() const override { return 0.0; }
+
+    int getNumPrograms() override { return 1; }
+    int getCurrentProgram() override { return 0; }
+    void setCurrentProgram(int index) override { juce::ignoreUnused(index); }
+    const juce::String getProgramName(int index) override { juce::ignoreUnused(index); return "Default"; }
+    void changeProgramName(int index, const juce::String& newName) override { juce::ignoreUnused(index, newName); }
+
+    //==============================================================================
+    // State save/restore
+    void getStateInformation(juce::MemoryBlock& destData) override;
+    void setStateInformation(const void* data, int sizeInBytes) override;
+
+    //==============================================================================
+    // Parameter access (thread-safe)
+    void setFrequency(float frequency);
+    void setGain(float gain);
+    float getFrequency() const { return currentFrequency.load(); }
+    float getGain() const { return currentGain.load(); }
 
 private:
     //==============================================================================
@@ -37,25 +64,17 @@ private:
     juce::dsp::Oscillator<float> oscillator{[](float x) { return std::sin(x); }, 200};
     juce::dsp::Gain<float> gain;
 
-    // GUI Components
-    juce::Slider frequencySlider;
-    juce::Label frequencyLabel;
-    juce::Slider gainSlider;
-    juce::Label gainLabel;
+    // Thread-safe parameter storage
+    std::atomic<float> currentFrequency{440.0f};
+    std::atomic<float> currentGain{0.5f};
 
     // Constants
-    static constexpr double MIN_FREQUENCY = 50.0;
-    static constexpr double MAX_FREQUENCY = 5000.0;
-    static constexpr double DEFAULT_FREQUENCY = 440.0;
-    static constexpr double MIN_GAIN = 0.0;
-    static constexpr double MAX_GAIN = 1.0;
-    static constexpr double DEFAULT_GAIN = 0.5;
+    static constexpr float MIN_FREQUENCY = 50.0f;
+    static constexpr float MAX_FREQUENCY = 5000.0f;
+    static constexpr float DEFAULT_FREQUENCY = 440.0f;
+    static constexpr float MIN_GAIN = 0.0f;
+    static constexpr float MAX_GAIN = 1.0f;
+    static constexpr float DEFAULT_GAIN = 0.5f;
 
-    //==============================================================================
-    /**
-     * @brief Initialize GUI controls with proper styling and ranges
-     */
-    void setupControls();
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DSPJuceAudioProcessor)
 };

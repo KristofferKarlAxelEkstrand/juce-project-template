@@ -1,74 +1,66 @@
 #include "MainComponent.h"
+#include "PluginEditor.h"
 
 //==============================================================================
-MainComponent::MainComponent() {
-    setupControls();
-    setSize(600, 150);
-    setAudioChannels(0, 2); // no inputs, stereo output
-}
-
-MainComponent::~MainComponent()
+DSPJuceAudioProcessor::DSPJuceAudioProcessor()
+     : AudioProcessor(BusesProperties()
+                       .withOutput("Output", juce::AudioChannelSet::stereo(), true))
 {
-    shutdownAudio();
+    // Initialize parameters with default values  
+    currentFrequency.store(DEFAULT_FREQUENCY);
+    currentGain.store(DEFAULT_GAIN);
 }
 
 //==============================================================================
-void MainComponent::setupControls() {
-    // Frequency control setup
-    addAndMakeVisible(frequencySlider);
-    frequencySlider.setRange(MIN_FREQUENCY, MAX_FREQUENCY, 1.0);
-    frequencySlider.setValue(DEFAULT_FREQUENCY);
-    frequencySlider.setSkewFactorFromMidPoint(1000.0); // Logarithmic scale
-    frequencySlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
-    frequencySlider.setTextValueSuffix(" Hz");
-    frequencySlider.onValueChange = [this] {
-        // Thread-safe parameter update - only update if on message thread
-        if (juce::MessageManager::getInstance()->isThisTheMessageThread()) {
-            oscillator.setFrequency(static_cast<float>(frequencySlider.getValue()));
-        }
-    };
-
-    addAndMakeVisible(frequencyLabel);
-    frequencyLabel.setText("Frequency", juce::dontSendNotification);
-    frequencyLabel.attachToComponent(&frequencySlider, true);
-
-    // Gain control setup
-    addAndMakeVisible(gainSlider);
-    gainSlider.setRange(MIN_GAIN, MAX_GAIN, 0.01);
-    gainSlider.setValue(DEFAULT_GAIN);
-    gainSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
-    gainSlider.onValueChange = [this] {
-        // Thread-safe parameter update
-        if (juce::MessageManager::getInstance()->isThisTheMessageThread()) {
-            gain.setGainLinear(static_cast<float>(gainSlider.getValue()));
-        }
-    };
-
-    addAndMakeVisible(gainLabel);
-    gainLabel.setText("Gain", juce::dontSendNotification);
-    gainLabel.attachToComponent(&gainSlider, true);
-}
-
-//==============================================================================
-void MainComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate) {
+void DSPJuceAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+{
     // Initialize DSP processing specs
     juce::dsp::ProcessSpec spec;
     spec.sampleRate = sampleRate;
-    spec.maximumBlockSize = static_cast<juce::uint32>(samplesPerBlockExpected);
-    spec.numChannels = 2;
+    spec.maximumBlockSize = static_cast<juce::uint32>(samplesPerBlock);
+    spec.numChannels = static_cast<juce::uint32>(getTotalNumOutputChannels());
 
     // Prepare DSP components
     oscillator.prepare(spec);
-    oscillator.setFrequency(static_cast<float>(frequencySlider.getValue()));
+    oscillator.setFrequency(currentFrequency.load());
 
     gain.prepare(spec);
-    gain.setGainLinear(static_cast<float>(gainSlider.getValue()));
+    gain.setGainLinear(currentGain.load());
 }
 
-void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo &bufferToFill) {
+void DSPJuceAudioProcessor::releaseResources()
+{
+    // Called when audio device stops or settings change
+    // DSP components automatically handle cleanup
+}
+
+bool DSPJuceAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+{
+    // Support stereo output only
+    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+        return false;
+
+    return true;
+}
+
+void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+{
+    juce::ignoreUnused(midiMessages);
+
+    juce::ScopedNoDenormals noDenormals;
+    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumOutputChannels = getTotalNumOutputChannels();
+
+    // Clear any input channels that don't contain input data
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+        buffer.clear(i, 0, buffer.getNumSamples());
+
+    // Update DSP parameters if they changed
+    oscillator.setFrequency(currentFrequency.load());
+    gain.setGainLinear(currentGain.load());
+
     // Process audio using modern JUCE DSP chain
-    auto *buffer = bufferToFill.buffer;
-    juce::dsp::AudioBlock<float> block(*buffer);
+    juce::dsp::AudioBlock<float> block(buffer);
     juce::dsp::ProcessContextReplacing<float> context(block);
 
     // Apply oscillator then gain
@@ -76,33 +68,41 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo &buffer
     gain.process(context);
 }
 
-void MainComponent::releaseResources() {
-    // Called when audio device stops or settings change
-    // DSP components automatically handle cleanup
+//==============================================================================
+juce::AudioProcessorEditor* DSPJuceAudioProcessor::createEditor()
+{
+    return new DSPJuceAudioProcessorEditor(*this);
 }
 
 //==============================================================================
-void MainComponent::paint(juce::Graphics &g) {
-    // Fill background with default window color
-    g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId));
-
-    // Add subtle gradient for modern look
-    auto bounds = getLocalBounds().toFloat();
-    juce::ColourGradient gradient(juce::Colours::darkgrey.withAlpha(0.1f), bounds.getTopLeft(),
-                                  juce::Colours::lightgrey.withAlpha(0.05f), bounds.getBottomRight(), false);
-    g.setGradientFill(gradient);
-    g.fillRoundedRectangle(bounds.reduced(5.0f), 8.0f);
+void DSPJuceAudioProcessor::setFrequency(float frequency)
+{
+    currentFrequency.store(juce::jlimit(MIN_FREQUENCY, MAX_FREQUENCY, frequency));
 }
 
-void MainComponent::resized() {
-    auto bounds = getLocalBounds().reduced(10);
-    constexpr int sliderLabelWidth = 80;
-    constexpr int sliderHeight = 20;
-    constexpr int verticalSpacing = 30;
+void DSPJuceAudioProcessor::setGain(float gainValue)
+{
+    currentGain.store(juce::jlimit(MIN_GAIN, MAX_GAIN, gainValue));
+}
 
-    // Position frequency control
-    frequencySlider.setBounds(sliderLabelWidth, 15, bounds.getWidth() - sliderLabelWidth, sliderHeight);
+//==============================================================================
+void DSPJuceAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+{
+    // Create XML with current parameter values
+    juce::XmlElement xml("DSPJucePlugin");
+    xml.setAttribute("frequency", static_cast<double>(currentFrequency.load()));
+    xml.setAttribute("gain", static_cast<double>(currentGain.load()));
+    copyXmlToBinary(xml, destData);
+}
 
-    // Position gain control
-    gainSlider.setBounds(sliderLabelWidth, 15 + verticalSpacing, bounds.getWidth() - sliderLabelWidth, sliderHeight);
+void DSPJuceAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
+{
+    // Restore parameter values from XML
+    std::unique_ptr<juce::XmlElement> xmlState = getXmlFromBinary(data, sizeInBytes);
+    
+    if (xmlState.get() != nullptr && xmlState->hasTagName("DSPJucePlugin"))
+    {
+        currentFrequency.store(static_cast<float>(xmlState->getDoubleAttribute("frequency", DEFAULT_FREQUENCY)));
+        currentGain.store(static_cast<float>(xmlState->getDoubleAttribute("gain", DEFAULT_GAIN)));
+    }
 }
