@@ -89,10 +89,10 @@ void DSPJuceAudioProcessor::setGain(float gainValue)
 void DSPJuceAudioProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     // Create XML with current parameter values
-    std::unique_ptr<juce::XmlElement> xml = std::make_unique<juce::XmlElement>("DSPJucePlugin");
-    xml->setAttribute("frequency", static_cast<double>(currentFrequency.load()));
-    xml->setAttribute("gain", static_cast<double>(currentGain.load()));
-    copyXmlToBinary(*xml, destData);
+    juce::XmlElement xml("DSPJucePlugin");
+    xml.setAttribute("frequency", static_cast<double>(currentFrequency.load()));
+    xml.setAttribute("gain", static_cast<double>(currentGain.load()));
+    copyXmlToBinary(xml, destData);
 }
 
 void DSPJuceAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
