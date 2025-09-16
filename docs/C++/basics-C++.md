@@ -1,47 +1,21 @@
-# C++ Basics
+# C++ in this Project
 
-C++ is a powerful, high-performance programming language widely used in system software, game development, and
-real-time applications. It is the primary language for developing JUCE-based audio applications.
+This project is written in modern C++20, a version of the C++ language that provides numerous features for writing safer, cleaner, and more efficient code.
 
-## Key Features of C++
+## Why C++ for Audio?
 
-- **Object-Oriented**: Supports classes, inheritance, polymorphism, and encapsulation.
-- **High Performance**: Offers low-level memory manipulation and efficient execution.
-- **Standard Template Library (STL)**: Provides reusable data structures and algorithms.
-- **Cross-Platform**: Code can be compiled and executed on multiple platforms.
-- **Modern Features**: Includes features like smart pointers, lambdas, and concurrency from C++20.
+- **Performance**: C++ provides low-level control over system resources, which is critical for real-time audio processing where low latency and high efficiency are required.
+- **Control**: It allows for precise memory management, preventing common audio issues like dropouts and glitches.
+- **Ecosystem**: C++ is the language of the JUCE framework and is the industry standard for professional audio software development.
 
-## Why Use C++ for Audio Development?
+## C++20 Features Used
 
-- **Real-Time Performance**: Ensures low latency and high efficiency for audio processing.
-- **Fine-Grained Control**: Allows precise control over memory and CPU usage.
-- **JUCE Framework**: Leverages JUCE's powerful tools for audio plugin development.
-- **Cross-Platform Compatibility**: Develop once and deploy on Windows, macOS, and Linux.
+This project leverages several modern C++20 features:
 
-## C++ in JUCE Projects
+- **`std::atomic`**: Used for thread-safe communication between the GUI and the real-time audio thread, ensuring that parameters can be updated without causing data races or audio artifacts.
+- **Lambda Expressions**: Used for concisely defining callback functions, such as for GUI slider updates.
+- **`constexpr`**: Used to define constants that can be evaluated at compile-time, improving performance.
+- **Structured Bindings**: Used for cleaner syntax when working with pairs or tuples.
+- **RAII (Resource Acquisition Is Initialization)**: A core C++ principle used throughout the project (e.g., `juce::ScopedNoDenormals`) to ensure that resources are properly managed.
 
-In JUCE-based audio projects, C++ is used to:
-
-1. **Implement DSP Algorithms**: Write efficient digital signal processing code.
-2. **Manage Audio Buffers**: Handle real-time audio data.
-3. **Create Plugin Interfaces**: Develop user interfaces for audio plugins.
-4. **Optimize Performance**: Ensure smooth operation under real-time constraints.
-
-## Getting Started with C++
-
-To start using C++ in JUCE projects:
-
-1. **Set Up Your Environment**:
-   - Install a C++ compiler (e.g., GCC, Clang, MSVC).
-   - Use an IDE like Visual Studio or CLion.
-2. **Learn Modern C++**:
-   - Focus on C++20 features.
-   - Practice RAII (Resource Acquisition Is Initialization) patterns.
-3. **Explore JUCE**:
-   - Familiarize yourself with JUCE modules like `juce_audio_processors` and `juce_dsp`.
-4. **Write and Test Code**:
-   - Use CMake to build your project.
-   - Test your code in various DAWs and platforms.
-
-C++ is a versatile language that empowers developers to create high-quality, professional audio applications.
-Mastering C++ is essential for success in JUCE-based audio development.
+By using these features, the project serves as a practical example of how to apply modern C++ practices to audio development.
