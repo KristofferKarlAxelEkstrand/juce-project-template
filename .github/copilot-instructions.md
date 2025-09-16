@@ -6,6 +6,16 @@ encounter unexpected information that does not match the info here.**
 This repository is a modern JUCE 8.0.9 audio development environment for creating professional
 audio applications with CMake build system integration.
 
+## Communication Style
+
+- **Direct and Unembellished**: Use direct, plain language. State facts without embellishment. Avoid unnecessary adjectives, adverbs, and filler words.
+- **Economical Phrasing**: Keep responses brief and focused. Use short sentences, with one concept per sentence.
+- **Structured for Clarity**: Lead with the main point. Organize information logically.
+- **Professional Tone**: Avoid emoticons, emojis, marketing speak, buzzwords, and conversational pleasantries.
+- **No Redundancy**: Remove redundant explanations and information.
+- **Avoid emoticons and emojis**: Maintain a professional tone without using emoticons or emojis.
+- **Avoid em-dashes and ellipses**: Use standard punctuation to ensure clarity and professionalism.
+
 ## Working Effectively
 
 ### Bootstrap and Build Process
