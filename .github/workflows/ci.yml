@@ -42,20 +42,26 @@ jobs:
 
     - name: Set build environment variables
       run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          # On Windows, always use vs2022 preset regardless of build type
-          echo "CMAKE_PRESET=vs2022" >> $GITHUB_ENV
-          echo "BUILD_DIR=${{github.workspace}}/build/vs2022" >> $GITHUB_ENV
-        else
-          # On non-Windows platforms, use preset based on build type
-          if [ "${{matrix.build_type}}" == "Release" ]; then
-            echo "CMAKE_PRESET=release" >> $GITHUB_ENV
-            echo "BUILD_DIR=${{github.workspace}}/build/release" >> $GITHUB_ENV
-          else
-            echo "CMAKE_PRESET=default" >> $GITHUB_ENV
-            echo "BUILD_DIR=${{github.workspace}}/build" >> $GITHUB_ENV
-          fi
-        fi
+        case "$RUNNER_OS" in
+          "Windows")
+            # On Windows, always use vs2022 preset regardless of build type
+            echo "CMAKE_PRESET=vs2022" >> $GITHUB_ENV
+            echo "BUILD_DIR=${{github.workspace}}/build/vs2022" >> $GITHUB_ENV
+            ;;
+          *)
+            # On non-Windows platforms, use preset based on build type
+            case "${{matrix.build_type}}" in
+              "Release")
+                echo "CMAKE_PRESET=release" >> $GITHUB_ENV
+                echo "BUILD_DIR=${{github.workspace}}/build/release" >> $GITHUB_ENV
+                ;;
+              *)
+                echo "CMAKE_PRESET=default" >> $GITHUB_ENV
+                echo "BUILD_DIR=${{github.workspace}}/build" >> $GITHUB_ENV
+                ;;
+            esac
+            ;;
+        esac
       shell: bash
 
     - name: Install Linux dependencies
