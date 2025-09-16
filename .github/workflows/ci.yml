@@ -57,20 +57,33 @@ jobs:
           libxext-dev
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          cmake --preset=vs2022
+        else
+          cmake --preset=default
+        fi
+      shell: bash
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          cmake --build build --config ${{matrix.build_type}}
+        else
+          cmake --build build --config ${{matrix.build_type}}
+        fi
+      shell: bash
 
     - name: Test (Linux/macOS)
       if: runner.os != 'Windows'
       working-directory: ${{github.workspace}}/build
       run: |
         # For now, just verify the binary was created
-        if [ -f "SimpleJuceApp_artefacts/${{matrix.build_type}}/SimpleJuceApp" ]; then
+        if [ -f "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin" ]; then
           echo "✅ Build successful - binary created"
         else
           echo "❌ Build failed - binary not found"
+          ls -la DSPJucePlugin_artefacts/${{matrix.build_type}}/
           exit 1
         fi
 
@@ -79,10 +92,11 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: |
         # For now, just verify the binary was created
-        if (Test-Path "SimpleJuceApp_artefacts/${{matrix.build_type}}/SimpleJuceApp.exe") {
+        if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
           Write-Host "✅ Build successful - binary created"
         } else {
           Write-Host "❌ Build failed - binary not found"
+          Get-ChildItem DSPJucePlugin_artefacts/${{matrix.build_type}}/
           exit 1
         }
 
@@ -90,7 +104,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: matrix.build_type == 'Release'
       with:
-        name: SimpleJuceApp-${{ matrix.os }}
+        name: DSPJucePlugin-${{ matrix.os }}
         path: |
-          ${{github.workspace}}/build/SimpleJuceApp_artefacts/Release/
+          ${{github.workspace}}/build/DSPJucePlugin_artefacts/Release/
         retention-days: 30

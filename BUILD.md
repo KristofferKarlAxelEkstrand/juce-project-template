@@ -1,11 +1,13 @@
 # DSP-JUCE Build Instructions
 
-This document provides comprehensive build instructions for the DSP-JUCE audio plugin and standalone application across Windows, Linux, and macOS platforms.
+This document provides comprehensive build instructions for the DSP-JUCE audio plugin and
+standalone application across Windows, Linux, and macOS platforms.
 
 ## Overview
 
 The DSP-JUCE project is configured to build:
-- **Plugin formats**: VST3 (all platforms), AU (macOS only) 
+
+- **Plugin formats**: VST3 (all platforms), AU (macOS only)
 - **Standalone application**: Cross-platform desktop application
 - **Debug and Release configurations**: Optimized for development and distribution
 
@@ -14,11 +16,13 @@ The DSP-JUCE project is configured to build:
 ### Prerequisites
 
 **All Platforms:**
+
 - CMake 3.22 or higher
 - C++20 compatible compiler
 - Git (for dependency management)
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev \
                         libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev \
@@ -27,6 +31,7 @@ sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-d
 ```
 
 **macOS:**
+
 ```bash
 # Install Xcode command line tools
 xcode-select --install
@@ -36,6 +41,7 @@ brew install cmake
 ```
 
 **Windows:**
+
 - Visual Studio 2019 or later with C++ workload
 - Or Visual Studio Build Tools 2019+
 - CMake (download from cmake.org or via Visual Studio installer)
@@ -43,6 +49,7 @@ brew install cmake
 ### Build Commands
 
 **Linux & macOS:**
+
 ```bash
 # Configure (Debug)
 cmake --preset=default
@@ -56,6 +63,7 @@ cmake --build --preset=release
 ```
 
 **Windows:**
+
 ```batch
 # Configure
 cmake --preset=vs2022
@@ -72,6 +80,7 @@ cmake --build --preset=vs2022-release
 ### Linux
 
 #### System Dependencies
+
 The project requires several audio and graphics libraries:
 
 ```bash
@@ -101,7 +110,8 @@ sudo dnf install -y alsa-lib-devel libX11-devel libXcomposite-devel \
                      gcc-c++ cmake make
 ```
 
-#### Build Process
+#### Linux Build Process
+
 ```bash
 # 1. Configure the build
 cmake --preset=default
@@ -121,6 +131,7 @@ ls build/DSPJucePlugin_artefacts/Debug/
 ```
 
 #### Alternative Build Methods
+
 ```bash
 # Using Ninja (if available)
 cmake --preset=ninja
@@ -139,11 +150,13 @@ cmake --build --preset=default
 ### macOS
 
 #### System Requirements
+
 - macOS 10.15 (Catalina) or later
 - Xcode 11 or later, or Xcode Command Line Tools
 - CMake 3.22+ (via Homebrew recommended)
 
 #### Setup
+
 ```bash
 # Install Xcode Command Line Tools
 xcode-select --install
@@ -154,7 +167,8 @@ brew install cmake
 # Alternative: Download CMake from cmake.org
 ```
 
-#### Build Process
+#### macOS Build Process
+
 ```bash
 # 1. Configure build (Unix Makefiles)
 cmake --preset=default
@@ -177,7 +191,8 @@ ls build/DSPJucePlugin_artefacts/Debug/
 #   - DSP-JUCE Plugin.app/ (Standalone application bundle)
 ```
 
-#### Installation
+#### macOS Installation
+
 ```bash
 # Install VST3 plugin (system-wide)
 sudo cp -r "build/DSPJucePlugin_artefacts/Debug/DSP-JUCE Plugin.vst3" \
@@ -195,7 +210,8 @@ cp -r "build/DSPJucePlugin_artefacts/Debug/DSP-JUCE Plugin.vst3" \
 
 ### Windows
 
-#### System Requirements
+#### Windows System Requirements
+
 - Windows 10 or later (x64)
 - Visual Studio 2019 or later with C++ workload, OR
 - Visual Studio Build Tools 2019+ (command line only)
@@ -203,19 +219,22 @@ cp -r "build/DSPJucePlugin_artefacts/Debug/DSP-JUCE Plugin.vst3" \
 
 #### Setup Options
 
-**Option 1: Visual Studio IDE**
+##### Option 1: Visual Studio IDE
+
 1. Install Visual Studio 2019/2022 Community (free)
 2. Select "Desktop development with C++" workload
 3. Ensure CMake is included in the installation
 
-**Option 2: Build Tools Only**
+##### Option 2: Build Tools Only
+
 1. Download Visual Studio Build Tools
 2. Install C++ build tools
 3. Download and install CMake separately
 
-#### Build Process
+#### Windows Build Process
 
 **Command Line (Recommended):**
+
 ```batch
 # 1. Open "x64 Native Tools Command Prompt" from Start Menu
 
@@ -240,6 +259,7 @@ dir build\DSPJucePlugin_artefacts\Debug\
 ```
 
 **Visual Studio IDE:**
+
 ```batch
 # 1. Configure to generate .sln file
 cmake --preset=vs2022
@@ -252,7 +272,8 @@ start build\vs2022\DSPJucePlugin.sln
 #    - Build > Build Solution (Ctrl+Shift+B)
 ```
 
-#### Installation
+#### Windows Installation
+
 ```batch
 # Install VST3 plugin (system-wide, requires Administrator)
 xcopy "build\DSPJucePlugin_artefacts\Debug\DSP-JUCE Plugin.vst3" ^
@@ -293,6 +314,7 @@ cmake --preset=default -DENABLE_EXTRA_WARNINGS=ON
 ## Validation and Testing
 
 ### Build Validation
+
 ```bash
 # Run the validation script
 ./scripts/validate-setup.sh
@@ -305,6 +327,7 @@ npm test     # Run markdown linting
 ### Manual Testing
 
 **Standalone Application:**
+
 ```bash
 # Linux/macOS
 ./build/DSPJucePlugin_artefacts/Debug/DSP-JUCE\ Plugin
@@ -314,6 +337,7 @@ build\DSPJucePlugin_artefacts\Debug\DSP-JUCE Plugin.exe
 ```
 
 **Plugin Testing:**
+
 - Load in your DAW (Reaper, Logic Pro, Pro Tools, etc.)
 - Verify audio processing and GUI responsiveness
 - Test parameter automation
@@ -323,7 +347,8 @@ build\DSPJucePlugin_artefacts\Debug\DSP-JUCE Plugin.exe
 
 ### Common Issues
 
-**"CMake not found"**
+#### CMake not found
+
 ```bash
 # Linux: Install via package manager
 sudo apt-get install cmake    # Ubuntu/Debian
@@ -335,7 +360,8 @@ brew install cmake
 # Windows: Download from cmake.org or use Visual Studio installer
 ```
 
-**"C++ compiler not found"**
+#### C++ compiler not found
+
 ```bash
 # Linux
 sudo apt-get install build-essential  # Ubuntu/Debian
@@ -347,7 +373,8 @@ xcode-select --install
 # Windows: Install Visual Studio with C++ workload
 ```
 
-**JUCE Dependencies Missing (Linux)**
+#### JUCE Dependencies Missing (Linux)
+
 ```bash
 # Run the complete dependency installation
 sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev \
@@ -355,7 +382,8 @@ sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev \
                         libfreetype6-dev libfontconfig1-dev libgl1-mesa-dev
 ```
 
-**Build Fails with "Generator Not Found"**
+#### Build Fails with Generator Not Found
+
 ```bash
 # Try alternative generator
 cmake --preset=ninja  # If Ninja is available
@@ -363,7 +391,7 @@ cmake --preset=ninja  # If Ninja is available
 cmake -G "Unix Makefiles" -B build
 ```
 
-**Plugin Not Recognized by DAW**
+#### Plugin Not Recognized by DAW
 
 1. **Check plugin location**: Ensure plugins are in the correct directory
 2. **Rescan plugins**: Force DAW to rescan plugin directories  
@@ -373,16 +401,19 @@ cmake -G "Unix Makefiles" -B build
 ### Platform-Specific Issues
 
 **Linux:**
+
 - **Audio Device Access**: Ensure user is in `audio` group
 - **Real-time Priority**: May need to configure `/etc/security/limits.conf`
 - **Plugin Scanning**: Some DAWs require manual plugin directory configuration
 
 **macOS:**
+
 - **Gatekeeper**: May need to allow unsigned plugins in Security preferences
 - **Code Signing**: For distribution, plugins need proper code signing
 - **Notarization**: Required for macOS 10.15+ distribution
 
 **Windows:**
+
 - **Antivirus**: Some antivirus software blocks plugin loading
 - **Visual C++ Redistributable**: May need to install for end users
 - **Windows Defender**: May quarantine newly built plugins
@@ -390,11 +421,13 @@ cmake -G "Unix Makefiles" -B build
 ### Performance Issues
 
 **High CPU Usage:**
+
 - Build Release configuration instead of Debug
 - Check for audio dropouts in system audio settings
 - Adjust audio buffer size in DAW preferences
 
 **GUI Responsiveness:**
+
 - Ensure GUI updates are on message thread only
 - Check for blocking operations in audio callback
 - Profile with appropriate tools (Instruments, Visual Studio Diagnostics)
@@ -402,18 +435,22 @@ cmake -G "Unix Makefiles" -B build
 ## Development Tips
 
 ### Code Formatting
+
 ```bash
 # Format all source files
 clang-format -i src/*.cpp src/*.h
 ```
 
 ### Debugging
+
 - Use Debug build configuration for development
 - Enable JUCE assertions for runtime checking
 - Use appropriate debugger (GDB, LLDB, Visual Studio)
 
 ### Continuous Integration
+
 The project includes CI/CD configurations for:
+
 - Multi-platform builds
 - Code quality checks
 - Security scanning
@@ -422,6 +459,7 @@ The project includes CI/CD configurations for:
 ## Advanced Configuration
 
 ### Custom JUCE Configuration
+
 Modify `CMakeLists.txt` to customize JUCE settings:
 
 ```cmake
@@ -436,6 +474,7 @@ target_compile_definitions(DSPJucePlugin PRIVATE
 ```
 
 ### Cross-Compilation
+
 ```bash
 # Cross-compile for different architectures (advanced)
 cmake --preset=default -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"  # macOS Universal
@@ -443,12 +482,14 @@ cmake --preset=default -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"  # macOS Univers
 
 ## Support and Resources
 
-- **JUCE Documentation**: https://docs.juce.com/
-- **JUCE Forum**: https://forum.juce.com/
-- **CMake Documentation**: https://cmake.org/documentation/
+- **JUCE Documentation**: <https://docs.juce.com/>
+- **JUCE Forum**: <https://forum.juce.com/>
+- **CMake Documentation**: <https://cmake.org/documentation/>
 - **Project Issues**: Check GitHub issues for known problems
 - **Audio Development**: Real-time audio programming best practices
 
 ---
 
-*Last updated: 2024 - Compatible with JUCE 8.0.9 and CMake 3.22+*
+---
+
+Last updated: 2024 - Compatible with JUCE 8.0.9 and CMake 3.22+
