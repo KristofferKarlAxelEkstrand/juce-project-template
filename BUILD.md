@@ -1,72 +1,92 @@
 # Build Instructions
 
-This document provides detailed build instructions for the DSP-JUCE project on Windows, macOS, and Linux.
+Complete build setup for DSP-JUCE on Windows, macOS, and Linux.
 
 ## Prerequisites
 
-Ensure you have the following software installed:
+**Required Software**:
 
-- **CMake**: Version 3.22 or higher.
-- **C++ Compiler**: A compiler with C++20 support (e.g., MSVC, GCC, Clang).
-- **Git**: For cloning the repository and managing dependencies.
+- **CMake**: 3.22 or higher
+- **C++20 Compiler**: MSVC 2019+, GCC 10+, or Clang 11+
+- **Git**: For dependency management
 
-### Platform-Specific Dependencies
+### Platform Setup
 
 #### Windows
 
-- **Visual Studio**: 2019 or later with the "Desktop development with C++" workload. The Community edition is sufficient.
+Install Visual Studio 2019+ with "Desktop development with C++" workload.
+
+```powershell
+# Verify installation
+cmake --version
+cl  # MSVC compiler check
+```
 
 #### macOS
 
-- **Xcode Command Line Tools**: Install by running `xcode-select --install` in your terminal.
-- **Homebrew**: Used for installing CMake.
+```bash
+# Install Xcode tools and Homebrew
+xcode-select --install
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install cmake
+
+# Verify installation  
+cmake --version
+clang++ --version
+```
 
 #### Linux (Ubuntu/Debian)
 
-- **Build Essentials**: A set of core development tools.
-- **Libraries**: Various libraries for audio, GUI, and web functionality.
-
 ```bash
-sudo apt-get update
-sudo apt-get install -y \
-    build-essential cmake \
+# Install dependencies
+sudo apt-get update && sudo apt-get install -y \
+    build-essential cmake git \
     libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev \
     libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev \
     libgl1-mesa-dev libwebkit2gtk-4.1-dev pkg-config
+
+# Verify installation
+cmake --version && g++ --version
 ```
 
 ## Build Process
 
-The project uses a preset-based CMake configuration for simplified building.
+**IMPORTANT**: Each step takes significant time. Do not cancel operations.
 
-### 1. Configure the Project
+### Step 1: Configure (90+ seconds)
 
-This step generates the native build files for your platform. It also downloads the JUCE dependency via `FetchContent`.
+Downloads JUCE 8.0.9 and generates platform-specific build files.
 
 ```bash
-# For Linux, macOS, or Windows using the default preset
 cmake --preset=default
 ```
 
-### 2. Build the Project
+### Step 2: Build (2m45s+ Debug, 4m30s+ Release)  
 
-This compiles the source code and creates the plugin and standalone application.
+Compiles all source code and JUCE modules.
 
 ```bash
-# This command works for all default presets
+# Debug build (faster compilation, larger binaries)
 cmake --build --preset=default
+
+# Release build (optimized, smaller binaries)
+cmake --preset=release && cmake --build --preset=release
 ```
 
-For **Release** builds, use the `release` preset:
+### Step 3: Validation
 
 ```bash
-cmake --preset=release
-cmake --build --preset=release
+# Check build artifacts exist
+ls -la build/DSPJucePlugin_artefacts/Debug/
+
+# Run validation script
+./scripts/validate-setup.sh
 ```
 
 ### Build Artifacts
 
-The compiled binaries are placed in the `build/DSPJucePlugin_artefacts/` directory, organized by build configuration (e.g., `Debug`, `Release`).
+The compiled binaries are placed in the `build/DSPJucePlugin_artefacts/` directory,
+organized by build configuration (e.g., `Debug`, `Release`).
 
 - **VST3 Plugin**: `VST3/DSP-JUCE Plugin.vst3`
 - **AU Plugin** (macOS): `AU/DSP-JUCE Plugin.component`
@@ -74,14 +94,43 @@ The compiled binaries are placed in the `build/DSPJucePlugin_artefacts/` directo
 
 ## Troubleshooting
 
-### Common Build Issues
+### Build Failures
 
-- **CMake Not Found**: Ensure CMake is installed and its location is in your system's `PATH`.
-- **Compiler Not Found**: Make sure you have a C++20 compatible compiler installed (Visual Studio, Xcode, or GCC/Clang).
-- **JUCE Download Fails**: Check your internet connection. If you are behind a firewall, you may need to configure Git to use a proxy.
-- **Plugin Not Found by DAW**:
-    - Ensure the plugin is installed in a directory that your DAW scans.
-    - Verify that the plugin architecture (e.g., 64-bit) matches your DAW.
-    - Force your DAW to rescan for new plugins.
+**CMake Configure Fails**:
 
-For more detailed troubleshooting, refer to the official JUCE and CMake documentation.
+```bash
+# Check CMake version
+cmake --version  # Must be 3.22+
+
+# Clear cache and retry
+rm -rf build/ && cmake --preset=default
+```
+
+**Compiler Errors**:
+
+```bash  
+# Verify C++20 support
+g++ -std=c++20 --version  # Linux
+clang++ -std=c++20 --version  # macOS
+cl /std:c++20  # Windows (in Developer Command Prompt)
+```
+
+**JUCE Download Fails**:
+
+- Check internet connection and firewall settings
+- Verify Git can access GitHub: `git clone https://github.com/juce-framework/JUCE.git /tmp/test-juce`
+
+### Plugin Installation
+
+**VST3 Not Found by DAW**:
+
+1. **Linux**: Check `~/.vst3/DSP-JUCE Plugin.vst3/` exists
+2. **Windows**: Copy to `%PROGRAMFILES%\Common Files\VST3\`  
+3. **macOS**: Copy to `/Library/Audio/Plug-Ins/VST3/`
+4. Rescan plugins in your DAW
+
+**Performance Issues**:
+
+- Use Release builds for production: `cmake --preset=release`
+- Ensure no debug symbols in audio thread
+- Check sample rate and buffer size compatibility

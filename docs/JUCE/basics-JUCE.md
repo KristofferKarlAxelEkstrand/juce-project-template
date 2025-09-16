@@ -1,24 +1,53 @@
-# JUCE in this Project
+# JUCE Framework in this Project
 
-JUCE (Jules' Utility Class Extensions) is a C++ framework for creating cross-platform audio applications and plugins. This project uses JUCE 8 to provide a robust foundation for its audio processing and GUI features.
+JUCE (Jules' Utility Class Extensions) is a C++ framework for cross-platform audio
+applications and plugins. This project uses JUCE 8.0.9 with modern CMake integration.
 
-## Core JUCE Concepts Used
+## Key JUCE Classes Used
 
-This project demonstrates several key JUCE classes and design patterns:
+**Core Audio Components**:
 
-- **`juce::AudioProcessor`**: The heart of the plugin (`DSPJuceAudioProcessor`). It manages the audio processing, parameters, and state.
-- **`juce::AudioProcessorEditor`**: The base class for the plugin's GUI (`DSPJuceAudioProcessorEditor`). It provides the user interface for interacting with the processor.
-- **`juce::dsp` Module**: The project uses the `juce::dsp::Oscillator` and `juce::dsp::Gain` classes for its audio synthesis. This module provides a set of high-performance, real-time safe DSP building blocks.
-- **Parameter Management**: The communication between the editor and the processor is handled thread-safely using `std::atomic` variables. This is a crucial pattern for preventing audio glitches when parameters are changed from the GUI.
-- **Plugin Formats**: JUCE handles the complexities of building for different plugin formats (VST3, AU) and as a standalone application from a single codebase.
+- **`juce::AudioProcessor`** (`MainComponent`): Handles audio processing, parameters, and plugin state
+- **`juce::AudioProcessorEditor`** (`PluginEditor`): Provides GUI interface and parameter controls
+- **`juce::dsp::Oscillator`**: High-performance sine wave generator
+- **`juce::dsp::Gain`**: Real-time safe gain control
+- **`juce::AudioProcessorValueTreeState`**: Thread-safe parameter management
 
-## Real-Time Safety
+**Architecture Benefits**:
 
-A critical concept in audio development is **real-time safety**. The audio thread, which runs the `processBlock` function in `MainComponent.cpp`, has strict performance requirements. To avoid audio dropouts, this thread must not perform any operations that could block or take an unpredictable amount of time, such as:
+- **Single Codebase**: Builds VST3, AU (macOS), and standalone from same source
+- **Cross-Platform**: Windows, macOS, Linux support with native look-and-feel  
+- **Real-Time Safe**: Built-in protections against audio dropouts and memory allocation
+- **Professional Grade**: Used in commercial audio software worldwide
 
-- Memory allocation (`new`, `malloc`)
-- Locking mutexes
-- File I/O
-- Waiting on a condition variable
+## Real-Time Safety Critical Concepts
 
-This project adheres to these rules by performing all setup in `prepareToPlay` and using lock-free techniques (`std::atomic`) for communication.
+**The Audio Thread** (`MainComponent::getNextAudioBlock`) must complete within ~10ms to prevent dropouts.
+
+**FORBIDDEN in Audio Thread**:
+
+- Memory allocation (`new`, `malloc`, `std::vector::push_back`)
+- Mutex locking (`std::mutex::lock`)
+- File I/O operations
+- Network requests
+- Dynamic memory operations
+
+**SAFE Practices Used**:
+
+- **Pre-allocation**: All buffers allocated in `prepareToPlay()`
+- **Lock-Free Communication**: `std::atomic` for parameter updates
+- **Stack Variables**: Local variables for temporary calculations
+- **JUCE DSP Modules**: Pre-validated real-time safe components
+
+**Implementation Example**:
+
+```cpp
+// SAFE: Atomic parameter read
+float currentFreq = frequency.load();
+
+// SAFE: Stack-based calculation  
+auto* leftChannel = buffer.getWritePointer(0);
+
+// UNSAFE: Dynamic allocation
+// auto newBuffer = std::make_unique<float[]>(numSamples); // DON'T DO THIS
+```

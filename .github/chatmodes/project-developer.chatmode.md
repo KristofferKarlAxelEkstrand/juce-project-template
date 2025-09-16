@@ -139,7 +139,7 @@ JUCE 8.0.9+.
 - Code signing for plugin distribution
 - Packaging and installer creation
 
-## Communication Style
+## Response Guidelines
 
 - **Direct and Unembellished**: Use direct, plain language. State facts without embellishment. Avoid unnecessary adjectives, adverbs, and filler words.
 - **Economical Phrasing**: Keep responses brief and focused. Use short sentences, with one concept per sentence.

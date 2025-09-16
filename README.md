@@ -1,37 +1,42 @@
 # DSP-JUCE Audio Plugin
 
-A cross-platform JUCE 8 audio plugin and standalone application demonstrating modern C++20, CMake, and real-time audio development practices.
+A cross-platform JUCE 8.0.9 audio plugin demonstrating modern C++20, CMake,
+and real-time audio development practices.
 
-This project serves as a template for building professional audio software. It includes a simple sine-wave synthesizer with a clean, real-time safe architecture.
+This project serves as a production-ready template for professional audio software.
+It implements a sine-wave synthesizer with frequency and gain controls, showcasing
+thread-safe parameter handling and real-time audio processing.
 
 ## Quick Start
 
 ### Prerequisites
 
-- **CMake**: Version 3.22+
-- **C++ Compiler**: C++20 support required
-- **Git**: For cloning and dependency management
+- **CMake**: Version 3.22 or higher
+- **C++ Compiler**: C++20 support (MSVC 2019+, GCC 10+, Clang 11+)
+- **Platform Dependencies**: Audio and GUI libraries (see [BUILD.md](BUILD.md))
 
-See [**BUILD.md**](BUILD.md) for detailed, platform-specific dependency and build instructions.
+### Build in 2 Steps
 
-### Build Commands
+1. **Configure**: Downloads JUCE 8.0.9 and generates build files
 
-1.  **Configure the project:**
-    ```bash
-    # For Linux, macOS, or Windows (using VS Code with default presets)
-    cmake --preset=default
-    ```
+   ```bash
+   cmake --preset=default
+   ```
 
-2.  **Build the application:**
-    ```bash
-    cmake --build --preset=default
-    ```
+2. **Build**: Compiles VST3 plugin and standalone application
 
-Built artifacts, including the VST3 plugin and Standalone application, will be located in the `build/DSPJucePlugin_artefacts/` directory.
+   ```bash
+   cmake --build --preset=default
+   ```
+
+**Built Artifacts**: `build/DSPJucePlugin_artefacts/Debug/`
+
+- `VST3/DSP-JUCE Plugin.vst3` - VST3 plugin
+- `Standalone/DSP-JUCE Plugin` - Standalone application
 
 ## Project Structure
 
-```
+```text
 dsp-juce/
 ├── src/                  # Source code
 │   ├── Main.cpp          # Plugin entry point
@@ -48,41 +53,55 @@ dsp-juce/
 
 ## Features
 
-- **Multi-Format Audio Plugin**: Builds as VST3, AU (macOS), and a Standalone application.
-- **Real-Time Audio**: A simple sine-wave synthesizer with frequency and gain controls, implemented using `juce::dsp` modules.
-- **Modern C++20**: Utilizes modern C++ features for clean, efficient, and safe code.
-- **CMake Build System**: A robust, cross-platform build system with `FetchContent` for automatic JUCE dependency management.
-- **Thread-Safe**: Demonstrates safe communication between the GUI and real-time audio threads using `std::atomic`.
+- **Cross-Platform Plugin**: VST3, AU (macOS), and standalone application from single codebase
+- **Real-Time Audio Processing**: Sine-wave synthesizer using `juce::dsp::Oscillator`
+  and `juce::dsp::Gain`
+- **Thread-Safe Architecture**: `std::atomic` parameters prevent audio dropouts
+  during GUI interaction
+- **Modern C++20**: Leverages lambdas, `constexpr`, structured bindings, and RAII patterns
+- **Zero-Dependency Build**: CMake `FetchContent` automatically downloads JUCE 8.0.9
+- **Professional Template**: Production-ready structure for commercial audio software
 
 ## Development
 
-### Code Formatting
+### Development Workflow
 
-This project uses `clang-format` to maintain a consistent code style.
+**Code Quality**:
 
 ```bash
-# Format all source files
+# Format source code
 clang-format -i src/*.cpp src/*.h
+
+# Validate setup and dependencies
+./scripts/validate-setup.sh
+
+# Test documentation
+npm test
 ```
 
-### Validation
-
-A validation script is included to check for common setup issues.
+**Release Builds**:
 
 ```bash
-./scripts/validate-setup.sh
+cmake --preset=release
+cmake --build --preset=release
 ```
+
+## Learning Resources
+
+- **[docs/JUCE/](docs/JUCE/)**: JUCE framework concepts and real-time safety
+- **[docs/cmake/](docs/cmake/)**: CMake build system and dependency management  
+- **[docs/C++/](docs/C++/)**: Modern C++20 features used in audio development
+- **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting
 
 ## Contributing
 
-Contributions are welcome. Please follow these steps:
-
-1.  Fork the repository.
-2.  Create a feature branch (`git checkout -b feature/my-feature`).
-3.  Commit your changes (`git commit -m 'feat: Add my feature'`).
-4.  Push to the branch (`git push origin feature/my-feature`).
-5.  Open a Pull Request.
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/your-feature`
+3. Follow coding standards: Run `clang-format` and `npm test`
+4. Commit changes: `git commit -m 'feat: Add your feature'`
+5. Submit pull request
 
 ## License
 
-This project is open source. The JUCE framework is subject to its own licensing terms. See the [JUCE website](https://juce.com/get-juce) for details.
+This project is open source. The JUCE framework is subject to its own licensing terms.
+See the [JUCE website](https://juce.com/get-juce) for details.

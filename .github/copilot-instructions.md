@@ -8,7 +8,8 @@ audio applications with CMake build system integration.
 
 ## Communication Style
 
-- **Direct and Unembellished**: Use direct, plain language. State facts without embellishment. Avoid unnecessary adjectives, adverbs, and filler words.
+- **Direct and Unembellished**: Use direct, plain language. State facts without embellishment.
+  Avoid unnecessary adjectives, adverbs, and filler words.
 - **Economical Phrasing**: Keep responses brief and focused. Use short sentences, with one concept per sentence.
 - **Structured for Clarity**: Lead with the main point. Organize information logically.
 - **Professional Tone**: Avoid emoticons, emojis, marketing speak, buzzwords, and conversational pleasantries.
