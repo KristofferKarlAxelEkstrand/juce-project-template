@@ -40,6 +40,32 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
+    - name: Set build environment variables
+      run: |
+        case "$RUNNER_OS" in
+          "Windows")
+            # On Windows, always use vs2022 preset regardless of build type
+            echo "CMAKE_PRESET=vs2022" >> $GITHUB_ENV
+            # Use forward slashes consistently for cross-platform compatibility
+            BUILD_PATH="${{github.workspace}}/build/vs2022"
+            echo "BUILD_DIR=${BUILD_PATH}" >> $GITHUB_ENV
+            ;;
+          *)
+            # On non-Windows platforms, use preset based on build type
+            case "${{matrix.build_type}}" in
+              "Release")
+                echo "CMAKE_PRESET=release" >> $GITHUB_ENV
+                echo "BUILD_DIR=${{github.workspace}}/build/release" >> $GITHUB_ENV
+                ;;
+              *)
+                echo "CMAKE_PRESET=default" >> $GITHUB_ENV
+                echo "BUILD_DIR=${{github.workspace}}/build" >> $GITHUB_ENV
+                ;;
+            esac
+            ;;
+        esac
+      shell: bash
+
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
       run: |
@@ -54,35 +80,60 @@ jobs:
           libfreetype6-dev \
           libfontconfig1-dev \
           libgl1-mesa-dev \
-          libxext-dev
+          libxext-dev \
+          libcurl4-openssl-dev \
+          libwebkit2gtk-4.1-dev \
+          pkg-config \
+          build-essential
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+      run: cmake --preset=${{ env.CMAKE_PRESET }}
+      shell: bash
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build_type}}
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          # For Windows, use the preset-defined build directory directly
+          cmake --build build/vs2022 --config ${{matrix.build_type}}
+        else
+          cmake --build ${{ env.BUILD_DIR }} --config ${{matrix.build_type}}
+        fi
+      shell: bash
 
     - name: Test (Linux/macOS)
       if: runner.os != 'Windows'
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{ env.BUILD_DIR }}
       run: |
-        # For now, just verify the binary was created
-        if [ -f "SimpleJuceApp_artefacts/${{matrix.build_type}}/SimpleJuceApp" ]; then
-          echo "✅ Build successful - binary created"
+        # Determine binary path based on platform
+        if [ "$RUNNER_OS" == "macOS" ]; then
+          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.app"
+          BINARY_TYPE="macOS app bundle"
+          TEST_CMD="[ -d"
         else
-          echo "❌ Build failed - binary not found"
+          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin"
+          BINARY_TYPE="Linux binary"
+          TEST_CMD="[ -f"
+        fi
+        
+        # Check if binary exists
+        if eval "$TEST_CMD \"$BINARY_PATH\" ]"; then
+          echo "✅ Build successful - $BINARY_TYPE created"
+        else
+          echo "❌ Build failed - $BINARY_TYPE not found"
+          ls -la "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/"
           exit 1
         fi
 
     - name: Test (Windows)
       if: runner.os == 'Windows'
-      working-directory: ${{github.workspace}}/build
+      working-directory: build/vs2022
       run: |
         # For now, just verify the binary was created
-        if (Test-Path "SimpleJuceApp_artefacts/${{matrix.build_type}}/SimpleJuceApp.exe") {
+        if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
           Write-Host "✅ Build successful - binary created"
         } else {
           Write-Host "❌ Build failed - binary not found"
+          Get-ChildItem "DSPJucePlugin_artefacts/${{matrix.build_type}}/"
           exit 1
         }
 
@@ -90,7 +141,8 @@ jobs:
       uses: actions/upload-artifact@v4
       if: matrix.build_type == 'Release'
       with:
-        name: SimpleJuceApp-${{ matrix.os }}
+        name: DSPJucePlugin-${{ matrix.os }}
         path: |
-          ${{github.workspace}}/build/SimpleJuceApp_artefacts/Release/
+          build/vs2022/DSPJucePlugin_artefacts/Release/
+          ${{ env.BUILD_DIR }}/DSPJucePlugin_artefacts/Release/
         retention-days: 30

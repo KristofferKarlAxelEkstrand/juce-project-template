@@ -1,6 +1,7 @@
 # DSP-JUCE Audio Plugin & Standalone Application
 
-A modern, cross-platform JUCE 8.0.9 audio plugin and standalone application demonstrating professional development practices for C++20, CMake, and real-time audio processing.
+A modern, cross-platform JUCE 8.0.9 audio plugin and standalone application demonstrating professional
+development practices for C++20, CMake, and real-time audio processing.
 
 ## 🎯 Project Overview
 
@@ -18,11 +19,13 @@ This project showcases professional JUCE development patterns:
 ### Prerequisites
 
 **All Platforms:**
+
 - CMake 3.22+
 - C++20 compatible compiler
 - Git
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev \
                         libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev \
@@ -31,18 +34,21 @@ sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-d
 ```
 
 **macOS:**
+
 ```bash
 xcode-select --install
 brew install cmake
 ```
 
 **Windows:**
+
 - Visual Studio 2019+ with C++ workload
 - CMake (via Visual Studio or cmake.org)
 
 ### Build Commands
 
 **Linux & macOS:**
+
 ```bash
 # Configure and build (Debug)
 cmake --preset=default
@@ -54,6 +60,7 @@ cmake --build --preset=release
 ```
 
 **Windows:**
+
 ```batch
 # Configure and build
 cmake --preset=vs2022
@@ -68,16 +75,19 @@ cmake --build --preset=vs2022-release
 After building, you'll find:
 
 **Linux:**
+
 - **VST3 Plugin**: `build/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/`
 - **Standalone App**: `build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin`
 - **Auto-installed to**: `~/.vst3/DSP-JUCE Plugin.vst3`
 
 **macOS:**
+
 - **VST3 Plugin**: `build/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/`
 - **AU Plugin**: `build/DSPJucePlugin_artefacts/Debug/AU/DSP-JUCE Plugin.component/`
 - **Standalone App**: `build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app/`
 
 **Windows:**
+
 - **VST3 Plugin**: `build\DSPJucePlugin_artefacts\Debug\VST3\DSP-JUCE Plugin.vst3\`
 - **Standalone App**: `build\DSPJucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe`
 
@@ -115,12 +125,14 @@ dsp-juce/
 ## 🎛️ Features
 
 ### Audio Processing
+
 - **Real-time sine wave synthesis** with configurable frequency (50Hz - 5kHz)
 - **DSP processing chain** using JUCE's modern `juce::dsp` modules
 - **Thread-safe parameter control** with atomic operations
 - **Professional audio quality** with proper buffering and sample rate handling
 
 ### User Interface
+
 - **Frequency control** with logarithmic scaling for musical response
 - **Gain control** with linear 0.0 - 1.0 range
 - **Real-time responsiveness** with immediate audio parameter updates
@@ -128,6 +140,7 @@ dsp-juce/
 - **Consistent across plugin and standalone** modes
 
 ### Code Quality
+
 - **Modern C++20 patterns** with constexpr, auto, and atomic operations
 - **RAII memory management** with smart pointers and JUCE's lifecycle
 - **Thread safety** using atomic variables for cross-thread communication
@@ -137,16 +150,19 @@ dsp-juce/
 ## 🔧 Development
 
 ### Code Formatting
+
 ```bash
 clang-format -i src/*.cpp src/*.h
 ```
 
 ### Documentation Linting
+
 ```bash
 npm install && npm test
 ```
 
 ### Validation
+
 ```bash
 ./scripts/validate-setup.sh
 ```
@@ -154,12 +170,14 @@ npm install && npm test
 ## 🧪 Testing & Quality Assurance
 
 ### Plugin Testing
+
 - **Load in DAW**: Reaper, Logic Pro, Pro Tools, Cubase, etc.
 - **Parameter automation**: Test frequency and gain controls
 - **Audio quality**: Check for dropouts, noise, and CPU usage
 - **GUI responsiveness**: Verify real-time parameter updates
 
 ### Standalone Testing
+
 ```bash
 # Linux/macOS
 ./build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin
@@ -169,6 +187,7 @@ build\DSPJucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
 ```
 
 ### Continuous Integration
+
 - **Multi-platform builds** (Ubuntu, Windows, macOS)
 - **Multiple configurations** (Debug, Release)
 - **Automated testing** with binary verification
@@ -178,6 +197,7 @@ build\DSPJucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
 ## 📚 JUCE Concepts Demonstrated
 
 ### Modern JUCE Patterns
+
 - **AudioProcessor** for cross-format plugin/standalone compatibility
 - **AudioProcessorEditor** for consistent GUI across formats
 - **juce::dsp modules** for professional DSP processing
@@ -185,6 +205,7 @@ build\DSPJucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
 - **Atomic variables** for thread-safe parameter communication
 
 ### Audio Processing Best Practices
+
 - **Thread separation** between GUI and audio processing
 - **Proper resource management** in prepareToPlay/releaseResources
 - **Real-time safe operations** avoiding allocations in audio callback
@@ -192,6 +213,7 @@ build\DSPJucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
 - **Cross-platform compatibility** with conditional AU support
 
 ### CMake Integration
+
 - **FetchContent** for automatic JUCE download and integration
 - **Modern target-based** CMake with proper visibility
 - **Cross-platform configuration** with conditional compilation
@@ -209,6 +231,7 @@ build\DSPJucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
 7. **Open a Pull Request**
 
 ### Development Guidelines
+
 - **Follow modern C++20 practices** with proper RAII and const correctness
 - **Add comprehensive documentation** for public APIs
 - **Ensure thread safety** in audio processing code
@@ -218,13 +241,16 @@ build\DSPJucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
 ## 🚨 Troubleshooting
 
 ### Build Issues
+
 See [BUILD.md](BUILD.md) for comprehensive troubleshooting including:
+
 - Missing dependencies and compiler setup
 - Platform-specific configuration issues  
 - Plugin installation and DAW recognition
 - Performance optimization and debugging
 
 ### Quick Fixes
+
 ```bash
 # Clean rebuild
 rm -rf build
@@ -252,4 +278,5 @@ This project is open source. JUCE has its own licensing terms - see [JUCE websit
 
 ---
 
-*This project demonstrates modern JUCE development practices and serves as a foundation for professional cross-platform audio applications and plugins.*
+*This project demonstrates modern JUCE development practices and serves as a foundation for professional
+cross-platform audio applications and plugins.*
