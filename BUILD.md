@@ -347,7 +347,7 @@ build\DSPJucePlugin_artefacts\Debug\DSP-JUCE Plugin.exe
 
 ### Common Issues
 
-#### CMake not found
+#### CMake Not Found
 
 ```bash
 # Linux: Install via package manager
