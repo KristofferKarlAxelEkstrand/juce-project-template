@@ -360,7 +360,7 @@ brew install cmake
 # Windows: Download from cmake.org or use Visual Studio installer
 ```
 
-#### C++ compiler not found
+#### C++ Compiler Not Found
 
 ```bash
 # Linux
