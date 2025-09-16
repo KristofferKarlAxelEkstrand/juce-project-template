@@ -46,7 +46,9 @@ jobs:
           "Windows")
             # On Windows, always use vs2022 preset regardless of build type
             echo "CMAKE_PRESET=vs2022" >> $GITHUB_ENV
-            echo "BUILD_DIR=${{github.workspace}}/build/vs2022" >> $GITHUB_ENV
+            # Use forward slashes consistently for cross-platform compatibility
+            BUILD_PATH="${{github.workspace}}/build/vs2022"
+            echo "BUILD_DIR=${BUILD_PATH}" >> $GITHUB_ENV
             ;;
           *)
             # On non-Windows platforms, use preset based on build type
@@ -89,7 +91,13 @@ jobs:
       shell: bash
 
     - name: Build
-      run: cmake --build ${{ env.BUILD_DIR }} --config ${{matrix.build_type}}
+      run: |
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          # For Windows, use the preset-defined build directory directly
+          cmake --build build/vs2022 --config ${{matrix.build_type}}
+        else
+          cmake --build ${{ env.BUILD_DIR }} --config ${{matrix.build_type}}
+        fi
       shell: bash
 
     - name: Test (Linux/macOS)
@@ -118,7 +126,7 @@ jobs:
 
     - name: Test (Windows)
       if: runner.os == 'Windows'
-      working-directory: ${{ env.BUILD_DIR }}
+      working-directory: build/vs2022
       run: |
         # For now, just verify the binary was created
         if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
@@ -134,5 +142,7 @@ jobs:
       if: matrix.build_type == 'Release'
       with:
         name: DSPJucePlugin-${{ matrix.os }}
-        path: ${{ env.BUILD_DIR }}/DSPJucePlugin_artefacts/Release/
+        path: |
+          build/vs2022/DSPJucePlugin_artefacts/Release/
+          ${{ env.BUILD_DIR }}/DSPJucePlugin_artefacts/Release/
         retention-days: 30
