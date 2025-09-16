@@ -382,7 +382,7 @@ sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev \
                         libfreetype6-dev libfontconfig1-dev libgl1-mesa-dev
 ```
 
-#### Build Fails with Generator Not Found
+#### Build Fails With 'Generator Not Found'
 
 ```bash
 # Try alternative generator
