@@ -90,25 +90,24 @@ jobs:
       if: runner.os != 'Windows'
       working-directory: ${{ env.BUILD_DIR }}
       run: |
-        # Check standalone binary path (differs between Linux and macOS)
+        # Determine binary path based on platform
         if [ "$RUNNER_OS" == "macOS" ]; then
-          # macOS creates app bundle
-          if [ -d "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.app" ]; then
-            echo "✅ Build successful - macOS app bundle created"
-          else
-            echo "❌ Build failed - macOS app bundle not found"
-            ls -la DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/
-            exit 1
-          fi
+          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.app"
+          BINARY_TYPE="macOS app bundle"
+          TEST_CMD="[ -d"
         else
-          # Linux creates executable
-          if [ -f "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin" ]; then
-            echo "✅ Build successful - Linux binary created"
-          else
-            echo "❌ Build failed - Linux binary not found"
-            ls -la DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/
-            exit 1
-          fi
+          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin"
+          BINARY_TYPE="Linux binary"
+          TEST_CMD="[ -f"
+        fi
+        
+        # Check if binary exists
+        if eval "$TEST_CMD \"$BINARY_PATH\" ]"; then
+          echo "✅ Build successful - $BINARY_TYPE created"
+        else
+          echo "❌ Build failed - $BINARY_TYPE not found"
+          ls -la "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/"
+          exit 1
         fi
 
     - name: Test (Windows)
@@ -120,7 +119,7 @@ jobs:
           Write-Host "✅ Build successful - binary created"
         } else {
           Write-Host "❌ Build failed - binary not found"
-          Get-ChildItem DSPJucePlugin_artefacts/${{matrix.build_type}}/
+          Get-ChildItem "DSPJucePlugin_artefacts/${{matrix.build_type}}/"
           exit 1
         }
 
