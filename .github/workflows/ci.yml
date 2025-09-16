@@ -64,6 +64,8 @@ jobs:
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           cmake --preset=vs2022
+        elif [ "${{matrix.build_type}}" == "Release" ]; then
+          cmake --preset=release
         else
           cmake --preset=default
         fi
@@ -73,22 +75,44 @@ jobs:
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
           cmake --build build/vs2022 --config ${{matrix.build_type}}
+        elif [ "${{matrix.build_type}}" == "Release" ]; then
+          cmake --build build/release --config Release
         else
-          cmake --build build --config ${{matrix.build_type}}
+          cmake --build build --config Debug
         fi
       shell: bash
 
     - name: Test (Linux/macOS)
       if: runner.os != 'Windows'
-      working-directory: ${{github.workspace}}/build
       run: |
-        # For now, just verify the binary was created
-        if [ -f "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin" ]; then
-          echo "✅ Build successful - binary created"
+        # Determine working directory based on build type
+        if [ "${{matrix.build_type}}" == "Release" ]; then
+          BUILD_DIR="${{github.workspace}}/build/release"
         else
-          echo "❌ Build failed - binary not found"
-          ls -la DSPJucePlugin_artefacts/${{matrix.build_type}}/
-          exit 1
+          BUILD_DIR="${{github.workspace}}/build"
+        fi
+        
+        cd "$BUILD_DIR"
+        
+        # Check standalone binary path (differs between Linux and macOS)
+        if [ "$RUNNER_OS" == "macOS" ]; then
+          # macOS creates app bundle
+          if [ -d "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.app" ]; then
+            echo "✅ Build successful - macOS app bundle created"
+          else
+            echo "❌ Build failed - macOS app bundle not found"
+            ls -la DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/
+            exit 1
+          fi
+        else
+          # Linux creates executable
+          if [ -f "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin" ]; then
+            echo "✅ Build successful - Linux binary created"
+          else
+            echo "❌ Build failed - Linux binary not found"
+            ls -la DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/
+            exit 1
+          fi
         fi
 
     - name: Test (Windows)
@@ -111,5 +135,6 @@ jobs:
         name: DSPJucePlugin-${{ matrix.os }}
         path: |
           ${{github.workspace}}/build/DSPJucePlugin_artefacts/Release/
+          ${{github.workspace}}/build/release/DSPJucePlugin_artefacts/Release/
           ${{github.workspace}}/build/vs2022/DSPJucePlugin_artefacts/Release/
         retention-days: 30
