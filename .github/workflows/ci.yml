@@ -54,7 +54,11 @@ jobs:
           libfreetype6-dev \
           libfontconfig1-dev \
           libgl1-mesa-dev \
-          libxext-dev
+          libxext-dev \
+          libcurl4-openssl-dev \
+          libwebkit2gtk-4.1-dev \
+          pkg-config \
+          build-essential
 
     - name: Configure CMake
       run: |
@@ -68,7 +72,7 @@ jobs:
     - name: Build
       run: |
         if [ "$RUNNER_OS" == "Windows" ]; then
-          cmake --build build --config ${{matrix.build_type}}
+          cmake --build build/vs2022 --config ${{matrix.build_type}}
         else
           cmake --build build --config ${{matrix.build_type}}
         fi
@@ -89,7 +93,7 @@ jobs:
 
     - name: Test (Windows)
       if: runner.os == 'Windows'
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}/build/vs2022
       run: |
         # For now, just verify the binary was created
         if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
@@ -107,4 +111,5 @@ jobs:
         name: DSPJucePlugin-${{ matrix.os }}
         path: |
           ${{github.workspace}}/build/DSPJucePlugin_artefacts/Release/
+          ${{github.workspace}}/build/vs2022/DSPJucePlugin_artefacts/Release/
         retention-days: 30
