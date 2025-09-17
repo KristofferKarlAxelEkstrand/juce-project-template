@@ -70,7 +70,7 @@ Follow KISS (Keep It Simple Stupid):
 Avoid:
 
 - Promotional language or marketing speak
-- Unnecessary adjectives and adverbs  
+- Unnecessary adjectives and adverbs
 - Complex sentence structures
 - Assumptions about reader knowledge
 - Emoticons, emojis, and decorative punctuation
