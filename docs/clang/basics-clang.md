@@ -38,6 +38,12 @@ clang-format -i src/*.cpp src/*.h
 - Ensure Clang is installed and available in your system PATH.
 - For Windows, use the version bundled with Visual Studio or install via LLVM.
 
+### Verifying Clang Installation
+
+To check if Clang is installed and available in your PATH, run:
+
+```bash
+clang --version
 ## References
 
 - [Clang documentation](https://clang.llvm.org/docs/)
