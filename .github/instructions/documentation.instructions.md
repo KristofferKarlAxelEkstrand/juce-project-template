@@ -9,11 +9,21 @@ decorative elements.
 
 ## Documentation Style
 
-- Use clear, concise language without flowery descriptions
-- Focus on actionable information and practical guidance
-- Provide specific examples and code snippets when relevant
-- Structure information hierarchically with proper headings
-- Use bullet points and numbered lists for clarity
+### Language Guidelines
+
+- **Concise**: Use short sentences. One concept per sentence.
+- **Simple**: Choose common words over complex alternatives.
+- **Descriptive**: State facts directly. Explain what, how, and why.
+- **Correct**: Verify all information. Test all code examples.
+- **Pedagogic**: Explain concepts step-by-step. Assume reader is learning.
+
+### Formatting Rules
+
+- **No decorative language**: Avoid adjectives like "amazing," "powerful," "seamless"
+- **No emoticons or emojis**: Professional tone only
+- **No em-dashes**: Use standard punctuation
+- **Structure hierarchically**: Use proper headings and lists
+- **Provide examples**: Include working code snippets
 
 ## Content Requirements
 
@@ -47,5 +57,20 @@ decorative elements.
 - Document validation and testing approaches
 - Include success metrics and evaluation criteria
 
-No decorative language, emoticons, or unnecessary pleasantries. Focus on information that enables successful implementation
-and usage.
+## Writing Principles
+
+Follow KISS (Keep It Simple Stupid):
+
+- **Be direct**: State what the reader needs to know
+- **Be practical**: Focus on implementation and usage
+- **Be helpful**: Solve real problems users face
+- **Be honest**: Document limitations and known issues
+- **Be consistent**: Use same terms and patterns throughout
+
+Avoid:
+
+- Promotional language or marketing speak
+- Unnecessary adjectives and adverbs
+- Complex sentence structures
+- Assumptions about reader knowledge
+- Emoticons, emojis, and decorative punctuation
