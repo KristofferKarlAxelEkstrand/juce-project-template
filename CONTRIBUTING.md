@@ -27,6 +27,58 @@ npm install
 npm test
 ```
 
+## Git Workflow
+
+This project uses a Git Flow-inspired workflow to optimize CI/CD resource usage:
+
+### Branch Structure
+
+- **`main`**: Production-ready code, protected branch
+- **`develop`**: Integration branch for features, protected branch  
+- **`feature/*`**: Feature branches created from `develop`
+
+### Development Process
+
+1. **Create Feature Branch**:
+
+   ```bash
+   git checkout develop
+   git pull origin develop
+   git checkout -b feature/your-feature-name
+   ```
+
+2. **Develop and Test**:
+
+   ```bash
+   # Make changes, format code
+   clang-format -i src/*.cpp src/*.h
+   npm test
+   
+   # Test builds locally
+   cmake --preset=default && cmake --build --preset=default
+   ```
+
+3. **Create PR to Develop**:
+   - Push your feature branch
+   - Create PR from `feature/your-feature-name` → `develop`
+   - CI will run on the PR (linting + cross-platform builds)
+
+4. **Merge to Develop**:
+   - After approval, merge feature branch to `develop`
+   - `develop` branch accumulates tested features
+
+5. **Release to Main**:
+   - Create PR from `develop` → `main` when ready for release
+   - CI runs full test suite on release PR
+   - After approval, merge to `main`
+
+### CI/CD Strategy
+
+- **CI runs only on PRs** to `main` and `develop` branches (saves action minutes)
+- **No CI on direct pushes** to feature branches
+- **Full cross-platform testing** on PRs to protected branches
+- **Security scanning** on PRs and weekly schedule
+
 ## Coding Standards
 
 ### C++ Guidelines
