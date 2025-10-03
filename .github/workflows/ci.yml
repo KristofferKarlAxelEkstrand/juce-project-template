@@ -69,6 +69,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          build-essential \
+          pkg-config \
           libasound2-dev \
           libx11-dev \
           libxcomposite-dev \
@@ -80,9 +82,7 @@ jobs:
           libgl1-mesa-dev \
           libxext-dev \
           libcurl4-openssl-dev \
-          libwebkit2gtk-4.1-dev \
-          pkg-config \
-          build-essential
+          libwebkit2gtk-4.1-dev
 
     - name: Cache JUCE
       uses: actions/cache@v4
@@ -134,6 +134,7 @@ jobs:
     - name: Test (Windows)
       if: runner.os == 'Windows'
       working-directory: build/vs2022
+      shell: pwsh
       run: |
         # For now, just verify the binary was created
         if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
@@ -148,8 +149,8 @@ jobs:
       uses: actions/upload-artifact@v4
       if: matrix.build_type == 'Release'
       with:
-        name: DSPJucePlugin-${{ matrix.os }}
+        name: DSPJucePlugin-${{ matrix.os }}-Release
         path: |
-          build/vs2022/DSPJucePlugin_artefacts/Release/
           ${{ env.BUILD_DIR }}/DSPJucePlugin_artefacts/Release/
         retention-days: 30
+        if-no-files-found: warn

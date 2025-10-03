@@ -32,6 +32,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          build-essential \
+          pkg-config \
           libasound2-dev \
           libx11-dev \
           libxcomposite-dev \
@@ -41,7 +43,9 @@ jobs:
           libfreetype6-dev \
           libfontconfig1-dev \
           libgl1-mesa-dev \
-          libxext-dev
+          libxext-dev \
+          libcurl4-openssl-dev \
+          libwebkit2gtk-4.1-dev
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
