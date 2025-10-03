@@ -88,13 +88,13 @@ jobs:
       uses: actions/cache@v4
       id: cache-juce
       with:
-        path: ${{ github.workspace }}/.juce_cache
+        path: .juce_cache
         key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**') }}
         restore-keys: |
           ${{ runner.os }}-juce-
 
     - name: Configure CMake
-      run: cmake --preset=${{ env.CMAKE_PRESET }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+      run: cmake --preset=${{ env.CMAKE_PRESET }} -DFETCHCONTENT_BASE_DIR=.juce_cache
       shell: bash
 
     - name: Build
