@@ -84,8 +84,17 @@ jobs:
           pkg-config \
           build-essential
 
+    - name: Cache JUCE
+      uses: actions/cache@v4
+      id: cache-juce
+      with:
+        path: ${{ github.workspace }}/.juce_cache
+        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-juce-
+
     - name: Configure CMake
-      run: cmake --preset=${{ env.CMAKE_PRESET }}
+      run: cmake --preset=${{ env.CMAKE_PRESET }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
       shell: bash
 
     - name: Build
