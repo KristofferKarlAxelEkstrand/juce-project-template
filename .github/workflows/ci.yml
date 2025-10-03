@@ -89,7 +89,7 @@ jobs:
       id: cache-juce
       with:
         path: ${{ github.workspace }}/.juce_cache
-        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt') }}
+        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**') }}
         restore-keys: |
           ${{ runner.os }}-juce-
 
