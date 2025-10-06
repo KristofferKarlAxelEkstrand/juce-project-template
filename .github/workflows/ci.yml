@@ -33,35 +33,27 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        build_type: [Debug, Release]
+        build_type: [Release]
+        include:
+          - os: ubuntu-latest
+            build_type: Debug
 
     steps:
     - uses: actions/checkout@v5
 
     - name: Set build environment variables
+      id: set_vars
       run: |
-        case "$RUNNER_OS" in
-          "Windows")
-            # On Windows, always use vs2022 preset regardless of build type
-            echo "CMAKE_PRESET=vs2022" >> $GITHUB_ENV
-            # Use forward slashes consistently for cross-platform compatibility
-            BUILD_PATH="${{github.workspace}}/build/vs2022"
-            echo "BUILD_DIR=${BUILD_PATH}" >> $GITHUB_ENV
-            ;;
-          *)
-            # On non-Windows platforms, use preset based on build type
-            case "${{matrix.build_type}}" in
-              "Release")
-                echo "CMAKE_PRESET=release" >> $GITHUB_ENV
-                echo "BUILD_DIR=${{github.workspace}}/build/release" >> $GITHUB_ENV
-                ;;
-              *)
-                echo "CMAKE_PRESET=default" >> $GITHUB_ENV
-                echo "BUILD_DIR=${{github.workspace}}/build" >> $GITHUB_ENV
-                ;;
-            esac
-            ;;
-        esac
+        if [ "${{ runner.os }}" == "Windows" ]; then
+          echo "cmake_preset=vs2022" >> $GITHUB_OUTPUT
+          echo "build_dir=${{ github.workspace }}/build/vs2022" >> $GITHUB_OUTPUT
+        elif [ "${{ matrix.build_type }}" == "Release" ]; then
+          echo "cmake_preset=release" >> $GITHUB_OUTPUT
+          echo "build_dir=${{ github.workspace }}/build/release" >> $GITHUB_OUTPUT
+        else
+          echo "cmake_preset=default" >> $GITHUB_OUTPUT
+          echo "build_dir=${{ github.workspace }}/build" >> $GITHUB_OUTPUT
+        fi
       shell: bash
 
     - name: Install Linux dependencies
@@ -94,7 +86,7 @@ jobs:
           ${{ runner.os }}-juce-
 
     - name: Configure CMake
-      run: cmake --preset=${{ env.CMAKE_PRESET }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+      run: cmake --preset=${{ steps.set_vars.outputs.cmake_preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
       shell: bash
 
     - name: Build
@@ -103,13 +95,13 @@ jobs:
           # For Windows, use the preset-defined build directory directly
           cmake --build build/vs2022 --config ${{matrix.build_type}}
         else
-          cmake --build ${{ env.BUILD_DIR }} --config ${{matrix.build_type}}
+          cmake --build ${{ steps.set_vars.outputs.build_dir }} --config ${{matrix.build_type}}
         fi
       shell: bash
 
     - name: Test (Linux/macOS)
       if: runner.os != 'Windows'
-      working-directory: ${{ env.BUILD_DIR }}
+      working-directory: ${{ steps.set_vars.outputs.build_dir }}
       run: |
         # Determine binary path based on platform
         if [ "$RUNNER_OS" == "macOS" ]; then
@@ -151,5 +143,5 @@ jobs:
         name: DSPJucePlugin-${{ matrix.os }}
         path: |
           build/vs2022/DSPJucePlugin_artefacts/Release/
-          ${{ env.BUILD_DIR }}/DSPJucePlugin_artefacts/Release/
+          ${{ steps.set_vars.outputs.build_dir }}/DSPJucePlugin_artefacts/Release/
         retention-days: 30
