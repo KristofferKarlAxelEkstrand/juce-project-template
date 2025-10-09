@@ -116,9 +116,9 @@ jobs:
         
         # Check if binary exists
         if eval "$TEST_CMD \"$BINARY_PATH\" ]"; then
-          echo "✅ Build successful - $BINARY_TYPE created"
+          echo "Build successful - $BINARY_TYPE created"
         else
-          echo "❌ Build failed - $BINARY_TYPE not found"
+          echo "Build failed - $BINARY_TYPE not found"
           ls -la "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/"
           exit 1
         fi
@@ -129,9 +129,9 @@ jobs:
       run: |
         # For now, just verify the binary was created
         if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
-          Write-Host "✅ Build successful - binary created"
+          Write-Host "Build successful - binary created"
         } else {
-          Write-Host "❌ Build failed - binary not found"
+          Write-Host "Build failed - binary not found"
           Get-ChildItem "DSPJucePlugin_artefacts/${{matrix.build_type}}/"
           exit 1
         }
