@@ -126,6 +126,7 @@ jobs:
     - name: Test (Windows)
       if: runner.os == 'Windows'
       working-directory: build/vs2022
+      shell: pwsh
       run: |
         # For now, just verify the binary was created
         if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
