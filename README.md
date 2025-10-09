@@ -1,6 +1,6 @@
 # DSP-JUCE Audio Plugin
 
-A cross-platform JUCE 8.0.9 audio plugin demonstrating modern C++20, CMake,
+A cross-platform JUCE 8.0.10 audio plugin demonstrating modern C++20, CMake,
 and real-time audio development practices.
 
 This project serves as a production-ready template for professional audio software.
@@ -17,7 +17,7 @@ thread-safe parameter handling and real-time audio processing.
 
 ### Build in 2 Steps
 
-1. **Configure**: Downloads JUCE 8.0.9 and generates build files
+1. **Configure**: Downloads JUCE 8.0.10 and generates build files
 
    ```bash
    cmake --preset=default
@@ -59,7 +59,7 @@ dsp-juce/
 - **Thread-Safe Architecture**: `std::atomic` parameters prevent audio dropouts
   during GUI interaction
 - **Modern C++20**: Leverages lambdas, `constexpr`, structured bindings, and RAII patterns
-- **Zero-Dependency Build**: CMake `FetchContent` automatically downloads JUCE 8.0.9
+- **Zero-Dependency Build**: CMake `FetchContent` automatically downloads JUCE 8.0.10
 - **Professional Template**: Production-ready structure for commercial audio software
 
 ## Development
