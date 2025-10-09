@@ -136,12 +136,16 @@ jobs:
           exit 1
         }
 
+    - name: List Windows build artifacts
+      if: runner.os == 'Windows' && matrix.build_type == 'Release'
+      run: |
+        ls -la build/vs2022/DSPJucePlugin_artefacts/Release/
+      shell: bash
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       if: matrix.build_type == 'Release'
       with:
         name: DSPJucePlugin-${{ matrix.os }}
-        path: |
-          build/vs2022/DSPJucePlugin_artefacts/Release/
-          ${{ steps.set_vars.outputs.build_dir }}/DSPJucePlugin_artefacts/Release/
+        path: ${{ steps.set_vars.outputs.build_dir }}/DSPJucePlugin_artefacts/Release/
         retention-days: 30
