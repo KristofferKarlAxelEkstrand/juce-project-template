@@ -34,18 +34,21 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Install prefix" FORCE)
 endif()
 
-# Fetch JUCE automatically (not added to git)
-include(FetchContent)
-FetchContent_Declare(
-    JUCE
-    GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG 8.0.9
-    GIT_SHALLOW TRUE
-    GIT_PROGRESS TRUE
-)
-
-# Make JUCE available
-FetchContent_MakeAvailable(JUCE)
+# Prefer JUCE from third_party/JUCE (git submodule). Fallback to FetchContent if not present.
+if(EXISTS "${CMAKE_SOURCE_DIR}/third_party/JUCE/CMakeLists.txt")
+    message(STATUS "Using JUCE from third_party/JUCE (submodule)")
+    add_subdirectory("${CMAKE_SOURCE_DIR}/third_party/JUCE" EXCLUDE_FROM_ALL)
+else()
+    include(FetchContent)
+    FetchContent_Declare(
+        JUCE
+        GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+        GIT_TAG 8.0.9
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+    )
+    FetchContent_MakeAvailable(JUCE)
+endif()
 
 # Create a JUCE plugin with proper format support
 juce_add_plugin(DSPJucePlugin
