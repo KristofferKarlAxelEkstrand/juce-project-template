@@ -85,9 +85,22 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-juce-
 
-    - name: Configure CMake
-      run: cmake --preset=${{ steps.set_vars.outputs.cmake_preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+    - name: Configure CMake with Retries
       shell: bash
+      run: |
+        for i in {1..3}; do
+          if cmake --preset=${{ steps.set_vars.outputs.cmake_preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache; then
+            echo "CMake configuration successful on attempt $i."
+            break
+          fi
+          if [ $i -lt 3 ]; then
+            echo "CMake configuration failed on attempt $i. Retrying in 5 seconds..."
+            sleep 5
+          else
+            echo "CMake configuration failed after 3 attempts."
+            exit 1
+          fi
+        done
 
     - name: Build
       run: |
