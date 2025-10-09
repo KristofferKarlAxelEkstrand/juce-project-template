@@ -1,6 +1,6 @@
 # DSP-JUCE Development Environment
 
-This repository is a modern JUCE 8.0.9 audio plugin development environment
+This repository is a modern JUCE 8.0.10 audio plugin development environment
 demonstrating real-time audio processing, cross-platform plugin builds, and modern C++20 patterns.
 
 ## Architecture Overview
@@ -10,7 +10,7 @@ demonstrating real-time audio processing, cross-platform plugin builds, and mode
 - `MainComponent.h/cpp`: AudioProcessor implementing sine-wave synthesizer with thread-safe parameter control
 - `PluginEditor.h/cpp`: GUI editor with frequency/gain sliders using immediate parameter updates  
 - `Main.cpp`: Plugin entry point supporting both VST3 plugin and standalone builds
-- `CMakeLists.txt`: Modern CMake with FetchContent auto-downloading JUCE 8.0.9
+- `CMakeLists.txt`: Modern CMake with FetchContent auto-downloading JUCE 8.0.10
 
 **Critical Real-Time Safety Pattern:**
 
@@ -36,7 +36,7 @@ gain.process(context);        // Apply gain
 **Critical Build Commands:**
 
 ```bash
-# Configure (90+ seconds - downloads JUCE 8.0.9 automatically)
+# Configure (90+ seconds - downloads JUCE 8.0.10 automatically)
 cmake --preset=default          # Linux/macOS
 cmake --preset=vs2022           # Windows (requires Visual Studio 2022)
 
@@ -96,7 +96,7 @@ dsp-juce/
 │   ├── PluginEditor.h      # AudioProcessorEditor interface for GUI
 │   └── PluginEditor.cpp    # GUI implementation with parameter controls
 ├── .github/                # GitHub configuration and instructions
-├── CMakeLists.txt          # Modern CMake with JUCE 8.0.9 FetchContent
+├── CMakeLists.txt          # Modern CMake with JUCE 8.0.10 FetchContent
 ├── CMakePresets.json       # Cross-platform build presets
 ├── package.json           # NPM tooling for documentation linting
 ├── scripts/               # Setup validation scripts

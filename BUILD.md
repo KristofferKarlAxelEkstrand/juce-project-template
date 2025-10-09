@@ -55,7 +55,7 @@ cmake --version && g++ --version
 
 ### Step 1: Configure (90+ seconds)
 
-Downloads JUCE 8.0.9 and generates platform-specific build files.
+Downloads JUCE 8.0.10 and generates platform-specific build files.
 
 ```bash
 cmake --preset=default
