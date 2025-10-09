@@ -1,7 +1,7 @@
 # JUCE Framework in this Project
 
 JUCE (Jules' Utility Class Extensions) is a C++ framework for cross-platform audio
-applications and plugins. This project uses JUCE 8.0.9 with modern CMake integration.
+applications and plugins. This project uses JUCE 8.0.10 with modern CMake integration.
 
 ## Key JUCE Classes Used
 
