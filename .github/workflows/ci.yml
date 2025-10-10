@@ -64,6 +64,16 @@ jobs:
           echo "CMake will use FetchContent to download JUCE 8.0.10"
         fi
 
+    - name: Ensure JUCE submodule is initialized
+      shell: bash
+      run: |
+        if [ ! -d "third_party/JUCE" ] || [ -z "$(git -C third_party/JUCE rev-parse --show-toplevel 2>/dev/null)" ]; then
+          echo "Initializing submodules..."
+          git submodule update --init --recursive
+        else
+          echo "✅ JUCE submodule already present"
+        fi
+
     - name: Set build environment variables
       id: set_vars
       run: |
@@ -107,7 +117,7 @@ jobs:
       id: cache-juce
       with:
         path: ${{ github.workspace }}/.juce_cache
-        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**') }}
+        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**', 'third_party/JUCE/**') }}
         restore-keys: |
           ${{ runner.os }}-juce-
       continue-on-error: true
@@ -124,6 +134,13 @@ jobs:
     - name: Configure CMake with Retries
       shell: bash
       run: |
+        echo "=== cmake version ==="
+        cmake --version || true
+        if [ "$(uname)" = "Darwin" ]; then
+          echo "=== xcodebuild version ==="
+          xcodebuild -version || true
+        fi
+        echo
         echo "=== Listing available CMake presets ==="
         cmake --list-presets || echo "cmake --list-presets failed"
         echo
@@ -135,16 +152,33 @@ jobs:
         fi
         echo
         FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        PRESET="${{ steps.set_vars.outputs.cmake_preset }}"
         echo "Using FETCHCONTENT_BASE_DIR=${FETCHCACHE}"
+        echo "Build directory: ${BUILD_DIR}"
+        echo "Preset: ${PRESET}"
+        echo
+        
         for i in 1 2 3; do
           echo "--- cmake attempt $i ---"
-          if cmake --preset=${{ steps.set_vars.outputs.cmake_preset }} -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
-            echo "CMake configuration successful on attempt $i."
-            break
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            # Use Xcode generator for macOS to ensure proper AU building
+            echo "Using Xcode generator for macOS"
+            if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
+              echo "CMake configuration successful on attempt $i."
+              break
+            fi
+          else
+            # Use preset for Windows/Linux
+            echo "Using preset: ${PRESET}"
+            if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
+              echo "CMake configuration successful on attempt $i."
+              break
+            fi
           fi
+          
           echo "CMake configuration failed on attempt $i."
           # show any generated debug logs immediately
-          BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
           if [ -d "${BUILD_DIR}/CMakeFiles" ]; then
             echo "---- CMakeError.log ----"
             sed -n '1,200p' "${BUILD_DIR}/CMakeFiles/CMakeError.log" 2>/dev/null || true
@@ -179,9 +213,29 @@ jobs:
           echo "No CMakeFiles directory at ${BUILD_DIR}/CMakeFiles (CMake likely failed before creating build dir)."
         fi
 
+    - name: Upload CMake logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cmake-logs-${{ matrix.os }}-${{ matrix.build_type }}
+        path: |
+          ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeError.log
+          ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeOutput.log
+        if-no-files-found: ignore
+        retention-days: 7
+
     - name: Build
-      run: cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
       shell: bash
+      run: |
+        if [ "${{ runner.os }}" = "macOS" ]; then
+          # Xcode generator requires --config flag
+          echo "Building with Xcode for macOS"
+          cmake --build "${{ steps.set_vars.outputs.build_dir }}" --config ${{ matrix.build_type }}
+        else
+          # Preset-based build for Windows/Linux
+          echo "Building with preset: ${{ steps.set_vars.outputs.cmake_build_preset }}"
+          cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
+        fi
 
     - name: Validate build artifacts
       shell: bash
@@ -202,8 +256,17 @@ jobs:
       id: plugin_meta
       shell: bash
       run: |
-        source ${{ steps.set_vars.outputs.build_dir }}/plugin_metadata.sh
-        echo "target_name=$PROJECT_NAME_TARGET" >> $GITHUB_OUTPUT
+        METADATA_FILE="${{ steps.set_vars.outputs.build_dir }}/plugin_metadata.sh"
+        if [ -f "${METADATA_FILE}" ]; then
+          source "${METADATA_FILE}"
+          echo "target_name=$PROJECT_NAME_TARGET" >> $GITHUB_OUTPUT
+          echo "✅ Plugin metadata: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
+        else
+          echo "::error::plugin_metadata.sh not found in build dir (${{ steps.set_vars.outputs.build_dir }})"
+          echo "Build directory contents:"
+          ls -la "${{ steps.set_vars.outputs.build_dir }}" || true
+          exit 1
+        fi
 
     - name: Upload build artefacts
       uses: actions/upload-artifact@v4
