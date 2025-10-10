@@ -90,7 +90,7 @@ success_count=0
 total_count=0
 
 # Check shared library
-total_count=$((total_count + 1))
+((total_count++))
 if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
     shared_lib_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/DSP-JUCE Plugin_SharedCode.lib"
 else
@@ -98,13 +98,13 @@ else
 fi
 
 if check_file "$shared_lib_path" "Shared Library"; then
-    success_count=$((success_count + 1))
+    ((success_count++))
 fi
 
 # Check VST3 plugin
-total_count=$((total_count + 1))
+((total_count++))
 if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3" "VST3 Plugin Bundle"; then
-    success_count=$((success_count + 1))
+    ((success_count++))
     
     # Check VST3 binary inside bundle
     if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -122,20 +122,20 @@ fi
 
 # Check AU plugin (macOS only)
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    total_count=$((total_count + 1))
+    ((total_count++))
     if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/AU/DSP-JUCE Plugin.component" "AU Plugin Bundle"; then
-        success_count=$((success_count + 1))
+        ((success_count++))
         check_file "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/AU/DSP-JUCE Plugin.component/Contents/MacOS/DSP-JUCE Plugin" "  AU Binary"
     fi
 fi
 
 # Check Standalone application
-total_count=$((total_count + 1))
+((total_count++))
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS app bundle
     standalone_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/Standalone/DSP-JUCE Plugin.app"
     if check_directory "$standalone_path" "Standalone App Bundle"; then
-        success_count=$((success_count + 1))
+        ((success_count++))
         test_executable "$standalone_path/Contents/MacOS/DSP-JUCE Plugin" "Standalone App"
     fi
 else
@@ -146,7 +146,7 @@ else
     fi
     
     if check_file "$standalone_path" "Standalone Application"; then
-        success_count=$((success_count + 1))
+        ((success_count++))
         test_executable "$standalone_path" "Standalone App"
     fi
 fi
