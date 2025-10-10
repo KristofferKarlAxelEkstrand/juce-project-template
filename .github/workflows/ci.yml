@@ -264,9 +264,11 @@ jobs:
         echo "=== Build directory structure ==="
         ls -la "${BUILD_DIR}" || true
         echo
-        if [ -d "${BUILD_DIR}/JucePlugin_artefacts" ]; then
-          echo "=== Artefacts directory contents ==="
-          find "${BUILD_DIR}/JucePlugin_artefacts" -maxdepth 3 -type d -print || true
+        # Dynamically discover artefacts directory
+        artefacts_dir=$(find "${BUILD_DIR}" -maxdepth 1 -type d -name "*_artefacts" | head -1)
+        if [ -n "${artefacts_dir}" ] && [ -d "${artefacts_dir}" ]; then
+          echo "=== Artefacts directory contents (${artefacts_dir}) ==="
+          find "${artefacts_dir}" -maxdepth 3 -type d -print || true
         fi
 
     - name: Validate build artifacts

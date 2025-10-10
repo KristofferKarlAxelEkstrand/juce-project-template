@@ -98,7 +98,7 @@ frequencySlider.onValueChange = [this] {
 
 // State persistence pattern (MainComponent.cpp)
 void getStateInformation(juce::MemoryBlock &destData) override {
-    juce::XmlElement xml(JucePlugin_Name);  // Uses CMake-generated macro
+    juce::XmlElement xml("PluginState");  // Use simple tag name for state persistence
     xml.setAttribute("frequency", currentFrequency.load());
     copyXmlToBinary(xml, destData);
 }
