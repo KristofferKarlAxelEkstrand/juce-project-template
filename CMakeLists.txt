@@ -50,17 +50,75 @@ else()
     FetchContent_MakeAvailable(JUCE)
 endif()
 
-# Note: JUCE uses British spelling "artefacts" for output directories
-# The build system will create DSPJucePlugin_artefacts/ automatically
+# =============================================================================
+# PLUGIN METADATA - Single Source of Truth
+# =============================================================================
+# Edit these values to create a new plugin. All build outputs, scripts, and
+# source code will automatically use these values.
 
-# Create a JUCE plugin with proper format support
-juce_add_plugin(DSPJucePlugin
-    VERSION 1.0.0
-    COMPANY_NAME "MyCompany"
-    PRODUCT_NAME "DSP-JUCE Plugin"
-    BUNDLE_ID com.mycompany.dspjuceplugin
-    PLUGIN_MANUFACTURER_CODE Juce
-    PLUGIN_CODE Dem0
+set(PLUGIN_NAME "DSP-JUCE Plugin")        # User-facing product name (can contain spaces)
+set(PLUGIN_TARGET "DSPJucePlugin")        # CMake target name (no spaces, used for directories)
+set(PLUGIN_VERSION "1.0.0")               # Semantic version number
+set(PLUGIN_COMPANY_NAME "MyCompany")      # Company/developer name
+set(PLUGIN_COMPANY_WEBSITE "https://mycompany.com")  # Company website URL
+set(PLUGIN_DESCRIPTION "Advanced DSP audio processing plugin")  # Short description
+
+# Plugin identification codes (JUCE/AU/AAX requirements)
+# PLUGIN_MANUFACTURER_CODE: 4 characters, at least one uppercase letter
+# PLUGIN_CODE: 4 characters, exactly one uppercase letter (first char uppercase for GarageBand compatibility)
+set(PLUGIN_MANUFACTURER_CODE "Mcmp")      # Manufacturer code
+set(PLUGIN_CODE "Dsp1")                   # Plugin code
+
+# Auto-generate bundle identifier in reverse-DNS format (com.company.plugin)
+string(TOLOWER "${PLUGIN_COMPANY_NAME}" COMPANY_LOWER)
+string(REPLACE " " "" COMPANY_LOWER "${COMPANY_LOWER}")
+string(TOLOWER "${PLUGIN_TARGET}" TARGET_LOWER)
+set(PLUGIN_BUNDLE_ID "com.${COMPANY_LOWER}.${TARGET_LOWER}")
+
+# Validate manufacturer codes
+string(LENGTH "${PLUGIN_MANUFACTURER_CODE}" MANUF_LEN)
+string(LENGTH "${PLUGIN_CODE}" CODE_LEN)
+if(NOT MANUF_LEN EQUAL 4)
+    message(FATAL_ERROR "PLUGIN_MANUFACTURER_CODE must be exactly 4 characters, got ${MANUF_LEN}")
+endif()
+if(NOT CODE_LEN EQUAL 4)
+    message(FATAL_ERROR "PLUGIN_CODE must be exactly 4 characters, got ${CODE_LEN}")
+endif()
+
+# Export metadata to shell script for build validation scripts
+file(WRITE "${CMAKE_BINARY_DIR}/plugin_metadata.sh"
+    "#!/bin/bash\n"
+    "# Auto-generated plugin metadata - DO NOT EDIT\n"
+    "# Generated from CMakeLists.txt on ${CMAKE_SYSTEM_NAME}\n\n"
+    "export PROJECT_NAME_TARGET=\"${PLUGIN_TARGET}\"\n"
+    "export PROJECT_NAME_PRODUCT=\"${PLUGIN_NAME}\"\n"
+    "export PROJECT_VERSION=\"${PLUGIN_VERSION}\"\n"
+    "export PROJECT_COMPANY=\"${PLUGIN_COMPANY_NAME}\"\n"
+    "export PROJECT_BUNDLE_ID=\"${PLUGIN_BUNDLE_ID}\"\n"
+)
+
+message(STATUS "Plugin: ${PLUGIN_NAME} v${PLUGIN_VERSION}")
+message(STATUS "Company: ${PLUGIN_COMPANY_NAME}")
+message(STATUS "Bundle ID: ${PLUGIN_BUNDLE_ID}")
+message(STATUS "Target: ${PLUGIN_TARGET}")
+
+# Note: JUCE uses British spelling "artefacts" for output directories
+# The build system will create ${PLUGIN_TARGET}_artefacts/ automatically
+
+# =============================================================================
+# JUCE PLUGIN CONFIGURATION
+# =============================================================================
+# Create a JUCE plugin using the metadata defined above
+
+juce_add_plugin(${PLUGIN_TARGET}
+    VERSION ${PLUGIN_VERSION}
+    COMPANY_NAME "${PLUGIN_COMPANY_NAME}"
+    COMPANY_WEBSITE "${PLUGIN_COMPANY_WEBSITE}"
+    PRODUCT_NAME "${PLUGIN_NAME}"
+    DESCRIPTION "${PLUGIN_DESCRIPTION}"
+    BUNDLE_ID ${PLUGIN_BUNDLE_ID}
+    PLUGIN_MANUFACTURER_CODE ${PLUGIN_MANUFACTURER_CODE}
+    PLUGIN_CODE ${PLUGIN_CODE}
     FORMATS VST3 Standalone $<$<PLATFORM_ID:Darwin>:AU>
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT FALSE
@@ -73,7 +131,7 @@ juce_add_plugin(DSPJucePlugin
 )
 
 # Add source files
-target_sources(DSPJucePlugin PRIVATE
+target_sources(${PLUGIN_TARGET} PRIVATE
     src/Main.cpp
     src/MainComponent.cpp
     src/MainComponent.h
@@ -82,13 +140,13 @@ target_sources(DSPJucePlugin PRIVATE
 )
 
 # Set target properties
-set_target_properties(DSPJucePlugin PROPERTIES
+set_target_properties(${PLUGIN_TARGET} PROPERTIES
     CXX_VISIBILITY_PRESET hidden
     VISIBILITY_INLINES_HIDDEN TRUE
 )
 
 # Link JUCE modules
-target_link_libraries(DSPJucePlugin PRIVATE
+target_link_libraries(${PLUGIN_TARGET} PRIVATE
     juce::juce_audio_basics
     juce::juce_audio_devices
     juce::juce_audio_formats
@@ -104,34 +162,34 @@ target_link_libraries(DSPJucePlugin PRIVATE
 )
 
 # Compile definitions
-target_compile_definitions(DSPJucePlugin PRIVATE
+target_compile_definitions(${PLUGIN_TARGET} PRIVATE
     JUCE_WEB_BROWSER=0
     JUCE_USE_CURL=0
     JUCE_VST3_CAN_REPLACE_VST2=0
-    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:DSPJucePlugin,JUCE_PRODUCT_NAME>"
-    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:DSPJucePlugin,JUCE_VERSION>"
+    JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PLUGIN_TARGET},JUCE_PRODUCT_NAME>"
+    JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PLUGIN_TARGET},JUCE_VERSION>"
 )
 
 # Platform-specific settings
 if(WIN32)
-    target_compile_definitions(DSPJucePlugin PRIVATE
+    target_compile_definitions(${PLUGIN_TARGET} PRIVATE
         JUCE_WIN32_LEAN_AND_MEAN=1
     )
 elseif(APPLE)
-    target_compile_definitions(DSPJucePlugin PRIVATE
+    target_compile_definitions(${PLUGIN_TARGET} PRIVATE
         JUCE_USE_OBJC_ARC=1
     )
 endif()
 
 # Debug-specific settings
-target_compile_definitions(DSPJucePlugin PRIVATE
+target_compile_definitions(${PLUGIN_TARGET} PRIVATE
     $<$<CONFIG:Debug>:JUCE_DEBUG=1>
     $<$<CONFIG:Debug>:DEBUG=1>
     $<$<CONFIG:Debug>:_DEBUG=1>
 )
 
 # Release-specific settings  
-target_compile_definitions(DSPJucePlugin PRIVATE
+target_compile_definitions(${PLUGIN_TARGET} PRIVATE
     $<$<CONFIG:Release>:JUCE_DEBUG=0>
     $<$<CONFIG:Release>:NDEBUG=1>
 )

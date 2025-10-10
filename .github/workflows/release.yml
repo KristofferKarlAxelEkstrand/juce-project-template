@@ -34,7 +34,6 @@ jobs:
             build_path: "build/release"
 
     env:
-      ZIP_NAME: "DSP-JUCE-Plugin-${{ github.ref_name }}-${{ matrix.platform_id }}.zip"
       ARTIFACT_DIR: "${{ matrix.build_path }}/DSPJucePlugin_artefacts/Release"
 
     steps:
@@ -76,21 +75,32 @@ jobs:
         run: bash scripts/validate-builds.sh Release
         shell: bash
 
+      - name: Extract plugin metadata
+        id: plugin_meta
+        shell: bash
+        run: |
+          source build/${{ matrix.build_path }}/plugin_metadata.sh
+          echo "product_name=$PROJECT_NAME_PRODUCT" >> $GITHUB_OUTPUT
+          echo "version=$PROJECT_VERSION" >> $GITHUB_OUTPUT
+          # Create sanitized name for ZIP file (replace spaces with hyphens)
+          ZIP_NAME=$(echo "$PROJECT_NAME_PRODUCT" | sed 's/ /-/g')
+          echo "zip_name=${ZIP_NAME}-${{ github.ref_name }}-${{ matrix.platform_id }}.zip" >> $GITHUB_OUTPUT
+
       - name: Archive plugin artifacts
         shell: bash
         run: |
           cd "${{ env.ARTIFACT_DIR }}"
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
-            zip -r "${{ github.workspace }}/${{ env.ZIP_NAME }}" VST3 Standalone AU
+            zip -r "${{ github.workspace }}/${{ steps.plugin_meta.outputs.zip_name }}" VST3 Standalone AU
           else
-            zip -r "${{ github.workspace }}/${{ env.ZIP_NAME }}" VST3 Standalone
+            zip -r "${{ github.workspace }}/${{ steps.plugin_meta.outputs.zip_name }}" VST3 Standalone
           fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.ZIP_NAME }}
-          path: ${{ env.ZIP_NAME }}
+          name: ${{ steps.plugin_meta.outputs.zip_name }}
+          path: ${{ steps.plugin_meta.outputs.zip_name }}
 
   create_release:
     name: Create GitHub Release

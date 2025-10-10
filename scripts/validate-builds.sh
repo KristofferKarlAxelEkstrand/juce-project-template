@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # DSP-JUCE Build Validation Script
-# Validates that plugin and standalone builds exist.
+#ARTEFACTS_DIR="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG"
+
+echo "🔧 Configuration: $BUILD_CONFIG on $OS"
+echo "📂 Build Directory: $BUILD_DIR"
+echo "📂 Artefacts Directory: $ARTEFACTS_DIR"
+echotes that plugin and standalone builds exist.
 
 set -e
 
@@ -11,8 +16,6 @@ echo
 
 # --- Configuration ---
 BUILD_CONFIG=${1:-Debug}
-PROJECT_NAME_TARGET="DSPJucePlugin"
-PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # --- OS Detection ---
@@ -30,6 +33,25 @@ else
     preset_name=$(echo "$BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')
     BUILD_DIR="$PROJECT_ROOT/build/$preset_name"
 fi
+
+# --- Load Plugin Metadata from CMake ---
+METADATA_FILE="$BUILD_DIR/plugin_metadata.sh"
+if [ -f "$METADATA_FILE" ]; then
+    source "$METADATA_FILE"
+    echo "📦 Plugin: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
+    echo "🏢 Company: $PROJECT_COMPANY"
+else
+    # Fallback to hardcoded values if CMake hasn't run yet
+    echo "⚠️  Warning: CMake metadata file not found at $METADATA_FILE"
+    echo "   Run 'cmake --preset=<preset>' first to generate metadata."
+    echo "   Using fallback values for validation..."
+    export PROJECT_NAME_TARGET="DSPJucePlugin"
+    export PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
+    export PROJECT_VERSION="1.0.0"
+    export PROJECT_COMPANY="MyCompany"
+fi
+
+echo
 ARTEFACTS_DIR="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG"
 
 echo "� Configuration: $BUILD_CONFIG on $OS"
