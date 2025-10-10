@@ -50,7 +50,8 @@ else()
     FetchContent_MakeAvailable(JUCE)
 endif()
 
-set(JUCE_PLUGIN_ARTIFACTS_DIR "${CMAKE_BINARY_DIR}/DSPJucePlugin_artifacts")
+# Note: JUCE uses British spelling "artefacts" for output directories
+# The build system will create DSPJucePlugin_artefacts/ automatically
 
 # Create a JUCE plugin with proper format support
 juce_add_plugin(DSPJucePlugin

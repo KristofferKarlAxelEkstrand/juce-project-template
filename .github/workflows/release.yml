@@ -18,19 +18,19 @@ jobs:
             os_name: Linux
             preset: default
             cmake_build_preset: release
-            artifact_dir: "build/DSPJucePlugin_artifacts/Release"
+            artifact_dir: "build/DSPJucePlugin_artefacts/Release"
             zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-linux.zip"
           - os: windows-latest
             os_name: Windows
             preset: vs2022
             cmake_build_preset: release
-            artifact_dir: "build/DSPJucePlugin_artifacts/Release"
+            artifact_dir: "build/DSPJucePlugin_artefacts/Release"
             zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-windows.zip"
           - os: macos-latest
             os_name: macOS
             preset: default
             cmake_build_preset: release
-            artifact_dir: "build/DSPJucePlugin_artifacts/Release"
+            artifact_dir: "build/DSPJucePlugin_artefacts/Release"
             zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-macos.zip"
 
     steps:

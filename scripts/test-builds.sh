@@ -9,8 +9,21 @@ echo "🧪 DSP-JUCE Build Testing"
 echo "========================="
 echo
 
+# Determine build configuration: default to Debug if not specified
+BUILD_CONFIG=${1:-Debug}
+echo "🔧 Build configuration: $BUILD_CONFIG"
+echo
+
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BUILD_DIR="$PROJECT_ROOT/build"
+
+# Adjust build directory based on OS
+if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+    BUILD_DIR="$PROJECT_ROOT/build/vs2022"
+    echo "🔎 Found Windows build directory: $BUILD_DIR"
+else
+    BUILD_DIR="$PROJECT_ROOT/build"
+    echo "🔎 Using default build directory: $BUILD_DIR"
+fi
 
 # Function to check if file exists and report
 check_file() {
@@ -77,23 +90,29 @@ success_count=0
 total_count=0
 
 # Check shared library
-((total_count++))
-if check_file "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/libDSP-JUCE Plugin_SharedCode.a" "Shared Library"; then
-    ((success_count++))
+total_count=$((total_count + 1))
+if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+    shared_lib_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/DSP-JUCE Plugin_SharedCode.lib"
+else
+    shared_lib_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/libDSP-JUCE Plugin_SharedCode.a"
+fi
+
+if check_file "$shared_lib_path" "Shared Library"; then
+    success_count=$((success_count + 1))
 fi
 
 # Check VST3 plugin
-((total_count++))
-if check_directory "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3" "VST3 Plugin Bundle"; then
-    ((success_count++))
+total_count=$((total_count + 1))
+if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3" "VST3 Plugin Bundle"; then
+    success_count=$((success_count + 1))
     
     # Check VST3 binary inside bundle
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/MacOS/DSP-JUCE Plugin"
+        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3/Contents/MacOS/DSP-JUCE Plugin"
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-linux/DSP-JUCE Plugin.so"
+        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-linux/DSP-JUCE Plugin.so"
     elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-win/DSP-JUCE Plugin.vst3"
+        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-win/DSP-JUCE Plugin.vst3"
     fi
     
     if [ -n "$vst3_binary" ]; then
@@ -103,31 +122,31 @@ fi
 
 # Check AU plugin (macOS only)
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    ((total_count++))
-    if check_directory "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/AU/DSP-JUCE Plugin.component" "AU Plugin Bundle"; then
-        ((success_count++))
-        check_file "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/AU/DSP-JUCE Plugin.component/Contents/MacOS/DSP-JUCE Plugin" "  AU Binary"
+    total_count=$((total_count + 1))
+    if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/AU/DSP-JUCE Plugin.component" "AU Plugin Bundle"; then
+        success_count=$((success_count + 1))
+        check_file "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/AU/DSP-JUCE Plugin.component/Contents/MacOS/DSP-JUCE Plugin" "  AU Binary"
     fi
 fi
 
 # Check Standalone application
-((total_count++))
+total_count=$((total_count + 1))
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS app bundle
-    standalone_path="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/Standalone/DSP-JUCE Plugin.app"
+    standalone_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/Standalone/DSP-JUCE Plugin.app"
     if check_directory "$standalone_path" "Standalone App Bundle"; then
-        ((success_count++))
+        success_count=$((success_count + 1))
         test_executable "$standalone_path/Contents/MacOS/DSP-JUCE Plugin" "Standalone App"
     fi
 else
     # Linux/Windows executable
-    standalone_path="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/Standalone/DSP-JUCE Plugin"
+    standalone_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/Standalone/DSP-JUCE Plugin"
     if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
         standalone_path+=".exe"
     fi
     
     if check_file "$standalone_path" "Standalone Application"; then
-        ((success_count++))
+        success_count=$((success_count + 1))
         test_executable "$standalone_path" "Standalone App"
     fi
 fi

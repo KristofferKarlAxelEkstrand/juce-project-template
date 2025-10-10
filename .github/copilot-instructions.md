@@ -41,7 +41,7 @@ cmake --preset=default          # Linux/macOS
 cmake --preset=vs2022           # Windows (requires Visual Studio 2022)
 
 # Build (2m45s Debug, 4m30s Release)
-cmake --build --preset=default  # Creates VST3 + standalone in build/DSPJucePlugin_artifacts/
+cmake --build --preset=default  # Creates VST3 + standalone in build/DSPJucePlugin_artefacts/
 ```
 
 **Threading Architecture:**
@@ -138,7 +138,7 @@ dsp-juce/
 ├── package.json           # NPM tooling for documentation linting
 ├── scripts/               # Setup validation scripts
 └── build/                 # Auto-generated build directory (ignored by git)
-    └── DSPJucePlugin_artifacts/Debug/
+    └── DSPJucePlugin_artefacts/Debug/
         ├── VST3/           # VST3 plugin bundle
         ├── Standalone/     # Standalone application
         └── libDSP-JUCE Plugin_SharedCode.a  # Shared library
@@ -183,11 +183,11 @@ After making changes, always test through these scenarios:
    cmake --build --preset=default
    ```
 
-2. **Artifact Verification:**
+2. **Artefact Verification:**
 
    ```bash
    # Check all expected files exist
-   ls -la "build/DSPJucePlugin_artifacts/Debug/Standalone/DSP-JUCE Plugin"
+   ls -la "build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
    ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/  # Linux/macOS
    dir "%PROGRAMFILES%\Common Files\VST3\"  # Windows
    ```
@@ -196,14 +196,14 @@ After making changes, always test through these scenarios:
 
    ```bash
    # Should start and show JUCE version (fails in headless environment)
-   timeout 3s ./build/DSPJucePlugin_artifacts/Debug/Standalone/DSP-JUCE\ Plugin
+   timeout 3s ./build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin
    ```
 
 4. **Plugin Format Validation:**
 
    ```bash
    # VST3 plugin should be properly structured
-   ls -la build/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE\ Plugin.vst3/Contents/x86_64-linux/
+   ls -la build/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE\ Plugin.vst3/Contents/x86_64-linux/
    ```
 
 ## Troubleshooting

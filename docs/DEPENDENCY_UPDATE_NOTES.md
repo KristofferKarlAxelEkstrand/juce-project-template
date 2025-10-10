@@ -77,8 +77,8 @@ cmake --build --preset=default
 - ✅ CMake configuration successful (94.5s)
 - ✅ JUCE 8.0.10 downloaded successfully via FetchContent
 - ✅ Build completed successfully
-- ✅ VST3 plugin built: `build/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3`
-- ✅ Standalone app built: `build/DSPJucePlugin_artifacts/Debug/Standalone/DSP-JUCE Plugin`
+- ✅ VST3 plugin built: `build/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3`
+- ✅ Standalone app built: `build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin`
 
 **Build Warnings**: Minor warnings from JUCE's bundled VST3 SDK are expected and do not affect functionality.
 These are upstream warnings from the VST3 SDK and not related to the project code.
