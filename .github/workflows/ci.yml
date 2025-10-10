@@ -178,5 +178,5 @@ jobs:
       if: matrix.build_type == 'Release'
       with:
         name: DSPJucePlugin-${{ matrix.os }}
-        path: ${{ steps.set_vars.outputs.build_dir }}/DSPJucePlugin_artifacts/Release/
+        path: ${{ steps.set_vars.outputs.build_dir }}/DSPJucePlugin_artefacts/Release/
         retention-days: 30
