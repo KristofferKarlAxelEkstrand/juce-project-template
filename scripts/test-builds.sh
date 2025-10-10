@@ -14,8 +14,6 @@ BUILD_CONFIG=${1:-Debug}
 echo "Build configuration: $BUILD_CONFIG"
 echo
 
-PROJECT_NAME_FILES="JucePlugin"
-PROJECT_NAME_DISPLAY="DSP-JUCE Plugin"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Determine OS
@@ -39,6 +37,19 @@ else
         echo "Using default Debug build directory: $BUILD_DIR"
     fi
 fi
+
+# Load plugin metadata from CMake-generated file
+METADATA_FILE="$BUILD_DIR/plugin_metadata.sh"
+if [ -f "$METADATA_FILE" ]; then
+    source "$METADATA_FILE"
+    echo "Loaded metadata: $PROJECT_NAME_PRODUCT (target: $PROJECT_NAME_TARGET)"
+else
+    echo "[WARN] plugin_metadata.sh not found at $METADATA_FILE"
+    echo "       Using fallback values. Run 'cmake --preset=<preset>' first."
+    PROJECT_NAME_TARGET="JucePlugin"
+    PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
+fi
+echo
 
 # Function to check if file exists and report
 check_file() {
