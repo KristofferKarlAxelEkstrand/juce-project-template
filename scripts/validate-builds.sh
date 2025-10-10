@@ -111,7 +111,17 @@ fi
 # AU Plugin (macOS only)
 if [ "$OS" = "macos" ]; then
     au_bundle_path="$ARTEFACTS_DIR/AU/${PROJECT_NAME_PRODUCT}.component"
-    check_exists "$au_bundle_path" "AU Plugin" -d || missing_artifacts+=("AU Plugin")
+    if check_exists "$au_bundle_path" "AU Plugin" -d; then
+        : # AU plugin found, all good
+    else
+        # AU plugin missing - check if we should treat as fatal
+        if [ "${ALLOW_MISSING_AU:-false}" = "true" ]; then
+            echo "⚠️  AU Plugin missing but ALLOW_MISSING_AU is set - continuing"
+            missing_optional_artifacts+=("AU Plugin")
+        else
+            missing_artifacts+=("AU Plugin")
+        fi
+    fi
 fi
 
 # --- Summary ---
