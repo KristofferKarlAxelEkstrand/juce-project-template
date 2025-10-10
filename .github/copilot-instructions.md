@@ -51,7 +51,7 @@ cmake --preset=default          # Linux/macOS (builds to build/)
 cmake --preset=vs2022           # Windows (builds to build/vs2022/)
 
 # Build (2m45s Debug, 4m30s Release)
-cmake --build --preset=default  # Creates VST3 + standalone in build/(JucePlugin_)artefacts/
+cmake --build --preset=default  # Creates VST3 + standalone in build/JucePlugin_artefacts/
 cmake --build build/vs2022 --config Release  # Windows Release build
 ```
 
