@@ -109,9 +109,20 @@ jobs:
             sleep 5
           else
             echo "CMake configuration failed after 3 attempts."
+            echo "::error::CMake configuration failed. Check logs above for details."
             exit 1
           fi
         done
+
+    - name: Show CMake error logs
+      if: failure()
+      shell: bash
+      run: |
+        echo "=== CMake Error Log ==="
+        cat ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeError.log 2>/dev/null || echo "No CMakeError.log found"
+        echo
+        echo "=== CMake Output Log ==="
+        cat ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeOutput.log 2>/dev/null || echo "No CMakeOutput.log found"
 
     - name: Build
       run: cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
