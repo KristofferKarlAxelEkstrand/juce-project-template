@@ -365,12 +365,6 @@ void DSPJuceAudioProcessor::setFrequency(float frequency) {
 - Denormal number handling and CPU optimization (`ScopedNoDenormals`)
 - Channel layout management for surround sound and immersive audio
 
-- Noise floor analysis and dithering strategies
-- Frequency response analysis and correction
-- Phase coherence in multi-channel processing
-- Real-time spectrum analysis and visualization
-- Audio driver latency optimization
-
 ### Modern C++20 & CMake Integration
 
 **C++20 Features in Audio Context:**
