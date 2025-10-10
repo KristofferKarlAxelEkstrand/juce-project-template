@@ -60,7 +60,7 @@ jobs:
         id: cache-juce
         with:
           path: ${{ github.workspace }}/.juce_cache
-          key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt') }}
+          key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**', 'third_party/JUCE/**') }}
 
       - name: Configure CMake
         shell: bash
@@ -77,7 +77,7 @@ jobs:
         run: cmake --build ${{ matrix.build_path }} --config Release
 
       - name: Validate build artifacts
-        run: bash scripts/validate-builds.sh Release
+        run: bash scripts/validate-builds.sh Release ${{ matrix.build_path }}
         shell: bash
 
       - name: Extract plugin metadata
