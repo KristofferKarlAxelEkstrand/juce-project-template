@@ -7,10 +7,10 @@ This document explains how versioning works in the DSP-JUCE project and how to c
 The version is defined in **two places** in `CMakeLists.txt`:
 
 ```cmake
-# Line 4: CMake project version
+# CMake project version
 project(JuceProject VERSION 0.0.1 LANGUAGES C CXX)
 
-# Line 61: Plugin version
+# Plugin version
 set(PLUGIN_VERSION "0.0.1")
 ```
 
@@ -31,13 +31,13 @@ Use [Semantic Versioning](https://semver.org/): `MAJOR.MINOR.PATCH`
 
 ### Step 1: Update Version in CMakeLists.txt
 
-Edit **both** lines:
+Edit **both** version statements:
 
 ```cmake
-# Line 4
+# Update the project() VERSION parameter
 project(JuceProject VERSION 2.0.0 LANGUAGES C CXX)
 
-# Line 61
+# Update the PLUGIN_VERSION variable
 set(PLUGIN_VERSION "2.0.0")
 ```
 
