@@ -33,9 +33,6 @@ jobs:
             cmake_build_preset: release
             build_path: "build/release"
 
-    env:
-      ARTIFACT_DIR: "${{ matrix.build_path }}/DSPJucePlugin_artefacts/Release"
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -79,9 +76,10 @@ jobs:
         id: plugin_meta
         shell: bash
         run: |
-          source build/${{ matrix.build_path }}/plugin_metadata.sh
+          source ${{ matrix.build_path }}/plugin_metadata.sh
           echo "product_name=$PROJECT_NAME_PRODUCT" >> $GITHUB_OUTPUT
           echo "version=$PROJECT_VERSION" >> $GITHUB_OUTPUT
+          echo "target_name=$PROJECT_NAME_TARGET" >> $GITHUB_OUTPUT
           # Create sanitized name for ZIP file (replace spaces with hyphens)
           ZIP_NAME=$(echo "$PROJECT_NAME_PRODUCT" | sed 's/ /-/g')
           echo "zip_name=${ZIP_NAME}-${{ github.ref_name }}-${{ matrix.platform_id }}.zip" >> $GITHUB_OUTPUT
@@ -89,7 +87,8 @@ jobs:
       - name: Archive plugin artifacts
         shell: bash
         run: |
-          cd "${{ env.ARTIFACT_DIR }}"
+          ARTIFACT_DIR="${{ matrix.build_path }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release"
+          cd "$ARTIFACT_DIR"
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             zip -r "${{ github.workspace }}/${{ steps.plugin_meta.outputs.zip_name }}" VST3 Standalone AU
           else

@@ -121,10 +121,17 @@ jobs:
       run: bash scripts/validate-builds.sh ${{ matrix.build_type }}
       shell: bash
 
+    - name: Extract plugin metadata
+      id: plugin_meta
+      shell: bash
+      run: |
+        source ${{ steps.set_vars.outputs.build_dir }}/plugin_metadata.sh
+        echo "target_name=$PROJECT_NAME_TARGET" >> $GITHUB_OUTPUT
+
     - name: Upload build artefacts
       uses: actions/upload-artifact@v4
       if: matrix.build_type == 'Release'
       with:
-        name: DSPJucePlugin-${{ matrix.os }}
-        path: ${{ steps.set_vars.outputs.build_dir }}/DSPJucePlugin_artefacts/Release/
+        name: ${{ steps.plugin_meta.outputs.target_name }}-${{ matrix.os }}
+        path: ${{ steps.set_vars.outputs.build_dir }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release/
         retention-days: 30
