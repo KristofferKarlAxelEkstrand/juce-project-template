@@ -101,6 +101,27 @@ clang-format -i src/*.cpp src/*.h  # Format before committing
 cmake --build --preset=default    # Validate builds successfully
 ```
 
+**Git Workflow Conventions:**
+
+```bash
+# Branch structure (Git Flow-inspired)
+feature/your-feature  # From develop branch
+fix/issue-123        # Bug fixes from develop
+
+# Commit messages (Conventional Commits)
+feat: Add frequency modulation to oscillator
+fix: Resolve audio dropout on buffer size change
+docs: Update build instructions for Windows
+style: Apply clang-format to source files
+```
+
+**Pre-Commit Automation:**
+
+- Husky runs `lint-staged` on commit
+- Automatically lints markdown files with `markdownlint-cli2 --fix`
+- Blocks commits that fail linting (fix with `npm run lint:md:fix`)
+- CI runs only on PRs to `main`/`develop` (saves resources)
+
 ## Project Structure and Key Files
 
 ```text
@@ -124,6 +145,13 @@ dsp-juce/
 ```
 
 ## Project-Specific Conventions
+
+**Git Workflow (Git Flow-inspired):**
+
+- **Branch Structure**: `main` (production) ← `develop` (integration) ← `feature/*` branches
+- **PR Strategy**: Feature → develop → main (CI runs only on PRs to protected branches)
+- **Commit Format**: Conventional Commits (`feat:`, `fix:`, `docs:`, `style:`)
+- **Pre-commit Hooks**: Husky + lint-staged auto-format markdown on commit
 
 **Real-Time Audio Constraints:**
 
