@@ -8,13 +8,16 @@ The version is defined in **two places** in `CMakeLists.txt`:
 
 ```cmake
 # Line 4: CMake project version
-project(JuceProject VERSION 1.0.0 LANGUAGES C CXX)
+project(JuceProject VERSION 0.0.1 LANGUAGES C CXX)
 
 # Line 61: Plugin version
-set(PLUGIN_VERSION "1.0.0")
+set(PLUGIN_VERSION "0.0.1")
 ```
 
 **⚠️ Critical**: These MUST match or CMake will fail with an error.
+
+**Note**: This template starts at version `0.0.1` to indicate pre-release/template status.
+Update to `1.0.0` when you release your first production version.
 
 ## Semantic Versioning
 

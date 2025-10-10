@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Simple JUCE Project
-project(JuceProject VERSION 1.0.0 LANGUAGES C CXX)
+project(JuceProject VERSION 0.0.1 LANGUAGES C CXX)
 
 # Set C++ standard - using C++20 for modern language features
 set(CMAKE_CXX_STANDARD 20)
@@ -58,7 +58,7 @@ endif()
 
 set(PLUGIN_NAME "DSP-JUCE Plugin")        # User-facing product name (can contain spaces)
 set(PLUGIN_TARGET "DSPJucePlugin")        # CMake target name (no spaces, used for directories)
-set(PLUGIN_VERSION "1.0.0")               # Semantic version number
+set(PLUGIN_VERSION "0.0.1")               # Semantic version number
 set(PLUGIN_COMPANY_NAME "MyCompany")      # Company/developer name
 set(PLUGIN_COMPANY_WEBSITE "https://mycompany.com")  # Company website URL
 set(PLUGIN_DESCRIPTION "Advanced DSP audio processing plugin")  # Short description
