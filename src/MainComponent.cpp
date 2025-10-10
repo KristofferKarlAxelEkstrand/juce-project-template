@@ -75,7 +75,7 @@ void DSPJuceAudioProcessor::setGain(float gainValue) { currentGain.store(juce::j
 //==============================================================================
 void DSPJuceAudioProcessor::getStateInformation(juce::MemoryBlock &destData) {
     // Create XML with current parameter values
-    juce::XmlElement xml("DSPJucePlugin");
+    juce::XmlElement xml(JucePlugin_Name);
     xml.setAttribute("frequency", static_cast<double>(currentFrequency.load()));
     xml.setAttribute("gain", static_cast<double>(currentGain.load()));
     copyXmlToBinary(xml, destData);
@@ -85,7 +85,7 @@ void DSPJuceAudioProcessor::setStateInformation(const void *data, int sizeInByte
     // Restore parameter values from XML
     std::unique_ptr<juce::XmlElement> xmlState = getXmlFromBinary(data, sizeInBytes);
 
-    if (xmlState.get() != nullptr && xmlState->hasTagName("DSPJucePlugin")) {
+    if (xmlState.get() != nullptr && xmlState->hasTagName(JucePlugin_Name)) {
         currentFrequency.store(static_cast<float>(xmlState->getDoubleAttribute("frequency", DEFAULT_FREQUENCY)));
         currentGain.store(static_cast<float>(xmlState->getDoubleAttribute("gain", DEFAULT_GAIN)));
     }

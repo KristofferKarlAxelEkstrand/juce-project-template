@@ -33,7 +33,7 @@ public:
 
     //==============================================================================
     // Program and state management
-    const juce::String getName() const override { return "DSP-JUCE Plugin"; }
+    const juce::String getName() const override { return JucePlugin_Name; }
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
     bool isMidiEffect() const override { return false; }

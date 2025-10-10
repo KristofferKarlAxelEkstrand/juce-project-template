@@ -76,14 +76,14 @@ cmake --preset=release && cmake --build --preset=release
 ### Step 3: Validation
 
 ```bash
-# Check build artifacts exist
+# Check build artefacts exist
 ls -la build/DSPJucePlugin_artefacts/Debug/
 
 # Run validation script
 ./scripts/validate-setup.sh
 ```
 
-### Build Artifacts
+### Build Artefacts
 
 The compiled binaries are placed in the `build/DSPJucePlugin_artefacts/` directory,
 organized by build configuration (e.g., `Debug`, `Release`).
