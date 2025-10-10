@@ -7,7 +7,7 @@ This project uses modern CMake 3.22+ features with JUCE integration.
 
 **Dependency Management**:
 
-- **FetchContent**: Downloads JUCE 8.0.9 automatically during configure
+- **FetchContent**: Downloads JUCE 8.0.10 automatically during configure
 - **Zero Dependencies**: No manual JUCE installation required
 - **Version Locking**: Ensures consistent JUCE version across builds
 
@@ -33,7 +33,7 @@ set(CMAKE_CXX_STANDARD 20)  # Enable C++20 features
 # Download JUCE automatically
 FetchContent_Declare(JUCE
     GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-    GIT_TAG 8.0.9)
+    GIT_TAG 8.0.10)
 
 # Configure plugin formats and properties
 juce_add_plugin(DSPJucePlugin
