@@ -85,6 +85,17 @@ if(NOT CODE_LEN EQUAL 4)
     message(FATAL_ERROR "PLUGIN_CODE must be exactly 4 characters, got ${CODE_LEN}")
 endif()
 
+# Validate version consistency
+if(NOT "${PLUGIN_VERSION}" STREQUAL "${PROJECT_VERSION}")
+    message(WARNING "Version mismatch detected!")
+    message(WARNING "  PLUGIN_VERSION: ${PLUGIN_VERSION}")
+    message(WARNING "  PROJECT_VERSION: ${PROJECT_VERSION}")
+    message(WARNING "  Please ensure both versions match in CMakeLists.txt:")
+    message(WARNING "    Line 4:  project(SimpleJuceApp VERSION ${PROJECT_VERSION} ...)")
+    message(WARNING "    Line 61: set(PLUGIN_VERSION \"${PLUGIN_VERSION}\")")
+    message(FATAL_ERROR "PLUGIN_VERSION and PROJECT_VERSION must match for consistency")
+endif()
+
 # Export metadata to shell script for build validation scripts
 file(WRITE "${CMAKE_BINARY_DIR}/plugin_metadata.sh"
     "#!/bin/bash\n"
