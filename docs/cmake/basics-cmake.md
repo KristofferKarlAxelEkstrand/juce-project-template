@@ -23,7 +23,7 @@ This project uses modern CMake 3.22+ features with JUCE integration.
 **Project Setup**:
 
 ```cmake
-project(DSPJucePlugin VERSION 1.0.0)
+project(JucePlugin VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 20)  # Enable C++20 features
 ```
 
@@ -36,7 +36,7 @@ FetchContent_Declare(JUCE
     GIT_TAG 8.0.10)
 
 # Configure plugin formats and properties
-juce_add_plugin(DSPJucePlugin
+juce_add_plugin(JucePlugin
     FORMATS VST3 AU Standalone
     PRODUCT_NAME "DSP-JUCE Plugin")
 ```

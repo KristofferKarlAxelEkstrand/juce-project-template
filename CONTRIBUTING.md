@@ -214,7 +214,7 @@ cmake --preset=default && cmake --build --preset=default
 cmake --preset=release && cmake --build --preset=release
 
 # Test standalone application
-./build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin
+./build/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin
 
 # Verify plugin installation (platform-specific)
 ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/  # Linux

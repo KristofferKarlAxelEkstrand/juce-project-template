@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DSPROJECT_NAME_TARGET="DSPJucePlugin"
+# DSPROJECT_NAME_TARGET="JucePlugin"
 PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"UCE Build Testing Script
 # Tests that plugin and standalone builds work correctly
@@ -16,8 +16,8 @@ BUILD_CONFIG=${1:-Debug}
 echo "🔧 Build configuration: $BUILD_CONFIG"
 echo
 
-PROJECT_NAME_FILES="DSPJucePlugin"
-PROJECT_NAME_FILES="DSPJucePlugin"
+PROJECT_NAME_FILES="JucePlugin"
+PROJECT_NAME_FILES="JucePlugin"
 PROJECT_NAME_DISPLAY="DSP-JUCE Plugin"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 

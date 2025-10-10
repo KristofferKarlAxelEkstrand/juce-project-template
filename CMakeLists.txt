@@ -57,7 +57,7 @@ endif()
 # source code will automatically use these values.
 
 set(PLUGIN_NAME "DSP-JUCE Plugin")        # User-facing product name (can contain spaces)
-set(PLUGIN_TARGET "DSPJucePlugin")        # CMake target name (no spaces, used for directories)
+set(PLUGIN_TARGET "JucePlugin")        # CMake target name (no spaces, used for directories)
 set(PLUGIN_VERSION "0.0.1")               # Semantic version number
 set(PLUGIN_COMPANY_NAME "MyCompany")      # Company/developer name
 set(PLUGIN_COMPANY_WEBSITE "https://mycompany.com")  # Company website URL
