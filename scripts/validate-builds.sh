@@ -11,6 +11,7 @@ echo
 
 # --- Configuration ---
 BUILD_CONFIG=${1:-Debug}
+OVERRIDE_BUILD_DIR=${2:-}  # Optional: override build directory from CI
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # --- OS Detection ---
@@ -22,7 +23,10 @@ case "$(uname -s)" in
 esac
 
 # --- Path Definitions ---
-if [ "$OS" = "windows" ]; then
+if [ -n "$OVERRIDE_BUILD_DIR" ]; then
+    # Use build directory provided by CI workflow
+    BUILD_DIR="$OVERRIDE_BUILD_DIR"
+elif [ "$OS" = "windows" ]; then
     BUILD_DIR="$PROJECT_ROOT/build/vs2022"
 else
     preset_name=$(echo "$BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')

@@ -129,7 +129,7 @@ jobs:
       shell: bash
 
     - name: Validate build artifacts
-      run: bash scripts/validate-builds.sh ${{ matrix.build_type }}
+      run: bash scripts/validate-builds.sh ${{ matrix.build_type }} ${{ steps.set_vars.outputs.build_dir }}
       shell: bash
 
     - name: Extract plugin metadata
