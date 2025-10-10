@@ -87,13 +87,15 @@ endif()
 
 # Validate version consistency
 if(NOT "${PLUGIN_VERSION}" STREQUAL "${PROJECT_VERSION}")
-    message(WARNING "Version mismatch detected!")
-    message(WARNING "  PLUGIN_VERSION: ${PLUGIN_VERSION}")
-    message(WARNING "  PROJECT_VERSION: ${PROJECT_VERSION}")
-    message(WARNING "  Please ensure both versions match in CMakeLists.txt:")
-    message(WARNING "    project(...) VERSION sets PROJECT_VERSION")
-    message(WARNING "    set(PLUGIN_VERSION ...) sets PLUGIN_VERSION")
-    message(FATAL_ERROR "PLUGIN_VERSION and PROJECT_VERSION must match for consistency")
+    message(FATAL_ERROR
+        "Version mismatch detected!\n"
+        "  PLUGIN_VERSION: ${PLUGIN_VERSION}\n"
+        "  PROJECT_VERSION: ${PROJECT_VERSION}\n"
+        "  Please ensure both versions match in CMakeLists.txt:\n"
+        "    project(...) VERSION sets PROJECT_VERSION\n"
+        "    set(PLUGIN_VERSION ...) sets PLUGIN_VERSION\n"
+        "PLUGIN_VERSION and PROJECT_VERSION must match for consistency"
+    )
 endif()
 
 # Export metadata to shell script for build validation scripts
