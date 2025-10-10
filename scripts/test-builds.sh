@@ -86,14 +86,21 @@ test_executable() {
     
     if [ -x "$exe_path" ]; then
         echo "  Testing $description..."
-        # Try to run with --help or version flag, or just test execution
-        if timeout 2s "$exe_path" --help >/dev/null 2>&1 || \
-           timeout 2s "$exe_path" >/dev/null 2>&1; then
-            echo "  [OK] $description: Executable runs"
-            return 0
+        # Check if timeout command is available (not on macOS by default)
+        if command -v timeout >/dev/null 2>&1; then
+            # Try to run with --help or version flag, or just test execution
+            if timeout 2s "$exe_path" --help >/dev/null 2>&1 || \
+               timeout 2s "$exe_path" >/dev/null 2>&1; then
+                echo "  [OK] $description: Executable runs"
+                return 0
+            else
+                echo "  [WARN] $description: Executable exists but may need display/audio"
+                return 0  # This is okay in headless environments
+            fi
         else
-            echo "  [WARN] $description: Executable exists but may need display/audio"
-            return 0  # This is okay in headless environments
+            # No timeout available - skip run check
+            echo "  [OK] $description: Executable exists (skipping run check; no timeout available)"
+            return 0
         fi
     else
         echo "  [FAIL] $description: Not executable"
