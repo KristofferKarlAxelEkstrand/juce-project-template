@@ -35,7 +35,7 @@ audioProcessor.setFrequency(newValue);  // GUI thread atomic store
 **Build System Essentials:**
 
 - `PLUGIN_NAME`, `PLUGIN_TARGET`, `PLUGIN_VERSION` in CMakeLists.txt control all metadata
-- Auto-generates `plugin_metadata.sh` for script validation
+- Auto-generates `plugin_metadata.sh` in the build directory for script validation
 - Output locations: `build/<preset>/JucePlugin_artefacts/<config>/`
 - Build times: Configure (90s), Debug build (2m45s), Release (4m30s)
 
