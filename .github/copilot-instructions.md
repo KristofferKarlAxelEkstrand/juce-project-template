@@ -12,6 +12,16 @@ demonstrating real-time audio processing, cross-platform plugin builds, and mode
 - `Main.cpp`: Plugin entry point supporting both VST3 plugin and standalone builds
 - `CMakeLists.txt`: Modern CMake with FetchContent auto-downloading JUCE 8.0.10
 
+**Metadata Centralization:**
+
+All plugin metadata is defined in `CMakeLists.txt` (lines 55-70) as a single source of truth:
+
+- Edit `PLUGIN_NAME`, `PLUGIN_TARGET`, `PLUGIN_VERSION` to create new plugins
+- Metadata automatically propagates to source code via JUCE macros (`JucePlugin_Name`, etc.)
+- Build scripts source generated `plugin_metadata.sh` for dynamic artifact validation
+- CI/CD workflows extract metadata for automated releases
+- Version consistency enforced by CMake (build fails if `PLUGIN_VERSION != PROJECT_VERSION`)
+
 **Critical Real-Time Safety Pattern:**
 
 ```cpp
@@ -41,7 +51,7 @@ cmake --preset=default          # Linux/macOS
 cmake --preset=vs2022           # Windows (requires Visual Studio 2022)
 
 # Build (2m45s Debug, 4m30s Release)
-cmake --build --preset=default  # Creates VST3 + standalone in build/DSPJucePlugin_artefacts/
+cmake --build --preset=default  # Creates VST3 + standalone in build/<target>_artefacts/
 ```
 
 **Threading Architecture:**
@@ -88,7 +98,7 @@ frequencySlider.onValueChange = [this] {
 
 // State persistence pattern (MainComponent.cpp)
 void getStateInformation(juce::MemoryBlock &destData) override {
-    juce::XmlElement xml("DSPJucePlugin");
+    juce::XmlElement xml(JucePlugin_Name);  // Uses CMake-generated macro
     xml.setAttribute("frequency", currentFrequency.load());
     copyXmlToBinary(xml, destData);
 }
@@ -138,10 +148,10 @@ dsp-juce/
 ├── package.json           # NPM tooling for documentation linting
 ├── scripts/               # Setup validation scripts
 └── build/                 # Auto-generated build directory (ignored by git)
-    └── DSPJucePlugin_artefacts/Debug/
+    └── <target>_artefacts/Debug/  # Named from PLUGIN_TARGET in CMakeLists.txt
         ├── VST3/           # VST3 plugin bundle
         ├── Standalone/     # Standalone application
-        └── libDSP-JUCE Plugin_SharedCode.a  # Shared library
+        └── lib<target>_SharedCode.a  # Shared library
 ```
 
 ## Project-Specific Conventions
@@ -183,27 +193,28 @@ After making changes, always test through these scenarios:
    cmake --build --preset=default
    ```
 
-2. **Artifact Verification:**
+2. **Artefact Verification:**
 
    ```bash
-   # Check all expected files exist
-   ls -la "build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
-   ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/  # Linux/macOS
-   dir "%PROGRAMFILES%\Common Files\VST3\"  # Windows
+   # Check all expected files exist (paths use PLUGIN_TARGET and PLUGIN_NAME from CMakeLists.txt)
+   # Use scripts/validate-builds.sh for automatic validation with dynamic metadata
+   ./scripts/validate-builds.sh
    ```
 
 3. **Application Startup Test:**
 
    ```bash
    # Should start and show JUCE version (fails in headless environment)
-   timeout 3s ./build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin
+   # Path depends on PLUGIN_TARGET and PLUGIN_NAME from CMakeLists.txt
+   # Example: ./build/<target>_artefacts/Debug/Standalone/<product-name>
    ```
 
 4. **Plugin Format Validation:**
 
    ```bash
    # VST3 plugin should be properly structured
-   ls -la build/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE\ Plugin.vst3/Contents/x86_64-linux/
+   # Path: build/<target>_artefacts/Debug/VST3/<product-name>.vst3/
+   # Use validate-builds.sh script for automatic validation
    ```
 
 ## Troubleshooting

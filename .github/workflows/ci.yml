@@ -49,29 +49,48 @@ jobs:
         submodules: 'recursive'
         lfs: true
 
+    - name: Verify JUCE submodule
+      shell: bash
+      run: |
+        echo "=== Checking JUCE submodule status ==="
+        git submodule status
+        echo
+        if [ -f "third_party/JUCE/CMakeLists.txt" ]; then
+          echo "✅ JUCE submodule is present at third_party/JUCE"
+          JUCE_VERSION=$(grep 'project.*VERSION' third_party/JUCE/CMakeLists.txt | head -1 || echo "Version not found")
+          echo "JUCE Version info: $JUCE_VERSION"
+        else
+          echo "⚠️ JUCE submodule not found at third_party/JUCE"
+          echo "CMake will use FetchContent to download JUCE 8.0.10"
+        fi
+
+    - name: Ensure JUCE submodule is initialized
+      shell: bash
+      run: |
+        if [ ! -d "third_party/JUCE" ] || [ -z "$(git -C third_party/JUCE rev-parse --show-toplevel 2>/dev/null)" ]; then
+          echo "Initializing submodules..."
+          git submodule update --init --recursive
+        else
+          echo "✅ JUCE submodule already present"
+        fi
+
     - name: Set build environment variables
       id: set_vars
       run: |
         if [ "${{ runner.os }}" == "Windows" ]; then
           echo "cmake_preset=vs2022" >> $GITHUB_OUTPUT
+          echo "cmake_build_preset=vs2022-$(echo ${{ matrix.build_type }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
           echo "build_dir=${{ github.workspace }}/build/vs2022" >> $GITHUB_OUTPUT
         elif [ "${{ matrix.build_type }}" == "Release" ]; then
           echo "cmake_preset=release" >> $GITHUB_OUTPUT
+          echo "cmake_build_preset=release" >> $GITHUB_OUTPUT
           echo "build_dir=${{ github.workspace }}/build/release" >> $GITHUB_OUTPUT
         else
           echo "cmake_preset=default" >> $GITHUB_OUTPUT
+          echo "cmake_build_preset=default" >> $GITHUB_OUTPUT
           echo "build_dir=${{ github.workspace }}/build" >> $GITHUB_OUTPUT
         fi
       shell: bash
-
-    - name: Cache Build Directory
-      uses: actions/cache@v4
-      id: cache-build
-      with:
-        path: ${{ steps.set_vars.outputs.build_dir }}
-        key: ${{ runner.os }}-${{ matrix.build_type }}-build-${{ hashFiles('src/**/*.cpp', 'src/**/*.h', 'CMakeLists.txt', 'CMakePresets.json') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.build_type }}-build-
 
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
@@ -98,85 +117,193 @@ jobs:
       id: cache-juce
       with:
         path: ${{ github.workspace }}/.juce_cache
-        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**') }}
+        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**', 'third_party/JUCE/**') }}
         restore-keys: |
           ${{ runner.os }}-juce-
+      continue-on-error: true
+
+    - name: Report cache status
+      shell: bash
+      run: |
+        if [ "${{ steps.cache-juce.outputs.cache-hit }}" = "true" ]; then
+          echo "✅ JUCE cache hit - using cached dependencies"
+        else
+          echo "⚠️ JUCE cache miss - will download dependencies"
+        fi
 
     - name: Configure CMake with Retries
       shell: bash
       run: |
-        for i in {1..3}; do
-          if cmake --preset=${{ steps.set_vars.outputs.cmake_preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache; then
-            echo "CMake configuration successful on attempt $i."
-            break
+        echo "=== cmake version ==="
+        cmake --version || true
+        if [ "$(uname)" = "Darwin" ]; then
+          echo "=== xcodebuild version ==="
+          xcodebuild -version || true
+        fi
+        echo
+        echo "=== Listing available CMake presets ==="
+        cmake --list-presets || echo "cmake --list-presets failed"
+        echo
+        echo "=== Dump CMakePresets.json (if present) ==="
+        if [ -f CMakePresets.json ]; then
+          sed -n '1,200p' CMakePresets.json || cat CMakePresets.json
+        else
+          echo "No CMakePresets.json in repo root"
+        fi
+        echo
+        FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        PRESET="${{ steps.set_vars.outputs.cmake_preset }}"
+        echo "Using FETCHCONTENT_BASE_DIR=${FETCHCACHE}"
+        echo "Build directory: ${BUILD_DIR}"
+        echo "Preset: ${PRESET}"
+        echo
+        
+        for i in 1 2 3; do
+          echo "--- cmake attempt $i ---"
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            # Use Xcode generator for macOS to ensure proper AU building
+            echo "Using Xcode generator for macOS"
+            if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
+              echo "CMake configuration successful on attempt $i."
+              break
+            fi
+          else
+            # Use preset for Windows/Linux
+            echo "Using preset: ${PRESET}"
+            if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
+              echo "CMake configuration successful on attempt $i."
+              break
+            fi
+          fi
+          
+          echo "CMake configuration failed on attempt $i."
+          # show any generated debug logs immediately
+          if [ -d "${BUILD_DIR}/CMakeFiles" ]; then
+            echo "---- CMakeError.log ----"
+            sed -n '1,200p' "${BUILD_DIR}/CMakeFiles/CMakeError.log" 2>/dev/null || true
+            echo "---- CMakeOutput.log ----"
+            sed -n '1,200p' "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" 2>/dev/null || true
+          else
+            echo "Build dir ${BUILD_DIR} not present yet."
           fi
           if [ $i -lt 3 ]; then
-            echo "CMake configuration failed on attempt $i. Retrying in 5 seconds..."
-            sleep 5
+            echo "Retrying in 10s..."
+            sleep 10
           else
             echo "CMake configuration failed after 3 attempts."
+            echo "::error::CMake configuration failed. See logs above."
             exit 1
           fi
         done
 
+    - name: Show CMake error logs
+      if: always()
+      shell: bash
+      run: |
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        echo "Build dir resolved to: ${BUILD_DIR}"
+        if [ -d "${BUILD_DIR}/CMakeFiles" ]; then
+          echo "=== CMake Error Log ==="
+          sed -n '1,400p' "${BUILD_DIR}/CMakeFiles/CMakeError.log" 2>/dev/null || echo "No CMakeError.log found"
+          echo
+          echo "=== CMake Output Log ==="
+          sed -n '1,400p' "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" 2>/dev/null || echo "No CMakeOutput.log found"
+        else
+          echo "No CMakeFiles directory at ${BUILD_DIR}/CMakeFiles (CMake likely failed before creating build dir)."
+        fi
+
+    - name: Upload CMake logs on failure
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: cmake-logs-${{ matrix.os }}-${{ matrix.build_type }}
+        path: |
+          ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeError.log
+          ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeOutput.log
+        if-no-files-found: ignore
+        retention-days: 7
+
     - name: Build
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          # For Windows, use the preset-defined build directory directly
-          cmake --build build/vs2022 --config ${{matrix.build_type}}
-        else
-          cmake --build ${{ steps.set_vars.outputs.build_dir }} --config ${{matrix.build_type}}
-        fi
       shell: bash
-
-    - name: Test (Linux/macOS)
-      if: runner.os != 'Windows'
-      working-directory: ${{ steps.set_vars.outputs.build_dir }}
       run: |
-        # Determine binary path based on platform
-        if [ "$RUNNER_OS" == "macOS" ]; then
-          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.app"
-          BINARY_TYPE="macOS app bundle"
-          TEST_CMD="[ -d"
+        if [ "${{ runner.os }}" = "macOS" ]; then
+          # Xcode generator requires --config flag
+          echo "Building with Xcode for macOS"
+          cmake --build "${{ steps.set_vars.outputs.build_dir }}" --config ${{ matrix.build_type }}
         else
-          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin"
-          BINARY_TYPE="Linux binary"
-          TEST_CMD="[ -f"
+          # Preset-based build for Windows/Linux
+          echo "Building with preset: ${{ steps.set_vars.outputs.cmake_build_preset }}"
+          cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
         fi
-        
-        # Check if binary exists
-        if eval "$TEST_CMD \"$BINARY_PATH\" ]"; then
-          echo "Build successful - $BINARY_TYPE created"
+
+    - name: List Xcode targets (macOS debug)
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        echo "=== Listing Xcode project targets ==="
+        # Find the .xcodeproj file
+        XCODEPROJ=$(find "${BUILD_DIR}" -maxdepth 1 -name "*.xcodeproj" | head -1)
+        if [ -n "${XCODEPROJ}" ]; then
+          echo "Found Xcode project: ${XCODEPROJ}"
+          xcodebuild -project "${XCODEPROJ}" -list || true
         else
-          echo "Build failed - $BINARY_TYPE not found"
-          ls -la "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/"
+          echo "No .xcodeproj found in ${BUILD_DIR}"
+        fi
+
+    - name: Show produced plugin artifacts (macOS debug)
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        echo "=== Searching for plugin artifacts ==="
+        echo "Looking for .component, .vst3, .app files:"
+        find "${BUILD_DIR}" -type d \( -name "*.component" -o -name "*.vst3" -o -name "*.app" \) -print || true
+        echo
+        echo "=== Build directory structure ==="
+        ls -la "${BUILD_DIR}" || true
+        echo
+        if [ -d "${BUILD_DIR}/DSPJucePlugin_artefacts" ]; then
+          echo "=== Artefacts directory contents ==="
+          find "${BUILD_DIR}/DSPJucePlugin_artefacts" -maxdepth 3 -type d -print || true
+        fi
+
+    - name: Validate build artifacts
+      shell: bash
+      run: |
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        echo "Validating build dir: ${BUILD_DIR}"
+        # On Windows with bash, ensure path is accessible
+        if [ "${{ runner.os }}" = "Windows" ]; then
+          # Convert to native path if cygpath is available
+          if command -v cygpath >/dev/null 2>&1; then
+            WIN_BUILD_DIR="$(cygpath -w "${BUILD_DIR}")"
+            echo "Converted build dir to Windows form: ${WIN_BUILD_DIR}"
+          fi
+        fi
+        bash scripts/validate-builds.sh ${{ matrix.build_type }} "${BUILD_DIR}"
+
+    - name: Extract plugin metadata
+      id: plugin_meta
+      shell: bash
+      run: |
+        METADATA_FILE="${{ steps.set_vars.outputs.build_dir }}/plugin_metadata.sh"
+        if [ -f "${METADATA_FILE}" ]; then
+          source "${METADATA_FILE}"
+          echo "target_name=$PROJECT_NAME_TARGET" >> $GITHUB_OUTPUT
+          echo "✅ Plugin metadata: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
+        else
+          echo "::error::plugin_metadata.sh not found in build dir (${{ steps.set_vars.outputs.build_dir }})"
+          echo "Build directory contents:"
+          ls -la "${{ steps.set_vars.outputs.build_dir }}" || true
           exit 1
         fi
 
-    - name: Test (Windows)
-      if: runner.os == 'Windows'
-      working-directory: build/vs2022
-      shell: pwsh
-      run: |
-        # For now, just verify the binary was created
-        if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
-          Write-Host "Build successful - binary created"
-        } else {
-          Write-Host "Build failed - binary not found"
-          Get-ChildItem "DSPJucePlugin_artefacts/${{matrix.build_type}}/"
-          exit 1
-        }
-
-    - name: List Windows build artifacts
-      if: runner.os == 'Windows' && matrix.build_type == 'Release'
-      run: |
-        ls -la build/vs2022/DSPJucePlugin_artefacts/Release/
-      shell: bash
-
-    - name: Upload build artifacts
+    - name: Upload build artefacts
       uses: actions/upload-artifact@v4
       if: matrix.build_type == 'Release'
       with:
-        name: DSPJucePlugin-${{ matrix.os }}
-        path: ${{ steps.set_vars.outputs.build_dir }}/DSPJucePlugin_artefacts/Release/
+        name: ${{ steps.plugin_meta.outputs.target_name }}-${{ matrix.os }}
+        path: ${{ steps.set_vars.outputs.build_dir }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release/
         retention-days: 30

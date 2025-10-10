@@ -1,7 +1,7 @@
 ---
 description: 'An expert JUCE audio developer for real-time audio processing, CMake build systems, and modern C++ development.'
 model: Gemini 2.5 Pro (copilot)
-tools: ['codebase', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'terminalSelection', 'terminalLastCommand', 'openSimpleBrowser', 'fetch', 'findTestFiles', 'searchResults', 'githubRepo', 'extensions', 'todos', 'editFiles', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'playwright']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'runTests', 'playwright']
 ---
 
 # JUCE Audio Developer Expert Chat Mode

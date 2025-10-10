@@ -5,7 +5,8 @@
 	"files.associations": {
 		"*.h": "cpp",
 		"*.hpp": "cpp",
-		"*.cpp": "cpp"
+		"*.cpp": "cpp",
+		"*.mm": "cpp"
 	},
 	"files.exclude": {
 		"build/**": true,

@@ -5,6 +5,7 @@
 	"scripts": {
 		"format": "prettier --write \"**/*.md\"",
 		"test": "npm run lint:md",
+		"test:build": "bash scripts/validate-builds.sh",
 		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\"",
 		"lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\"",
 		"prepare": "husky"
