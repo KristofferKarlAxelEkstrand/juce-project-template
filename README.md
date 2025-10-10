@@ -29,7 +29,7 @@ thread-safe parameter handling and real-time audio processing.
    cmake --build --preset=default
    ```
 
-**Built Artefacts**: `build/DSPJucePlugin_artefacts/Debug/`
+**Built Artefacts**: `build/JucePlugin_artefacts/Debug/`
 
 - `VST3/DSP-JUCE Plugin.vst3` - VST3 plugin
 - `Standalone/DSP-JUCE Plugin` - Standalone application
