@@ -65,7 +65,7 @@ set(PLUGIN_DESCRIPTION "Advanced DSP audio processing plugin")  # Short descript
 
 # Plugin identification codes (JUCE/AU/AAX requirements)
 # PLUGIN_MANUFACTURER_CODE: 4 characters, at least one uppercase letter
-# PLUGIN_CODE: 4 characters, exactly one uppercase letter (first char uppercase for GarageBand compatibility)
+# PLUGIN_CODE: 4 characters, at least one uppercase letter (first char uppercase for GarageBand compatibility)
 set(PLUGIN_MANUFACTURER_CODE "Mcmp")      # Manufacturer code
 set(PLUGIN_CODE "Dsp1")                   # Plugin code
 
