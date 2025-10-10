@@ -43,15 +43,14 @@ jobs:
           libgl1-mesa-dev \
           libxext-dev
 
-    - name: Cache C++ build
+    - name: Cache JUCE
       if: matrix.language == 'c-cpp'
       uses: actions/cache@v4
       with:
-        path: build
-        key: ${{ runner.os }}-codeql-build-${{ github.repository }}-${{ hashFiles('src/**/*.cpp', 'src/**/*.h', 'CMakeLists.txt') }}
+        path: third_party/JUCE
+        key: ${{ runner.os }}-juce-${{ hashFiles('CMakeLists.txt') }}
         restore-keys: |
-          ${{ runner.os }}-codeql-build-${{ github.repository }}-
-          ${{ runner.os }}-codeql-build-
+          ${{ runner.os }}-juce-
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
