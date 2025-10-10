@@ -54,24 +54,18 @@ jobs:
       run: |
         if [ "${{ runner.os }}" == "Windows" ]; then
           echo "cmake_preset=vs2022" >> $GITHUB_OUTPUT
+          echo "cmake_build_preset=vs2022-${{ matrix.build_type }}" >> $GITHUB_OUTPUT
           echo "build_dir=${{ github.workspace }}/build/vs2022" >> $GITHUB_OUTPUT
         elif [ "${{ matrix.build_type }}" == "Release" ]; then
           echo "cmake_preset=release" >> $GITHUB_OUTPUT
+          echo "cmake_build_preset=release" >> $GITHUB_OUTPUT
           echo "build_dir=${{ github.workspace }}/build/release" >> $GITHUB_OUTPUT
         else
           echo "cmake_preset=default" >> $GITHUB_OUTPUT
+          echo "cmake_build_preset=default" >> $GITHUB_OUTPUT
           echo "build_dir=${{ github.workspace }}/build" >> $GITHUB_OUTPUT
         fi
       shell: bash
-
-    - name: Cache Build Directory
-      uses: actions/cache@v4
-      id: cache-build
-      with:
-        path: ${{ steps.set_vars.outputs.build_dir }}
-        key: ${{ runner.os }}-${{ matrix.build_type }}-build-${{ hashFiles('src/**/*.cpp', 'src/**/*.h', 'CMakeLists.txt', 'CMakePresets.json') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.build_type }}-build-
 
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
@@ -120,7 +114,7 @@ jobs:
         done
 
     - name: Build
-      run: cmake --build ${{ steps.set_vars.outputs.build_dir }} --config ${{matrix.build_type}}
+      run: cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
       shell: bash
 
     - name: Validate build artifacts
