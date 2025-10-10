@@ -44,11 +44,27 @@ cmake --preset=vs2022           # Windows (requires Visual Studio 2022)
 cmake --build --preset=default  # Creates VST3 + standalone in build/DSPJucePlugin_artefacts/
 ```
 
-**Platform Architecture:**
+**Threading Architecture:**
 
-- `CMakePresets.json`: Conditional presets using `${hostSystemName}` for cross-platform support
-- `FetchContent`: Automatic JUCE download eliminates manual dependency management
-- Build outputs: VST3 plugin, AU (macOS), and standalone application from single codebase
+- **Audio Thread**: `processBlock()` runs in real-time audio thread (no allocations, lock-free)
+- **GUI Thread**: Slider callbacks update `std::atomic<float>` parameters
+- **Message Thread**: JUCE's message thread handles UI updates and event processing
+- **Data Flow**: GUI → atomic store → audio thread load → DSP parameter update
+
+**JUCE Module Dependencies:**
+
+- `juce_audio_basics`: Core audio types and buffer management
+- `juce_audio_devices`: Audio device I/O (standalone app only)
+- `juce_audio_formats`: File I/O support
+- `juce_audio_processors`: Plugin framework and parameter handling
+- `juce_audio_utils`: UI components for audio applications
+- `juce_core`: Fundamental utilities and data structures
+- `juce_data_structures`: Value trees and undo management
+- `juce_dsp`: Digital signal processing algorithms
+- `juce_events`: Message threading and asynchronous operations
+- `juce_graphics`: 2D graphics rendering
+- `juce_gui_basics`: Core GUI components and event handling
+- `juce_gui_extra`: Additional GUI components (sliders, buttons)
 
 ## Development Workflow
 
@@ -134,16 +150,18 @@ After making changes, always test through these scenarios:
    ```bash
    # Clean rebuild cycle
    rm -rf build
-   cmake --preset=default    # Should complete in ~90s
-   cmake --build --preset=default  # Should complete in ~2m45s
+   cmake --preset=default  # Linux/macOS
+   cmake --preset=vs2022   # Windows
+   cmake --build --preset=default
    ```
 
 2. **Artifact Verification:**
 
    ```bash
    # Check all expected files exist
-   file "build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
-   ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/
+   ls -la "build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
+   ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/  # Linux/macOS
+   dir "%PROGRAMFILES%\Common Files\VST3\"  # Windows
    ```
 
 3. **Application Startup Test:**
