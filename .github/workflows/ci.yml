@@ -120,57 +120,11 @@ jobs:
         done
 
     - name: Build
-      run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          # For Windows, use the preset-defined build directory directly
-          cmake --build build/vs2022 --config ${{matrix.build_type}}
-        else
-          cmake --build ${{ steps.set_vars.outputs.build_dir }} --config ${{matrix.build_type}}
-        fi
+      run: cmake --build ${{ steps.set_vars.outputs.build_dir }} --config ${{matrix.build_type}}
       shell: bash
 
-    - name: Test (Linux/macOS)
-      if: runner.os != 'Windows'
-      working-directory: ${{ steps.set_vars.outputs.build_dir }}
-      run: |
-        # Determine binary path based on platform
-        if [ "$RUNNER_OS" == "macOS" ]; then
-          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.app"
-          BINARY_TYPE="macOS app bundle"
-          TEST_CMD="[ -d"
-        else
-          BINARY_PATH="DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin"
-          BINARY_TYPE="Linux binary"
-          TEST_CMD="[ -f"
-        fi
-        
-        # Check if binary exists
-        if eval "$TEST_CMD \"$BINARY_PATH\" ]"; then
-          echo "Build successful - $BINARY_TYPE created"
-        else
-          echo "Build failed - $BINARY_TYPE not found"
-          ls -la "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/"
-          exit 1
-        fi
-
-    - name: Test (Windows)
-      if: runner.os == 'Windows'
-      working-directory: build/vs2022
-      shell: pwsh
-      run: |
-        # For now, just verify the binary was created
-        if (Test-Path "DSPJucePlugin_artefacts/${{matrix.build_type}}/Standalone/DSP-JUCE Plugin.exe") {
-          Write-Host "Build successful - binary created"
-        } else {
-          Write-Host "Build failed - binary not found"
-          Get-ChildItem "DSPJucePlugin_artefacts/${{matrix.build_type}}/"
-          exit 1
-        }
-
-    - name: List Windows build artefacts
-      if: runner.os == 'Windows' && matrix.build_type == 'Release'
-      run: |
-        ls -la build/vs2022/DSPJucePlugin_artefacts/Release/
+    - name: Validate build artifacts
+      run: bash scripts/validate-builds.sh ${{ matrix.build_type }}
       shell: bash
 
     - name: Upload build artefacts

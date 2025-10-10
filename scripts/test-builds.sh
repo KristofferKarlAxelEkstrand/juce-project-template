@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# DSP-JUCE Build Testing Script
+# DSPROJECT_NAME_TARGET="DSPJucePlugin"
+PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"UCE Build Testing Script
 # Tests that plugin and standalone builds work correctly
 
 set -e
@@ -14,15 +16,31 @@ BUILD_CONFIG=${1:-Debug}
 echo "🔧 Build configuration: $BUILD_CONFIG"
 echo
 
+PROJECT_NAME_FILES="DSPJucePlugin"
+PROJECT_NAME_FILES="DSPJucePlugin"
+PROJECT_NAME_DISPLAY="DSP-JUCE Plugin"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# Adjust build directory based on OS
-if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+# Determine OS
+case "$(uname -s)" in
+    Linux*)     OS="linux";;
+    Darwin*)    OS="macos";;
+    CYGWIN*|MINGW*|MSYS*) OS="windows";;
+    *)          OS="unknown";;
+esac
+
+# Adjust build directory based on OS and configuration
+if [ "$OS" = "windows" ]; then
     BUILD_DIR="$PROJECT_ROOT/build/vs2022"
     echo "🔎 Found Windows build directory: $BUILD_DIR"
 else
-    BUILD_DIR="$PROJECT_ROOT/build"
-    echo "🔎 Using default build directory: $BUILD_DIR"
+    if [[ "$BUILD_CONFIG" == "Release" ]]; then
+        BUILD_DIR="$PROJECT_ROOT/build/release"
+        echo "🔎 Found Release build directory: $BUILD_DIR"
+    else
+        BUILD_DIR="$PROJECT_ROOT/build"
+        echo "🔎 Using default Debug build directory: $BUILD_DIR"
+    fi
 fi
 
 # Function to check if file exists and report
@@ -91,10 +109,10 @@ total_count=0
 
 # Check shared library
 ((total_count++))
-if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    shared_lib_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/DSP-JUCE Plugin_SharedCode.lib"
+if [ "$OS" = "windows" ]; then
+    shared_lib_path="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/${PROJECT_NAME_PRODUCT}_SharedCode.lib"
 else
-    shared_lib_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/libDSP-JUCE Plugin_SharedCode.a"
+    shared_lib_path="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/lib${PROJECT_NAME_PRODUCT}_SharedCode.a"
 fi
 
 if check_file "$shared_lib_path" "Shared Library"; then
@@ -103,16 +121,16 @@ fi
 
 # Check VST3 plugin
 ((total_count++))
-if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3" "VST3 Plugin Bundle"; then
+if check_directory "$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/VST3/${PROJECT_NAME_PRODUCT}.vst3" "VST3 Plugin Bundle"; then
     ((success_count++))
     
     # Check VST3 binary inside bundle
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3/Contents/MacOS/DSP-JUCE Plugin"
-    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-linux/DSP-JUCE Plugin.so"
-    elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-win/DSP-JUCE Plugin.vst3"
+    if [ "$OS" = "macos" ]; then
+        vst3_binary="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/VST3/${PROJECT_NAME_PRODUCT}.vst3/Contents/MacOS/${PROJECT_NAME_PRODUCT}"
+    elif [ "$OS" = "linux" ]; then
+        vst3_binary="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/VST3/${PROJECT_NAME_PRODUCT}.vst3/Contents/x86_64-linux/${PROJECT_NAME_PRODUCT}.so"
+    elif [ "$OS" = "windows" ]; then
+        vst3_binary="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/VST3/${PROJECT_NAME_PRODUCT}.vst3/Contents/x86_64-win/${PROJECT_NAME_PRODUCT}.vst3"
     fi
     
     if [ -n "$vst3_binary" ]; then
@@ -121,27 +139,27 @@ if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/VST3/DSP-JU
 fi
 
 # Check AU plugin (macOS only)
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [ "$OS" = "macos" ]; then
     ((total_count++))
-    if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/AU/DSP-JUCE Plugin.component" "AU Plugin Bundle"; then
+    if check_directory "$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/AU/${PROJECT_NAME_PRODUCT}.component" "AU Plugin Bundle"; then
         ((success_count++))
-        check_file "$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/AU/DSP-JUCE Plugin.component/Contents/MacOS/DSP-JUCE Plugin" "  AU Binary"
+        check_file "$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/AU/${PROJECT_NAME_PRODUCT}.component/Contents/MacOS/${PROJECT_NAME_PRODUCT}" "  AU Binary"
     fi
 fi
 
 # Check Standalone application
 ((total_count++))
-if [[ "$OSTYPE" == "darwin"* ]]; then
+if [ "$OS" = "macos" ]; then
     # macOS app bundle
-    standalone_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/Standalone/DSP-JUCE Plugin.app"
+    standalone_path="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/Standalone/${PROJECT_NAME_PRODUCT}.app"
     if check_directory "$standalone_path" "Standalone App Bundle"; then
         ((success_count++))
-        test_executable "$standalone_path/Contents/MacOS/DSP-JUCE Plugin" "Standalone App"
+        test_executable "$standalone_path/Contents/MacOS/${PROJECT_NAME_PRODUCT}" "Standalone App"
     fi
 else
     # Linux/Windows executable
-    standalone_path="$BUILD_DIR/DSPJucePlugin_artefacts/$BUILD_CONFIG/Standalone/DSP-JUCE Plugin"
-    if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
+    standalone_path="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/Standalone/${PROJECT_NAME_PRODUCT}"
+    if [ "$OS" = "windows" ]; then
         standalone_path+=".exe"
     fi
     
@@ -156,22 +174,31 @@ echo "🔍 Plugin Installation Check..."
 echo "-------------------------------"
 
 # Check if plugins are installed to user directories
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    if [ -d "$HOME/.vst3/DSP-JUCE Plugin.vst3" ]; then
+if [ "$OS" = "linux" ]; then
+    if [ -d "$HOME/.vst3/${PROJECT_NAME_PRODUCT}.vst3" ]; then
         echo "✅ VST3 plugin installed to user directory: ~/.vst3/"
     else
         echo "⚠️  VST3 plugin not found in ~/.vst3/ (may need manual installation)"
     fi
-elif [[ "$OSTYPE" == "darwin"* ]]; then
-    if [ -d "$HOME/Library/Audio/Plug-Ins/VST3/DSP-JUCE Plugin.vst3" ]; then
+elif [ "$OS" = "macos" ]; then
+    if [ -d "$HOME/Library/Audio/Plug-Ins/VST3/${PROJECT_NAME_PRODUCT}.vst3" ]; then
         echo "✅ VST3 plugin installed to user directory"
     fi
-    if [ -d "$HOME/Library/Audio/Plug-Ins/Components/DSP-JUCE Plugin.component" ]; then
+    if [ -d "$HOME/Library/Audio/Plug-Ins/Components/${PROJECT_NAME_PRODUCT}.component" ]; then
         echo "✅ AU plugin installed to user directory"
     fi
-elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-    if [ -d "$APPDATA/VST3/DSP-JUCE Plugin.vst3" ]; then
-        echo "✅ VST3 plugin installed to user directory"
+elif [ "$OS" = "windows" ]; then
+    # System-wide VST3 directory
+    vst3_path_system="${PROGRAMFILES_COMMONW64}/VST3/${PROJECT_NAME_PRODUCT}.vst3"
+    # User-specific VST3 directory
+    vst3_path_user="${LOCALAPPDATA}/Programs/Common/VST3/${PROJECT_NAME_PRODUCT}.vst3"
+
+    if [ -d "$vst3_path_system" ]; then
+        echo "✅ VST3 plugin installed to system directory: $vst3_path_system"
+    elif [ -d "$vst3_path_user" ]; then
+        echo "✅ VST3 plugin installed to user directory: $vst3_path_user"
+    else
+        echo "⚠️  VST3 plugin not found in standard system or user directories."
     fi
 fi
 

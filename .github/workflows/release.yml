@@ -19,22 +19,23 @@ jobs:
             platform_id: linux
             preset: release
             cmake_build_preset: release
-            artifact_dir: "build/release/DSPJucePlugin_artefacts/Release"
+            build_path: "build/release"
           - os: windows-latest
             os_name: Windows
             platform_id: windows
             preset: vs2022
             cmake_build_preset: vs2022-release
-            artifact_dir: "build/vs2022/DSPJucePlugin_artefacts/Release"
+            build_path: "build/vs2022"
           - os: macos-latest
             os_name: macOS
             platform_id: macos
             preset: release
             cmake_build_preset: release
-            artifact_dir: "build/release/DSPJucePlugin_artefacts/Release"
+            build_path: "build/release"
 
     env:
       ZIP_NAME: "DSP-JUCE-Plugin-${{ github.ref_name }}-${{ matrix.platform_id }}.zip"
+      ARTIFACT_DIR: "${{ matrix.build_path }}/DSPJucePlugin_artefacts/Release"
 
     steps:
       - name: Check out repository
@@ -46,18 +47,39 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev libgl1-mesa-dev libwebkit2gtk-4.1-dev
+          sudo apt-get install -y \
+            libasound2-dev \
+            libx11-dev \
+            libxcomposite-dev \
+            libxcursor-dev \
+            libxinerama-dev \
+            libxrandr-dev \
+            libfreetype6-dev \
+            libfontconfig1-dev \
+            libgl1-mesa-dev \
+            libwebkit2gtk-4.1-dev
+
+      - name: Cache JUCE
+        uses: actions/cache@v4
+        id: cache-juce
+        with:
+          path: ${{ github.workspace }}/.juce_cache
+          key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt') }}
 
       - name: Configure CMake
-        run: cmake --preset=${{ matrix.preset }}
+        run: cmake --preset=${{ matrix.preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
 
       - name: Build with CMake
-        run: cmake --build --preset=${{ matrix.cmake_build_preset }}
+        run: cmake --build ${{ matrix.build_path }} --config Release
+
+      - name: Validate build artifacts
+        run: bash scripts/validate-builds.sh Release
+        shell: bash
 
       - name: Archive plugin artifacts
         shell: bash
         run: |
-          cd "${{ matrix.artifact_dir }}"
+          cd "${{ env.ARTIFACT_DIR }}"
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             zip -r "${{ github.workspace }}/${{ env.ZIP_NAME }}" VST3 Standalone AU
           else
