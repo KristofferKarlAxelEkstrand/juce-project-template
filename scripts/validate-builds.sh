@@ -5,8 +5,8 @@
 
 set -e
 
-echo "🧪 DSP-JUCE Build Validation"
-echo "============================"
+echo "DSP-JUCE Build Validation"
+echo "=========================="
 echo
 
 # --- Configuration ---
@@ -37,11 +37,11 @@ fi
 METADATA_FILE="$BUILD_DIR/plugin_metadata.sh"
 if [ -f "$METADATA_FILE" ]; then
     source "$METADATA_FILE"
-    echo "📦 Plugin: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
-    echo "🏢 Company: $PROJECT_COMPANY"
+    echo "Plugin: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
+    echo "Company: $PROJECT_COMPANY"
 else
     # Fallback to hardcoded values if CMake hasn't run yet
-    echo "⚠️  Warning: CMake metadata file not found at $METADATA_FILE"
+    echo "Warning: CMake metadata file not found at $METADATA_FILE"
     echo "   Run 'cmake --preset=<preset>' first to generate metadata."
     echo "   Using fallback values for validation..."
     export PROJECT_NAME_TARGET="JucePlugin"
@@ -53,10 +53,10 @@ fi
 echo
 ARTEFACTS_DIR="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG"
 
-echo "� Configuration: $BUILD_CONFIG on $OS"
-echo "📂 Project Root: $PROJECT_ROOT"
-echo "📂 Build Directory: $BUILD_DIR"
-echo "📂 Artefacts Directory: $ARTEFACTS_DIR"
+echo "Configuration: $BUILD_CONFIG on $OS"
+echo "Project Root: $PROJECT_ROOT"
+echo "Build Directory: $BUILD_DIR"
+echo "Artefacts Directory: $ARTEFACTS_DIR"
 echo
 
 # --- Validation Functions ---
@@ -66,16 +66,16 @@ check_exists() {
     local type_flag="$3" # -f for file, -d for directory
 
     if [ "$type_flag" "$path" ]; then
-        echo "✅ $description: Found"
+        echo "[OK] $description: Found"
         return 0
     else
-        echo "❌ $description: Missing at '$path'"
+        echo "[FAIL] $description: Missing at '$path'"
         return 1
     fi
 }
 
 # --- Main Execution ---
-echo "� Starting validation..."
+echo "Starting validation..."
 
 if ! check_exists "$ARTEFACTS_DIR" "Artefacts directory" -d; then
     exit 1
@@ -116,7 +116,7 @@ if [ "$OS" = "macos" ]; then
     else
         # AU plugin missing - check if we should treat as fatal
         if [ "${ALLOW_MISSING_AU:-false}" = "true" ]; then
-            echo "⚠️  AU Plugin missing but ALLOW_MISSING_AU is set - continuing"
+            echo "Warning: AU Plugin missing but ALLOW_MISSING_AU is set - continuing"
             missing_optional_artifacts+=("AU Plugin")
         else
             missing_artifacts+=("AU Plugin")
@@ -126,17 +126,17 @@ fi
 
 # --- Summary ---
 echo
-echo "📊 Build Test Summary"
-echo "===================="
+echo "Build Test Summary"
+echo "=================="
 if [ ${#missing_artifacts[@]} -gt 0 ]; then
-    echo "❌ Critical build artifacts are missing: ${missing_artifacts[*]}"
+    echo "ERROR: Critical build artifacts are missing: ${missing_artifacts[*]}"
     exit 1
 elif [ ${#missing_optional_artifacts[@]} -gt 0 ]; then
-    echo "⚠️  Optional artifacts missing (not fatal): ${missing_optional_artifacts[*]}"
-    echo "✅ All critical build artifacts found successfully!"
+    echo "Warning: Optional artifacts missing (not fatal): ${missing_optional_artifacts[*]}"
+    echo "SUCCESS: All critical build artifacts found successfully!"
     exit 0
 else
-    echo "🎉 All expected build artifacts found successfully!"
+    echo "SUCCESS: All expected build artifacts found successfully!"
     exit 0
 fi
 

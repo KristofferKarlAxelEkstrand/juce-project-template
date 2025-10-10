@@ -1,22 +1,19 @@
 #!/bin/bash
 
-# DSPROJECT_NAME_TARGET="JucePlugin"
-PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"UCE Build Testing Script
+# DSP-JUCE Build Testing Script
 # Tests that plugin and standalone builds work correctly
 
 set -e
 
-echo "🧪 DSP-JUCE Build Testing"
-echo "========================="
+echo "DSP-JUCE Build Testing"
+echo "======================"
 echo
 
 # Determine build configuration: default to Debug if not specified
 BUILD_CONFIG=${1:-Debug}
-echo "🔧 Build configuration: $BUILD_CONFIG"
+echo "Build configuration: $BUILD_CONFIG"
 echo
 
-PROJECT_NAME_FILES="JucePlugin"
 PROJECT_NAME_FILES="JucePlugin"
 PROJECT_NAME_DISPLAY="DSP-JUCE Plugin"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -32,14 +29,14 @@ esac
 # Adjust build directory based on OS and configuration
 if [ "$OS" = "windows" ]; then
     BUILD_DIR="$PROJECT_ROOT/build/vs2022"
-    echo "🔎 Found Windows build directory: $BUILD_DIR"
+    echo "Found Windows build directory: $BUILD_DIR"
 else
     if [[ "$BUILD_CONFIG" == "Release" ]]; then
         BUILD_DIR="$PROJECT_ROOT/build/release"
-        echo "🔎 Found Release build directory: $BUILD_DIR"
+        echo "Found Release build directory: $BUILD_DIR"
     else
         BUILD_DIR="$PROJECT_ROOT/build"
-        echo "🔎 Using default Debug build directory: $BUILD_DIR"
+        echo "Using default Debug build directory: $BUILD_DIR"
     fi
 fi
 
@@ -49,10 +46,10 @@ check_file() {
     local description="$2"
     
     if [ -f "$file_path" ]; then
-        echo "✅ $description: $(basename "$file_path")"
+        echo "[OK] $description: $(basename "$file_path")"
         return 0
     else
-        echo "❌ $description: Missing"
+        echo "[FAIL] $description: Missing"
         return 1
     fi
 }
@@ -63,10 +60,10 @@ check_directory() {
     local description="$2"
     
     if [ -d "$dir_path" ]; then
-        echo "✅ $description: $(basename "$dir_path")"
+        echo "[OK] $description: $(basename "$dir_path")"
         return 0
     else
-        echo "❌ $description: Missing"
+        echo "[FAIL] $description: Missing"
         return 1
     fi
 }
@@ -77,30 +74,30 @@ test_executable() {
     local description="$2"
     
     if [ -x "$exe_path" ]; then
-        echo "  🔍 Testing $description..."
+        echo "  Testing $description..."
         # Try to run with --help or version flag, or just test execution
         if timeout 2s "$exe_path" --help >/dev/null 2>&1 || \
            timeout 2s "$exe_path" >/dev/null 2>&1; then
-            echo "  ✅ $description: Executable runs"
+            echo "  [OK] $description: Executable runs"
             return 0
         else
-            echo "  ⚠️  $description: Executable exists but may need display/audio"
+            echo "  [WARN] $description: Executable exists but may need display/audio"
             return 0  # This is okay in headless environments
         fi
     else
-        echo "  ❌ $description: Not executable"
+        echo "  [FAIL] $description: Not executable"
         return 1
     fi
 }
 
-echo "📁 Checking Build Artifacts..."
-echo "------------------------------"
+echo "Checking Build Artifacts..."
+echo "----------------------------"
 
 cd "$PROJECT_ROOT"
 
 # Check if build directory exists
 if [ ! -d "$BUILD_DIR" ]; then
-    echo "❌ Build directory not found. Run 'cmake --preset=default && cmake --build --preset=default' first."
+    echo "[FAIL] Build directory not found. Run 'cmake --preset=default && cmake --build --preset=default' first."
     exit 1
 fi
 
@@ -170,22 +167,22 @@ else
 fi
 
 echo
-echo "🔍 Plugin Installation Check..."
-echo "-------------------------------"
+echo "Plugin Installation Check..."
+echo "-----------------------------"
 
 # Check if plugins are installed to user directories
 if [ "$OS" = "linux" ]; then
     if [ -d "$HOME/.vst3/${PROJECT_NAME_PRODUCT}.vst3" ]; then
-        echo "✅ VST3 plugin installed to user directory: ~/.vst3/"
+        echo "[OK] VST3 plugin installed to user directory: ~/.vst3/"
     else
-        echo "⚠️  VST3 plugin not found in ~/.vst3/ (may need manual installation)"
+        echo "[WARN] VST3 plugin not found in ~/.vst3/ (may need manual installation)"
     fi
 elif [ "$OS" = "macos" ]; then
     if [ -d "$HOME/Library/Audio/Plug-Ins/VST3/${PROJECT_NAME_PRODUCT}.vst3" ]; then
-        echo "✅ VST3 plugin installed to user directory"
+        echo "[OK] VST3 plugin installed to user directory"
     fi
     if [ -d "$HOME/Library/Audio/Plug-Ins/Components/${PROJECT_NAME_PRODUCT}.component" ]; then
-        echo "✅ AU plugin installed to user directory"
+        echo "[OK] AU plugin installed to user directory"
     fi
 elif [ "$OS" = "windows" ]; then
     # System-wide VST3 directory
@@ -194,21 +191,21 @@ elif [ "$OS" = "windows" ]; then
     vst3_path_user="${LOCALAPPDATA}/Programs/Common/VST3/${PROJECT_NAME_PRODUCT}.vst3"
 
     if [ -d "$vst3_path_system" ]; then
-        echo "✅ VST3 plugin installed to system directory: $vst3_path_system"
+        echo "[OK] VST3 plugin installed to system directory: $vst3_path_system"
     elif [ -d "$vst3_path_user" ]; then
-        echo "✅ VST3 plugin installed to user directory: $vst3_path_user"
+        echo "[OK] VST3 plugin installed to user directory: $vst3_path_user"
     else
-        echo "⚠️  VST3 plugin not found in standard system or user directories."
+        echo "[WARN] VST3 plugin not found in standard system or user directories."
     fi
 fi
 
 echo
-echo "📊 Build Test Summary"
-echo "===================="
+echo "Build Test Summary"
+echo "=================="
 echo "Successful: $success_count/$total_count artifacts built"
 
 if [ $success_count -eq $total_count ]; then
-    echo "🎉 All build artifacts created successfully!"
+    echo "SUCCESS: All build artifacts created successfully!"
     echo
     echo "Next steps:"
     echo "1. Load VST3 plugin in your DAW"
@@ -216,7 +213,7 @@ if [ $success_count -eq $total_count ]; then
     echo "3. Test audio functionality"
     exit 0
 else
-    echo "⚠️  Some build artifacts are missing."
+    echo "[WARN] Some build artifacts are missing."
     echo "Check the build output and BUILD.md for troubleshooting."
     exit 1
 fi
