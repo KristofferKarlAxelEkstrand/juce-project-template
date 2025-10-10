@@ -109,7 +109,7 @@ total_count=0
 if [ "$OS" = "windows" ]; then
     shared_lib_path="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/${PROJECT_NAME_PRODUCT}_SharedCode.lib"
 else
-    shared_lib_path="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/lib${PROJECT_NAME_PRODUCT}_SharedCode.a"
+    shared_lib_path="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/lib${PROJECT_NAME_TARGET}_SharedCode.a"
 fi
 
 if check_file "$shared_lib_path" "Shared Library"; then
