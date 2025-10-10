@@ -16,22 +16,25 @@ jobs:
         include:
           - os: ubuntu-latest
             os_name: Linux
+            platform_id: linux
             preset: release
             cmake_build_preset: release
             artifact_dir: "build/release/DSPJucePlugin_artefacts/Release"
-            zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-linux.zip"
           - os: windows-latest
             os_name: Windows
+            platform_id: windows
             preset: vs2022
             cmake_build_preset: vs2022-release
             artifact_dir: "build/vs2022/DSPJucePlugin_artefacts/Release"
-            zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-windows.zip"
           - os: macos-latest
             os_name: macOS
+            platform_id: macos
             preset: release
             cmake_build_preset: release
             artifact_dir: "build/release/DSPJucePlugin_artefacts/Release"
-            zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-macos.zip"
+
+    env:
+      ZIP_NAME: "DSP-JUCE-Plugin-${{ github.ref_name }}-${{ matrix.platform_id }}.zip"
 
     steps:
       - name: Check out repository
@@ -56,16 +59,16 @@ jobs:
         run: |
           cd "${{ matrix.artifact_dir }}"
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
-            zip -r "${{ github.workspace }}/${{ matrix.zip_name }}" VST3 Standalone AU
+            zip -r "${{ github.workspace }}/${{ env.ZIP_NAME }}" VST3 Standalone AU
           else
-            zip -r "${{ github.workspace }}/${{ matrix.zip_name }}" VST3 Standalone
+            zip -r "${{ github.workspace }}/${{ env.ZIP_NAME }}" VST3 Standalone
           fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.zip_name }}
-          path: ${{ matrix.zip_name }}
+          name: ${{ env.ZIP_NAME }}
+          path: ${{ env.ZIP_NAME }}
 
   create_release:
     name: Create GitHub Release
