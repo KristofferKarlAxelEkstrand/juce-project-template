@@ -61,11 +61,8 @@ jobs:
 
     - if: matrix.language == 'c-cpp'
       name: Clean build directory
-      run: |
-        if [ -d "build/_deps" ]; then
-          echo "Cleaning build/_deps directory to avoid stale FetchContent CMakeCache"
-          rm -rf build/_deps
-        fi
+      run: rm -rf build
+
     - if: matrix.language == 'c-cpp'
       name: Build C++
       run: |
