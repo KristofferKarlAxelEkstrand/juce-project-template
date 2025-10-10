@@ -8,7 +8,7 @@ The version is defined in **two places** in `CMakeLists.txt`:
 
 ```cmake
 # Line 4: CMake project version
-project(SimpleJuceApp VERSION 1.0.0 LANGUAGES C CXX)
+project(JuceProject VERSION 1.0.0 LANGUAGES C CXX)
 
 # Line 61: Plugin version
 set(PLUGIN_VERSION "1.0.0")
@@ -32,7 +32,7 @@ Edit **both** lines:
 
 ```cmake
 # Line 4
-project(SimpleJuceApp VERSION 2.0.0 LANGUAGES C CXX)
+project(JuceProject VERSION 2.0.0 LANGUAGES C CXX)
 
 # Line 61
 set(PLUGIN_VERSION "2.0.0")

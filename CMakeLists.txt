@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Simple JUCE Project
-project(SimpleJuceApp VERSION 1.0.0 LANGUAGES C CXX)
+project(JuceProject VERSION 1.0.0 LANGUAGES C CXX)
 
 # Set C++ standard - using C++20 for modern language features
 set(CMAKE_CXX_STANDARD 20)
@@ -91,7 +91,7 @@ if(NOT "${PLUGIN_VERSION}" STREQUAL "${PROJECT_VERSION}")
     message(WARNING "  PLUGIN_VERSION: ${PLUGIN_VERSION}")
     message(WARNING "  PROJECT_VERSION: ${PROJECT_VERSION}")
     message(WARNING "  Please ensure both versions match in CMakeLists.txt:")
-    message(WARNING "    Line 4:  project(SimpleJuceApp VERSION ${PROJECT_VERSION} ...)")
+    message(WARNING "    Line 4:  project(JuceProject VERSION ${PROJECT_VERSION} ...)")
     message(WARNING "    Line 61: set(PLUGIN_VERSION \"${PLUGIN_VERSION}\")")
     message(FATAL_ERROR "PLUGIN_VERSION and PROJECT_VERSION must match for consistency")
 endif()
