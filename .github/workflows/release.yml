@@ -1,0 +1,82 @@
+# .github/workflows/release.yml
+
+name: Create Plugin Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            os_name: Linux
+            preset: default
+            cmake_build_preset: release
+            artefact_dir: "build/DSPJucePlugin_artefacts/Release"
+            zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-linux.zip"
+          - os: windows-latest
+            os_name: Windows
+            preset: vs2022
+            cmake_build_preset: release
+            artefact_dir: "build/DSPJucePlugin_artefacts/Release"
+            zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-windows.zip"
+          - os: macos-latest
+            os_name: macOS
+            preset: default
+            cmake_build_preset: release
+            artefact_dir: "build/DSPJucePlugin_artefacts/Release"
+            zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-macos.zip"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev libgl1-mesa-dev libwebkit2gtk-4.1-dev
+
+      - name: Configure CMake
+        run: cmake --preset=${{ matrix.preset }}
+
+      - name: Build with CMake
+        run: cmake --build --preset=${{ matrix.cmake_build_preset }}
+
+      - name: Archive plugin artifacts
+        shell: bash
+        run: |
+          cd "${{ matrix.artefact_dir }}"
+          zip -r "${{ github.workspace }}/${{ matrix.zip_name }}" VST3 Standalone
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.zip_name }}
+          path: ${{ matrix.zip_name }}
+
+  create_release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create a release
+
+    steps:
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Create Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*/*.zip
+          body: "Automated release for version ${{ github.ref_name }}."
+          fail_on_unmatched_files: true
