@@ -49,6 +49,21 @@ jobs:
         submodules: 'recursive'
         lfs: true
 
+    - name: Verify JUCE submodule
+      shell: bash
+      run: |
+        echo "=== Checking JUCE submodule status ==="
+        git submodule status
+        echo
+        if [ -f "third_party/JUCE/CMakeLists.txt" ]; then
+          echo "✅ JUCE submodule is present at third_party/JUCE"
+          JUCE_VERSION=$(grep 'project.*VERSION' third_party/JUCE/CMakeLists.txt | head -1 || echo "Version not found")
+          echo "JUCE Version info: $JUCE_VERSION"
+        else
+          echo "⚠️ JUCE submodule not found at third_party/JUCE"
+          echo "CMake will use FetchContent to download JUCE 8.0.10"
+        fi
+
     - name: Set build environment variables
       id: set_vars
       run: |
@@ -95,6 +110,16 @@ jobs:
         key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**') }}
         restore-keys: |
           ${{ runner.os }}-juce-
+      continue-on-error: true
+
+    - name: Report cache status
+      shell: bash
+      run: |
+        if [ "${{ steps.cache-juce.outputs.cache-hit }}" = "true" ]; then
+          echo "✅ JUCE cache hit - using cached dependencies"
+        else
+          echo "⚠️ JUCE cache miss - will download dependencies"
+        fi
 
     - name: Configure CMake with Retries
       shell: bash
@@ -129,8 +154,8 @@ jobs:
             echo "Build dir ${BUILD_DIR} not present yet."
           fi
           if [ $i -lt 3 ]; then
-            echo "Retrying in 5s..."
-            sleep 5
+            echo "Retrying in 10s..."
+            sleep 10
           else
             echo "CMake configuration failed after 3 attempts."
             echo "::error::CMake configuration failed. See logs above."
