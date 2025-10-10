@@ -1,12 +1,7 @@
 #!/bin/bash
 
 # DSP-JUCE Build Validation Script
-#ARTEFACTS_DIR="$BUILD_DIR/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG"
-
-echo "🔧 Configuration: $BUILD_CONFIG on $OS"
-echo "📂 Build Directory: $BUILD_DIR"
-echo "📂 Artefacts Directory: $ARTEFACTS_DIR"
-echotes that plugin and standalone builds exist.
+# Validates that plugin and standalone builds exist.
 
 set -e
 
