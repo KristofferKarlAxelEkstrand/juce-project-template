@@ -44,11 +44,27 @@ cmake --preset=vs2022           # Windows (requires Visual Studio 2022)
 cmake --build --preset=default  # Creates VST3 + standalone in build/DSPJucePlugin_artefacts/
 ```
 
-**Platform Architecture:**
+**Threading Architecture:**
 
-- `CMakePresets.json`: Conditional presets using `${hostSystemName}` for cross-platform support
-- `FetchContent`: Automatic JUCE download eliminates manual dependency management
-- Build outputs: VST3 plugin, AU (macOS), and standalone application from single codebase
+- **Audio Thread**: `processBlock()` runs in real-time audio thread (no allocations, lock-free)
+- **GUI Thread**: Slider callbacks update `std::atomic<float>` parameters
+- **Message Thread**: JUCE's message thread handles UI updates and event processing
+- **Data Flow**: GUI → atomic store → audio thread load → DSP parameter update
+
+**JUCE Module Dependencies:**
+
+- `juce_audio_basics`: Core audio types and buffer management
+- `juce_audio_devices`: Audio device I/O (standalone app only)
+- `juce_audio_formats`: File I/O support
+- `juce_audio_processors`: Plugin framework and parameter handling
+- `juce_audio_utils`: UI components for audio applications
+- `juce_core`: Fundamental utilities and data structures
+- `juce_data_structures`: Value trees and undo management
+- `juce_dsp`: Digital signal processing algorithms
+- `juce_events`: Message threading and asynchronous operations
+- `juce_graphics`: 2D graphics rendering
+- `juce_gui_basics`: Core GUI components and event handling
+- `juce_gui_extra`: Additional GUI components (sliders, buttons)
 
 ## Development Workflow
 
@@ -85,6 +101,27 @@ clang-format -i src/*.cpp src/*.h  # Format before committing
 cmake --build --preset=default    # Validate builds successfully
 ```
 
+**Git Workflow Conventions:**
+
+```bash
+# Branch structure (Git Flow-inspired)
+feature/your-feature  # From develop branch
+fix/issue-123        # Bug fixes from develop
+
+# Commit messages (Conventional Commits)
+feat: Add frequency modulation to oscillator
+fix: Resolve audio dropout on buffer size change
+docs: Update build instructions for Windows
+style: Apply clang-format to source files
+```
+
+**Pre-Commit Automation:**
+
+- Husky runs `lint-staged` on commit
+- Automatically lints markdown files with `markdownlint-cli2 --fix`
+- Blocks commits that fail linting (fix with `npm run lint:md:fix`)
+- CI runs only on PRs to `main`/`develop` (saves resources)
+
 ## Project Structure and Key Files
 
 ```text
@@ -108,6 +145,13 @@ dsp-juce/
 ```
 
 ## Project-Specific Conventions
+
+**Git Workflow (Git Flow-inspired):**
+
+- **Branch Structure**: `main` (production) ← `develop` (integration) ← `feature/*` branches
+- **PR Strategy**: Feature → develop → main (CI runs only on PRs to protected branches)
+- **Commit Format**: Conventional Commits (`feat:`, `fix:`, `docs:`, `style:`)
+- **Pre-commit Hooks**: Husky + lint-staged auto-format markdown on commit
 
 **Real-Time Audio Constraints:**
 
@@ -134,16 +178,18 @@ After making changes, always test through these scenarios:
    ```bash
    # Clean rebuild cycle
    rm -rf build
-   cmake --preset=default    # Should complete in ~90s
-   cmake --build --preset=default  # Should complete in ~2m45s
+   cmake --preset=default  # Linux/macOS
+   cmake --preset=vs2022   # Windows
+   cmake --build --preset=default
    ```
 
 2. **Artifact Verification:**
 
    ```bash
    # Check all expected files exist
-   file "build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
-   ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/
+   ls -la "build/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
+   ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/  # Linux/macOS
+   dir "%PROGRAMFILES%\Common Files\VST3\"  # Windows
    ```
 
 3. **Application Startup Test:**

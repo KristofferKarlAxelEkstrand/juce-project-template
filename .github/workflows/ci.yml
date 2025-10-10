@@ -64,6 +64,15 @@ jobs:
         fi
       shell: bash
 
+    - name: Cache Build Directory
+      uses: actions/cache@v4
+      id: cache-build
+      with:
+        path: ${{ steps.set_vars.outputs.build_dir }}
+        key: ${{ runner.os }}-${{ matrix.build_type }}-build-${{ hashFiles('src/**/*.cpp', 'src/**/*.h', 'CMakeLists.txt', 'CMakePresets.json') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.build_type }}-build-
+
     - name: Install Linux dependencies
       if: runner.os == 'Linux'
       run: |
