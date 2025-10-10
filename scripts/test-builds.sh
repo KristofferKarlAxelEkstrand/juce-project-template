@@ -196,10 +196,10 @@ elif [ "$OS" = "macos" ]; then
         echo "[OK] AU plugin installed to user directory"
     fi
 elif [ "$OS" = "windows" ]; then
-    # System-wide VST3 directory
-    vst3_path_system="${PROGRAMFILES_COMMONW64}/VST3/${PROJECT_NAME_PRODUCT}.vst3"
-    # User-specific VST3 directory
-    vst3_path_user="${LOCALAPPDATA}/Programs/Common/VST3/${PROJECT_NAME_PRODUCT}.vst3"
+    # System-wide VST3 directory (CommonProgramFiles\VST3)
+    vst3_path_system="${CommonProgramW6432:-$COMMONPROGRAMFILES}/VST3/${PROJECT_NAME_PRODUCT}.vst3"
+    # User-specific VST3 directory (AppData\Roaming\VST3)
+    vst3_path_user="${APPDATA}/VST3/${PROJECT_NAME_PRODUCT}.vst3"
 
     if [ -d "$vst3_path_system" ]; then
         echo "[OK] VST3 plugin installed to system directory: $vst3_path_system"
