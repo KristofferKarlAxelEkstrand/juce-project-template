@@ -99,38 +99,79 @@ jobs:
     - name: Configure CMake with Retries
       shell: bash
       run: |
-        for i in {1..3}; do
-          if cmake --preset=${{ steps.set_vars.outputs.cmake_preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache; then
+        echo "=== Listing available CMake presets ==="
+        cmake --list-presets || echo "cmake --list-presets failed"
+        echo
+        echo "=== Dump CMakePresets.json (if present) ==="
+        if [ -f CMakePresets.json ]; then
+          sed -n '1,200p' CMakePresets.json || cat CMakePresets.json
+        else
+          echo "No CMakePresets.json in repo root"
+        fi
+        echo
+        FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
+        echo "Using FETCHCONTENT_BASE_DIR=${FETCHCACHE}"
+        for i in 1 2 3; do
+          echo "--- cmake attempt $i ---"
+          if cmake --preset=${{ steps.set_vars.outputs.cmake_preset }} -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
             echo "CMake configuration successful on attempt $i."
             break
           fi
+          echo "CMake configuration failed on attempt $i."
+          # show any generated debug logs immediately
+          BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+          if [ -d "${BUILD_DIR}/CMakeFiles" ]; then
+            echo "---- CMakeError.log ----"
+            sed -n '1,200p' "${BUILD_DIR}/CMakeFiles/CMakeError.log" 2>/dev/null || true
+            echo "---- CMakeOutput.log ----"
+            sed -n '1,200p' "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" 2>/dev/null || true
+          else
+            echo "Build dir ${BUILD_DIR} not present yet."
+          fi
           if [ $i -lt 3 ]; then
-            echo "CMake configuration failed on attempt $i. Retrying in 5 seconds..."
+            echo "Retrying in 5s..."
             sleep 5
           else
             echo "CMake configuration failed after 3 attempts."
-            echo "::error::CMake configuration failed. Check logs above for details."
+            echo "::error::CMake configuration failed. See logs above."
             exit 1
           fi
         done
 
     - name: Show CMake error logs
-      if: failure()
+      if: always()
       shell: bash
       run: |
-        echo "=== CMake Error Log ==="
-        cat ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeError.log 2>/dev/null || echo "No CMakeError.log found"
-        echo
-        echo "=== CMake Output Log ==="
-        cat ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeOutput.log 2>/dev/null || echo "No CMakeOutput.log found"
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        echo "Build dir resolved to: ${BUILD_DIR}"
+        if [ -d "${BUILD_DIR}/CMakeFiles" ]; then
+          echo "=== CMake Error Log ==="
+          sed -n '1,400p' "${BUILD_DIR}/CMakeFiles/CMakeError.log" 2>/dev/null || echo "No CMakeError.log found"
+          echo
+          echo "=== CMake Output Log ==="
+          sed -n '1,400p' "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" 2>/dev/null || echo "No CMakeOutput.log found"
+        else
+          echo "No CMakeFiles directory at ${BUILD_DIR}/CMakeFiles (CMake likely failed before creating build dir)."
+        fi
 
     - name: Build
       run: cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
       shell: bash
 
     - name: Validate build artifacts
-      run: bash scripts/validate-builds.sh ${{ matrix.build_type }} ${{ steps.set_vars.outputs.build_dir }}
       shell: bash
+      run: |
+        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
+        echo "Validating build dir: ${BUILD_DIR}"
+        # On Windows with bash, ensure path is accessible
+        if [ "${{ runner.os }}" = "Windows" ]; then
+          # Convert to native path if cygpath is available
+          if command -v cygpath >/dev/null 2>&1; then
+            WIN_BUILD_DIR="$(cygpath -w "${BUILD_DIR}")"
+            echo "Converted build dir to Windows form: ${WIN_BUILD_DIR}"
+          fi
+        fi
+        bash scripts/validate-builds.sh ${{ matrix.build_type }} "${BUILD_DIR}"
 
     - name: Extract plugin metadata
       id: plugin_meta
