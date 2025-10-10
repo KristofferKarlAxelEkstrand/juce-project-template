@@ -77,7 +77,7 @@ cmake --preset=release && cmake --build --preset=release
 
 ```bash
 # Check build artifacts exist
-ls -la build/DSPJucePlugin_artefacts/Debug/
+ls -la build/DSPJucePlugin_artifacts/Debug/
 
 # Run validation script
 ./scripts/validate-setup.sh
@@ -85,7 +85,7 @@ ls -la build/DSPJucePlugin_artefacts/Debug/
 
 ### Build Artifacts
 
-The compiled binaries are placed in the `build/DSPJucePlugin_artefacts/` directory,
+The compiled binaries are placed in the `build/DSPJucePlugin_artifacts/` directory,
 organized by build configuration (e.g., `Debug`, `Release`).
 
 - **VST3 Plugin**: `VST3/DSP-JUCE Plugin.vst3`

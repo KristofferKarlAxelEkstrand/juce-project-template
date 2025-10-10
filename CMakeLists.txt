@@ -50,6 +50,8 @@ else()
     FetchContent_MakeAvailable(JUCE)
 endif()
 
+set(JUCE_PLUGIN_ARTIFACTS_DIR "${CMAKE_BINARY_DIR}/DSPJucePlugin_artifacts")
+
 # Create a JUCE plugin with proper format support
 juce_add_plugin(DSPJucePlugin
     VERSION 1.0.0

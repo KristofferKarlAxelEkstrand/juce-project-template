@@ -78,22 +78,22 @@ total_count=0
 
 # Check shared library
 ((total_count++))
-if check_file "$BUILD_DIR/DSPJucePlugin_artefacts/Debug/libDSP-JUCE Plugin_SharedCode.a" "Shared Library"; then
+if check_file "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/libDSP-JUCE Plugin_SharedCode.a" "Shared Library"; then
     ((success_count++))
 fi
 
 # Check VST3 plugin
 ((total_count++))
-if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3" "VST3 Plugin Bundle"; then
+if check_directory "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3" "VST3 Plugin Bundle"; then
     ((success_count++))
     
     # Check VST3 binary inside bundle
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/MacOS/DSP-JUCE Plugin"
+        vst3_binary="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/MacOS/DSP-JUCE Plugin"
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-linux/DSP-JUCE Plugin.so"
+        vst3_binary="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-linux/DSP-JUCE Plugin.so"
     elif [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
-        vst3_binary="$BUILD_DIR/DSPJucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-win/DSP-JUCE Plugin.vst3"
+        vst3_binary="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/VST3/DSP-JUCE Plugin.vst3/Contents/x86_64-win/DSP-JUCE Plugin.vst3"
     fi
     
     if [ -n "$vst3_binary" ]; then
@@ -104,9 +104,9 @@ fi
 # Check AU plugin (macOS only)
 if [[ "$OSTYPE" == "darwin"* ]]; then
     ((total_count++))
-    if check_directory "$BUILD_DIR/DSPJucePlugin_artefacts/Debug/AU/DSP-JUCE Plugin.component" "AU Plugin Bundle"; then
+    if check_directory "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/AU/DSP-JUCE Plugin.component" "AU Plugin Bundle"; then
         ((success_count++))
-        check_file "$BUILD_DIR/DSPJucePlugin_artefacts/Debug/AU/DSP-JUCE Plugin.component/Contents/MacOS/DSP-JUCE Plugin" "  AU Binary"
+        check_file "$BUILD_DIR/DSPJucePlugin_artifacts/Debug/AU/DSP-JUCE Plugin.component/Contents/MacOS/DSP-JUCE Plugin" "  AU Binary"
     fi
 fi
 
@@ -114,14 +114,14 @@ fi
 ((total_count++))
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS app bundle
-    standalone_path="$BUILD_DIR/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
+    standalone_path="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/Standalone/DSP-JUCE Plugin.app"
     if check_directory "$standalone_path" "Standalone App Bundle"; then
         ((success_count++))
         test_executable "$standalone_path/Contents/MacOS/DSP-JUCE Plugin" "Standalone App"
     fi
 else
     # Linux/Windows executable
-    standalone_path="$BUILD_DIR/DSPJucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
+    standalone_path="$BUILD_DIR/DSPJucePlugin_artifacts/Debug/Standalone/DSP-JUCE Plugin"
     if [[ "$OSTYPE" == "msys" ]] || [[ "$OSTYPE" == "win32" ]]; then
         standalone_path+=".exe"
     fi

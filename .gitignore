@@ -38,7 +38,7 @@ cmake_install.cmake
 
 # JUCE generated files
 **/JuceLibraryCode/
-**/*_artefacts/
+**/*_artifacts/
 
 # IDE specific files
 #.vscode/settings.json

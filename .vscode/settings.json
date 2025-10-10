@@ -11,7 +11,7 @@
 		"build/**": true,
 		"_deps/**": true
 	},
-	"cSpell.words": ["ALSA", "artefacts", "ASIO", "automatable", "biquad", "chatmode", "chatmodes", "constexpr", "elif", "frontmatter", "jassert", "libasound", "Makefiles", "Metaprogramming", "msbuild", "MSVC", "Nyquist", "oneline", "Projucer", "RAII", "Sheenbidi"],
+	"cSpell.words": ["ALSA", "artifacts", "ASIO", "automatable", "biquad", "chatmode", "chatmodes", "constexpr", "elif", "frontmatter", "jassert", "libasound", "Makefiles", "Metaprogramming", "msbuild", "MSVC", "Nyquist", "oneline", "Projucer", "RAII", "Sheenbidi"],
 	"[markdown]": {
 		"editor.formatOnSave": false,
 		"editor.codeActionsOnSave": {
