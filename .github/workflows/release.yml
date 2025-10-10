@@ -16,26 +16,28 @@ jobs:
         include:
           - os: ubuntu-latest
             os_name: Linux
-            preset: default
+            preset: release
             cmake_build_preset: release
-            artifact_dir: "build/DSPJucePlugin_artefacts/Release"
+            artifact_dir: "build/release/DSPJucePlugin_artefacts/Release"
             zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-linux.zip"
           - os: windows-latest
             os_name: Windows
             preset: vs2022
-            cmake_build_preset: release
-            artifact_dir: "build/DSPJucePlugin_artefacts/Release"
+            cmake_build_preset: vs2022-release
+            artifact_dir: "build/vs2022/DSPJucePlugin_artefacts/Release"
             zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-windows.zip"
           - os: macos-latest
             os_name: macOS
-            preset: default
+            preset: release
             cmake_build_preset: release
-            artifact_dir: "build/DSPJucePlugin_artefacts/Release"
+            artifact_dir: "build/release/DSPJucePlugin_artefacts/Release"
             zip_name: "DSP-JUCE-Plugin-${{ github.ref_name }}-macos.zip"
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install Linux dependencies
         if: matrix.os == 'ubuntu-latest'
@@ -53,7 +55,11 @@ jobs:
         shell: bash
         run: |
           cd "${{ matrix.artifact_dir }}"
-          zip -r "${{ github.workspace }}/${{ matrix.zip_name }}" VST3 Standalone
+          if [ "${{ matrix.os }}" == "macos-latest" ]; then
+            zip -r "${{ github.workspace }}/${{ matrix.zip_name }}" VST3 Standalone AU
+          else
+            zip -r "${{ github.workspace }}/${{ matrix.zip_name }}" VST3 Standalone
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
