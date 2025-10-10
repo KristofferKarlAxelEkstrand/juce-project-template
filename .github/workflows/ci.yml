@@ -54,7 +54,7 @@ jobs:
       run: |
         if [ "${{ runner.os }}" == "Windows" ]; then
           echo "cmake_preset=vs2022" >> $GITHUB_OUTPUT
-          echo "cmake_build_preset=vs2022-${{ matrix.build_type }}" >> $GITHUB_OUTPUT
+          echo "cmake_build_preset=vs2022-$(echo ${{ matrix.build_type }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
           echo "build_dir=${{ github.workspace }}/build/vs2022" >> $GITHUB_OUTPUT
         elif [ "${{ matrix.build_type }}" == "Release" ]; then
           echo "cmake_preset=release" >> $GITHUB_OUTPUT
