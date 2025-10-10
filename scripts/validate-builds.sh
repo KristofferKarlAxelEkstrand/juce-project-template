@@ -87,8 +87,8 @@ declare -a missing_optional_artifacts
 # --- Artefact Checks ---
 # Shared Library (optional - internal build artifact)
 if [ "$OS" = "windows" ]; then
-    # The VS project is named after the PRODUCT_NAME for the shared library
-    shared_lib_path="$ARTEFACTS_DIR/${PROJECT_NAME_PRODUCT}_SharedCode.lib"
+    # Windows uses target name for SharedCode library (no spaces in filename)
+    shared_lib_path="$ARTEFACTS_DIR/${PROJECT_NAME_TARGET}_SharedCode.lib"
 else
     shared_lib_path="$ARTEFACTS_DIR/lib${PROJECT_NAME_TARGET}_SharedCode.a"
 fi
