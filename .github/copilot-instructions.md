@@ -7,14 +7,14 @@ demonstrating real-time audio processing, cross-platform plugin builds, and mode
 
 **Core Components:**
 
-- `MainComponent.h/cpp`: AudioProcessor implementing sine-wave synthesizer with thread-safe parameter control
-- `PluginEditor.h/cpp`: GUI editor with frequency/gain sliders using immediate parameter updates  
-- `Main.cpp`: Plugin entry point supporting both VST3 plugin and standalone builds
+- `src/MainComponent.h/cpp`: `DSPJuceAudioProcessor` implementing sine-wave synthesizer with thread-safe parameter control
+- `src/PluginEditor.h/cpp`: GUI editor with frequency/gain sliders using immediate parameter updates  
+- `src/Main.cpp`: Plugin entry point supporting both VST3 plugin and standalone builds
 - `CMakeLists.txt`: Modern CMake with FetchContent auto-downloading JUCE 8.0.10
 
 **Metadata Centralization:**
 
-All plugin metadata is defined in `CMakeLists.txt` (lines 55-70) as a single source of truth:
+All plugin metadata is defined in `CMakeLists.txt` (lines 58-65) as a single source of truth:
 
 - Edit `PLUGIN_NAME`, `PLUGIN_TARGET`, `PLUGIN_VERSION` to create new plugins
 - Metadata automatically propagates to source code via JUCE macros (`JucePlugin_Name`, etc.)
@@ -47,12 +47,26 @@ gain.process(context);        // Apply gain
 
 ```bash
 # Configure (90+ seconds - downloads JUCE 8.0.10 automatically)
-cmake --preset=default          # Linux/macOS
-cmake --preset=vs2022           # Windows (requires Visual Studio 2022)
+cmake --preset=default          # Linux/macOS (builds to build/)
+cmake --preset=vs2022           # Windows (builds to build/vs2022/)
 
 # Build (2m45s Debug, 4m30s Release)
-cmake --build --preset=default  # Creates VST3 + standalone in build/<target>_artefacts/
+cmake --build --preset=default  # Creates VST3 + standalone in build/(JucePlugin_)artefacts/
+cmake --build build/vs2022 --config Release  # Windows Release build
 ```
+
+**Output Locations (Windows vs2022 preset):**
+
+- VST3: `build/vs2022/JucePlugin_artefacts/Release/VST3/DSP-JUCE Plugin.vst3/`
+- Standalone: `build/vs2022/JucePlugin_artefacts/Release/Standalone/DSP-JUCE Plugin.exe`
+- Library: `build/vs2022/JucePlugin_artefacts/Release/DSP-JUCE Plugin_SharedCode.lib`
+
+**Cross-Platform Presets:**
+
+- `--preset=default`: Unix Makefiles for Linux/macOS → `build/`
+- `--preset=vs2022`: Visual Studio 2022 for Windows → `build/vs2022/`
+- `--preset=release`: Release builds for Linux/macOS → `build/release/`
+- `--preset=ninja`: Ninja builds for fast compilation → `build/ninja/`
 
 **Threading Architecture:**
 
@@ -84,6 +98,15 @@ cmake --build --preset=default  # Creates VST3 + standalone in build/<target>_ar
 ./scripts/validate-setup.sh  # Check dependencies
 npm test                     # Validate documentation
 ```
+
+**Essential Project Structure:**
+
+- `.github/instructions/`: File-specific coding instructions (read via relative imports)
+  - `cpp-source.instructions.md`: C++20/JUCE patterns for src/**/*.{cpp,h}
+  - `cmake-config.instructions.md`: CMake best practices for **/CMakeLists.txt
+  - `documentation.instructions.md`: Markdown conventions for **/*.md
+  - `github-config.instructions.md`: GitHub workflow patterns for .github/**/*
+- `build/vs2022/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
 
 **Code Patterns:**
 
@@ -217,6 +240,17 @@ After making changes, always test through these scenarios:
    # Use validate-builds.sh script for automatic validation
    ```
 
+### NPM Development Workflow
+
+This project uses NPM for documentation tooling (not Node.js development):
+
+```bash
+npm test                    # Run markdown linting
+npm run lint:md:fix         # Auto-fix markdown issues
+npm run test:build          # Validate build artifacts
+npm run prepare             # Setup Husky pre-commit hooks
+```
+
 ## Troubleshooting
 
 ### Missing Dependencies (Linux)
@@ -244,11 +278,12 @@ sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-d
 - Always run `npm test` before committing
 - Fix issues with `npm run lint:md:fix`
 - Common issues: trailing whitespace, heading levels
+- Husky pre-commit hooks will auto-fix markdown and block commits that fail linting
 
 ### Build Performance Issues
 
 - Debug builds are large (~197MB static library) but necessary for development
-- Use Release builds for distribution: `cmake --preset=release && cmake --build --preset=release`
+- Use Release builds for distribution: `cmake --build build/vs2022 --config Release`
 - Clean builds take full time; incremental builds are much faster
 
 ## JUCE Development Anti-Patterns
