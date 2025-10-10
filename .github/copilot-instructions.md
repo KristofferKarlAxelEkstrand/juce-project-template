@@ -14,7 +14,7 @@ demonstrating real-time audio processing, cross-platform plugin builds, and mode
 
 **Metadata Centralization:**
 
-All plugin metadata is defined in `CMakeLists.txt` (lines 58-65) as a single source of truth:
+All plugin metadata is defined in `CMakeLists.txt` (see the section where `PLUGIN_NAME`, `PLUGIN_TARGET`, and `PLUGIN_VERSION` are defined) as a single source of truth:
 
 - Edit `PLUGIN_NAME`, `PLUGIN_TARGET`, `PLUGIN_VERSION` to create new plugins
 - Metadata automatically propagates to source code via JUCE macros (`JucePlugin_Name`, etc.)
