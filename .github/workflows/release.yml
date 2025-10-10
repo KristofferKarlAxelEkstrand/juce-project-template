@@ -63,7 +63,15 @@ jobs:
           key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt') }}
 
       - name: Configure CMake
-        run: cmake --preset=${{ matrix.preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" == "macos-latest" ]; then
+            # macOS requires Xcode generator for AU plugin support
+            cmake -G Xcode -B ${{ matrix.build_path }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+          else
+            # Linux/Windows use presets
+            cmake --preset=${{ matrix.preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+          fi
 
       - name: Build with CMake
         run: cmake --build ${{ matrix.build_path }} --config Release
