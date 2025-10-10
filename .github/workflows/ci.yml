@@ -271,8 +271,6 @@ jobs:
 
     - name: Validate build artifacts
       shell: bash
-      env:
-        ALLOW_MISSING_AU: 'true'  # Temporary: allow AU to be missing while debugging
       run: |
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
         echo "Validating build dir: ${BUILD_DIR}"

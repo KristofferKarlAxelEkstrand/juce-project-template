@@ -121,6 +121,15 @@ message(STATUS "Target: ${PLUGIN_TARGET}")
 # =============================================================================
 # Create a JUCE plugin using the metadata defined above
 
+# Define plugin formats based on platform
+if(APPLE)
+    set(PLUGIN_FORMATS VST3 Standalone AU)
+    message(STATUS "Building for macOS: VST3, Standalone, AU")
+else()
+    set(PLUGIN_FORMATS VST3 Standalone)
+    message(STATUS "Building for ${CMAKE_SYSTEM_NAME}: VST3, Standalone")
+endif()
+
 juce_add_plugin(${PLUGIN_TARGET}
     VERSION ${PLUGIN_VERSION}
     COMPANY_NAME "${PLUGIN_COMPANY_NAME}"
@@ -130,7 +139,7 @@ juce_add_plugin(${PLUGIN_TARGET}
     BUNDLE_ID ${PLUGIN_BUNDLE_ID}
     PLUGIN_MANUFACTURER_CODE ${PLUGIN_MANUFACTURER_CODE}
     PLUGIN_CODE ${PLUGIN_CODE}
-    FORMATS VST3 Standalone $<$<PLATFORM_ID:Darwin>:AU>
+    FORMATS ${PLUGIN_FORMATS}
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT FALSE
