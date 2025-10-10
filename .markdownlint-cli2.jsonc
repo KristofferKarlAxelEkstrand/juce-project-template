@@ -11,5 +11,5 @@
 		},
 		"MD041": false
 	},
-	"globs": ["**/*.md", "!node_modules", "!build"]
+	"globs": ["**/*.md", "!node_modules", "!build", "!third_party"]
 }
