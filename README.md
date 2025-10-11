@@ -64,7 +64,36 @@ dsp-juce/
 
 ## Development
 
-### Development Workflow
+### Fast Development Workflow (Recommended)
+
+For the fastest edit-build-test cycle, use **Ninja with VS Code**:
+
+1. **Edit** source files in VS Code
+2. **Build** with `Ctrl+Shift+B` (1-3 second incremental builds)
+3. **Run** the standalone plugin to test changes
+
+See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) for the complete guide.
+
+### Alternative: CMake Presets
+
+**Debug Builds** (VS Code or command line):
+
+```bash
+# Windows with Visual Studio 2022
+cmake --preset=vs2022
+cmake --build build/vs2022 --config Debug
+
+# Linux/macOS with Unix Makefiles  
+cmake --preset=default
+cmake --build --preset=default
+```
+
+**Release Builds**:
+
+```bash
+cmake --preset=release
+cmake --build --preset=release
+```
 
 **Code Quality**:
 
@@ -77,13 +106,6 @@ clang-format -i src/*.cpp src/*.h
 
 # Test documentation
 npm test
-```
-
-**Release Builds**:
-
-```bash
-cmake --preset=release
-cmake --build --preset=release
 ```
 
 ## Learning Resources

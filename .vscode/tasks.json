@@ -1,0 +1,70 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Standalone (Ninja Debug)",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\scripts\\build-ninja.bat"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/scripts/build-ninja.sh"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/scripts/build-ninja.sh"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run Standalone",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\build\\ninja\\JucePlugin_artefacts\\Debug\\Standalone\\DSP-JUCE Plugin.exe"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
+            },
+            "osx": {
+                "command": "open",
+                "args": [
+                    "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
+                ]
+            },
+            "dependsOn": "Build Standalone (Ninja Debug)",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Configure Ninja",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\scripts\\configure-ninja.bat"
+            },
+            "linux": {
+                "command": "${workspaceFolder}/scripts/configure-ninja.sh"
+            },
+            "osx": {
+                "command": "${workspaceFolder}/scripts/configure-ninja.sh"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}

@@ -46,20 +46,30 @@
 		},
 		{
 			"name": "ninja",
-			"displayName": "Ninja Build (Debug)",
+			"displayName": "Ninja Build (Debug, Windows)",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/ninja",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
 			}
 		},
 		{
 			"name": "ninja-release",
-			"displayName": "Ninja Build (Release)",
+			"displayName": "Ninja Build (Release, Windows)",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/ninja-release",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release"
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
 			}
 		},
 		{
