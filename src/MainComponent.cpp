@@ -89,3 +89,4 @@ void DSPJuceAudioProcessor::setStateInformation(const void *data, int sizeInByte
         currentFrequency.store(static_cast<float>(xmlState->getDoubleAttribute("frequency", DEFAULT_FREQUENCY)));
         currentGain.store(static_cast<float>(xmlState->getDoubleAttribute("gain", DEFAULT_GAIN)));
     }
+}
