@@ -44,4 +44,4 @@ if %ERRORLEVEL% NEQ 0 (
 )
 
 echo.
-echo Build successful! Artifacts are in: build/ninja/JucePlugin_artefacts/Debug/
+echo Build successful! Artifacts are in: build/ninja/JucePlugin_artefacts/

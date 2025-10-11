@@ -10,4 +10,4 @@ echo "Building with Ninja..."
 cmake --build build/ninja
 
 echo ""
-echo "Build successful! Artifacts are in: build/ninja/JucePlugin_artefacts/Debug/"
+echo "Build successful! Artifacts are in: build/ninja/JucePlugin_artefacts/"

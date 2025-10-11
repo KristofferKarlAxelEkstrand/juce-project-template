@@ -11,4 +11,4 @@ cmake --preset=ninja
 
 echo ""
 echo "Configuration successful! Build directory: build/ninja"
-echo "You can now build with: cmake --build build/ninja"
+echo "You can now build with: scripts/build-ninja.sh"
