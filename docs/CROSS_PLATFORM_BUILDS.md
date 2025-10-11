@@ -95,7 +95,7 @@ The "Run Standalone" task handles this:
     },
     "osx": {
         "command": "open",
-        "args": ["...\\DSP-JUCE Plugin.app"]
+        "args": [".../DSP-JUCE Plugin.app"]
     },
     "linux": {
         "command": ".../DSP-JUCE Plugin"
