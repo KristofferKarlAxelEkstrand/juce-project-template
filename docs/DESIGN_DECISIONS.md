@@ -19,9 +19,12 @@ if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\B
 )
 ```
 
-**Copilot Suggestion:** Extract to shared configuration file or environment variables.
+**Copilot Suggestions:**
 
-**Our Decision:** Keep duplication (for now).
+- PR review (configure-ninja.bat:12-18): Extract paths to shared config or environment variables
+- Multiple occurrences of same detection logic flagged as duplication
+
+**Our Decision:** Keep duplication intentionally.
 
 **Rationale:**
 
