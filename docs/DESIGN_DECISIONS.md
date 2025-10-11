@@ -22,9 +22,10 @@ if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\B
 **Copilot Suggestions:**
 
 - PR review (configure-ninja.bat:12-18): Extract paths to shared config or environment variables
+- PR review (build-ninja.bat:12-18): Same VS detection logic is duplicated
 - Multiple occurrences of same detection logic flagged as duplication
 
-**Our Decision:** Keep duplication intentionally.
+**Our Decision:** Keep duplication intentionally in **both scripts**.
 
 **Rationale:**
 
