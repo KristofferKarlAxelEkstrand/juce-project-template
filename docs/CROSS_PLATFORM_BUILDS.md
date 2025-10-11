@@ -254,7 +254,7 @@ chmod +x scripts/*.sh
 - Add CMake toolchain files for cross-compilation
 - Support ARM64 builds on macOS and Windows
 - Add CI/CD workflows for automated multi-platform builds
-- Create universal binaries for macOS (x64 + ARM64)
+- Create universal binaries for macOS (x86_64 + ARM64)
 
 ## Related Documentation
 
