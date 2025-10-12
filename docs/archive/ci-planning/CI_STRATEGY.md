@@ -1,5 +1,18 @@
 # CI Strategy & Philosophy
 
+> **⚠️ ARCHIVED PLANNING DOCUMENT**
+>
+> This document represents historical planning from the CI optimization project.
+> The final implementation evolved from these initial concepts.
+>
+> **For current CI documentation, see:**
+>
+> - **[CI_GUIDE.md](../../CI_GUIDE.md)** - Current CI/CD strategy and philosophy
+> - **[CI_IMPLEMENTATION.md](../../CI_IMPLEMENTATION.md)** - Technical implementation details
+> - **[Archive README](README.md)** - Context on planning evolution
+
+---
+
 This document explains the **why** behind the CI configuration choices.
 
 ## Core Philosophy

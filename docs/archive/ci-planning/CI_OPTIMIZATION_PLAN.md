@@ -1,5 +1,20 @@
 # CI Optimization Implementation Plan
 
+> **⚠️ ARCHIVED PLANNING DOCUMENT**
+>
+> This document represents historical planning from the CI optimization project.
+> The implementation has been **completed** and differs from these original plans.
+>
+> **For current CI documentation, see:**
+>
+> - **[CI_GUIDE.md](../../CI_GUIDE.md)** - Current CI/CD strategy and usage
+> - **[CI_IMPLEMENTATION.md](../../CI_IMPLEMENTATION.md)** - Technical implementation details
+> - **[Archive README](README.md)** - Context on planning evolution
+>
+> **Status indicators below (⏳, ✅, ❌) reflect planning phase state, not current implementation.**
+
+---
+
 Based on analysis in `CI_TRIGGERS.md`, this document outlines concrete changes to make CI runs smarter and more efficient.
 
 ## Current Problems

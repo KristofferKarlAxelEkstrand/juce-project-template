@@ -1,5 +1,18 @@
 # CI/CD Trigger Matrix
 
+> **⚠️ ARCHIVED PLANNING DOCUMENT**
+>
+> This document represents historical planning from the CI optimization project.
+> The trigger matrix shown here reflects the final implemented strategy.
+>
+> **For current CI documentation, see:**
+>
+> - **[CI_GUIDE.md](../../CI_GUIDE.md)** - Current trigger matrix and strategy
+> - **[CI_IMPLEMENTATION.md](../../CI_IMPLEMENTATION.md)** - Technical implementation details
+> - **[Archive README](README.md)** - Context on planning evolution
+
+---
+
 This document shows which GitHub Actions workflows and jobs run for different events.
 
 ## Trigger Event Matrix
