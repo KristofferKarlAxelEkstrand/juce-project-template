@@ -1,144 +1,75 @@
-# PR Review Comment Evaluation and Response
+# PR Review Comment Evaluation
 
-Analyze all review comments on the current Pull Request and address them systematically.
+Evaluate all PR review comments and make decisions: Accept (implement), Reject (explain why), or Acknowledge (informational).
 
-## Evaluation Framework
+## Core Evaluation Questions
 
-For each comment, consider:
+For each comment ask:
 
-### Technical Validity
+1. **Technically correct?** Does it fix a bug, improve safety, or align with best practices?
+2. **Worth the change?** Real benefit vs added complexity (KISS principle)?
+3. **Project fit?** Matches architecture, conventions, and PR objectives?
+4. **Edge cases?** Are there gotchas or constraints the reviewer missed?
 
-- Is the suggestion technically correct and safe?
-- Does it align with language/framework best practices?
-- Are there edge cases or gotchas the reviewer might have missed?
+## Decision Framework
 
-### Code Quality Impact
+**Accept if:**
 
-- **Readability**: Does it make the code easier to understand?
-- **Maintainability**: Will it help future developers?
-- **Simplicity**: Does it follow KISS principles, or add unnecessary complexity?
-- **Consistency**: Does it match existing codebase patterns?
-
-### Big Picture Alignment
-
-- Does it support the PR's core objective?
-- Is it worth the change, or is it a minor nitpick?
-- What are the trade-offs (e.g., DRY vs clarity, brevity vs explicitness)?
-- Does it introduce new dependencies or complexity elsewhere?
-
-### Performance & Safety
-
-- Real-time audio constraints (if applicable)
-- Thread safety and concurrency
-- Memory allocation patterns
-- Cross-platform compatibility
-
-## Decision Criteria
-
-**Accept and Implement When:**
-
-- Fixes actual bugs or security issues
-- Improves safety (e.g., null checks, bounds validation)
-- Enhances readability without sacrificing performance
-- Aligns with established best practices
-- Addresses documentation gaps
+- Fixes bugs/security issues
+- Improves safety (null checks, bounds validation)
+- Enhances clarity without performance cost
+- Fills documentation gaps
 - Prevents future maintenance issues
 
-**Reject Politely When:**
+**Reject if:**
 
-- Suggestion is technically incorrect or impossible
-- Adds complexity without meaningful benefit
-- Violates project conventions or architecture
-- Is purely stylistic preference without clear advantage
-- Would reduce clarity or readability
-- Requires significant refactoring for marginal gain
+- Technically incorrect or impossible
+- Adds complexity without clear benefit
+- Violates project patterns/architecture
+- Purely stylistic with no advantage
+- Requires major refactoring for minor gain
 
-## Response Actions
+## Workflow
 
-### For Accepted Suggestions
+1. **Read all comments** - Get full context first
+2. **Evaluate each** - Apply decision framework
+3. **Implement accepted** - Make changes, commit with reference
+4. **Explain rejected** - Technical rationale, trade-offs
+5. **Verify changes** - Run lint/build/test if applicable
+6. **Communicate clearly** - Brief summary to user
 
-1. **Implement the change** immediately
-2. **Commit with clear message** referencing the comment
-3. **Document rationale** if the benefit isn't obvious
-4. **Verify** the change (lint, build, test if applicable)
-5. **Thank the reviewer** and explain what you implemented
+## Response Style
 
-### For Rejected Suggestions
+**Be concise and clear:**
 
-1. **Explain technically why** the suggestion doesn't work or isn't ideal
-2. **Provide context** about design decisions or constraints
-3. **Show trade-off analysis** if it's a judgment call
-4. **Reference documentation** or best practices when relevant
-5. **Be respectful** - acknowledge the reviewer's intent
+✅ **Accepted:**
+"Added null check. Protects against future workflow changes. (commit abc1234)"
 
-## Output Format
+❌ **Rejected:**
+"Can't use `default()` - doesn't exist in GitHub Actions. Current `|| 'develop'` is standard pattern."
 
-Create a comprehensive response document (`.temp-pr-reviews-docs/REVIEW_RESPONSES_PR##.md`) with:
+🤝 **Acknowledged:**
+"Good point about performance - already optimized in commit xyz5678."
 
-**Note:** All review response files are created in `.temp-pr-reviews-docs/` directory which is:
+## Optional: Quick Summary Note
 
-- Not tracked by git (in `.gitignore`)
-- Temporary working directory
-- Easily deleted after PR merge
-- Should be deleted manually after PR merge to keep the repository clean (e.g., run `rm -rf .temp-pr-reviews-docs/`)
+If helpful for tracking, create brief note in `.temp-pr-reviews-docs/`:
 
 ```markdown
-# PR Review Comment Responses
+# PR #XX Review - Quick Notes
 
-## Summary
-- Total Comments: X
-- Accepted: Y
-- Rejected: Z
+✅ Accepted (3): #1 null check, #4 docs fix, #7 typo
+❌ Rejected (2): #3 wrong syntax, #5 over-engineered
+🤝 Noted (1): #2 already done
 
-## Detailed Responses
-
-### Comment 1: [Title]
-
-**Status:** ✅ Accepted | ❌ Rejected
-
-**Reviewer Suggestion:**
-[Quote or summarize the comment]
-
-**Analysis:**
-[Your evaluation - why accept or reject]
-
-**Implementation:** (if accepted)
-[What you changed, commit reference]
-
-**Rationale:** (if rejected)
-[Technical explanation, trade-offs, alternatives considered]
+Changes: commit abc1234
+Ready to merge: Yes/No
 ```
 
-## Quality Standards
+**Note:** `.temp-pr-reviews-docs/` is gitignored temp space. Delete after PR merge: `rm -rf .temp-pr-reviews-docs/`
 
-- **Be Thorough**: Don't skip comments, even small ones
-- **Be Honest**: If you're unsure, say so and seek clarification
-- **Be Professional**: Respectful tone, clear reasoning
-- **Be Decisive**: Make a clear accept/reject decision for each item
-- **Be Transparent**: Document your decision-making process
+## Focus
 
-## Example Decision-Making
+**Priority:** Make good decisions and communicate them clearly.
 
-**Good Reason to Accept:**
-> "Added null-safe check as suggested. While `github.base_ref` is always defined for
-> `pull_request` events, this defensive programming practice protects against future
-> workflow changes and follows shell scripting best practices."
-
-**Good Reason to Reject:**
-> "Rejected: The suggested `default()` function doesn't exist in GitHub Actions syntax.
-> The current approach using `|| 'develop'` is the standard pattern for default values
-> in GitHub Actions expressions."
-
-## Final Step
-
-After addressing all comments:
-
-1. Commit any code changes with descriptive messages
-2. Commit the response document
-3. Push all changes to the PR branch
-4. Report summary to user with merge readiness status
-
----
-
-**Remember:** The goal is thoughtful, principled decision-making that improves code quality
-while respecting project architecture, maintainability, and the reviewer's time.
+**Not priority:** Writing extensive documentation. Keep notes minimal - just enough to track decisions and explain to user.
