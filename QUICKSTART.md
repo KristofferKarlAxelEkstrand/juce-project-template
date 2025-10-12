@@ -39,8 +39,8 @@ open "build/default/JucePlugin_artefacts/Debug/Standalone/<PLUGIN_NAME>.app"
 # On Linux
 ./build/default/JucePlugin_artefacts/Debug/Standalone/"<PLUGIN_NAME>"
 
-# On Windows
-build\default\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
+# On Windows (uses vs2022 preset)
+build\vs2022\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
 ```
 
 > **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt` (default: "DSP-JUCE Plugin").
