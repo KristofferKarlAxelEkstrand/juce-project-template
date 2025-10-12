@@ -205,6 +205,7 @@ build\ninja\JucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
 ## What You Just Built
 
 You built a working JUCE audio plugin that:
+
 - Generates a sine wave at 440 Hz
 - Has frequency and gain controls
 - Works as VST3, Standalone (AU on macOS)
@@ -212,16 +213,19 @@ You built a working JUCE audio plugin that:
 ## Next Steps
 
 **Customize Your Plugin:**
+
 1. Edit plugin name and metadata → [CUSTOMIZATION.md](CUSTOMIZATION.md)
 2. Add your DSP code → [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)
 3. Design your GUI → [docs/JUCE/basics-JUCE.md](docs/JUCE/basics-JUCE.md)
 
 **Learn the System:**
+
 - Full build options → [BUILD.md](BUILD.md)
 - Fast development workflow → [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)
 - CI/CD and releases → [docs/CI.md](docs/CI.md)
 
 **Troubleshooting:**
+
 - Build fails? → [BUILD.md#troubleshooting](BUILD.md#troubleshooting)
 - Plugin doesn't load? → [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)
 
@@ -230,6 +234,7 @@ You built a working JUCE audio plugin that:
 ### "cmake: command not found"
 
 Install CMake 3.22+:
+
 - macOS: `brew install cmake`
 - Linux: `sudo apt install cmake`
 - Windows: Download from <https://cmake.org>
@@ -237,9 +242,11 @@ Install CMake 3.22+:
 ### "JUCE download fails"
 
 Check internet connection. If behind firewall:
+
 1. Download JUCE manually: <https://github.com/juce-framework/JUCE/archive/refs/tags/8.0.10.zip>
 2. Extract to `third_party/JUCE`
 3. Initialize as submodule: `git submodule add https://github.com/juce-framework/JUCE.git third_party/JUCE`
+
 ```
 
 **Success Criteria:**
@@ -590,15 +597,19 @@ cmake --preset=xcode
 ```
 
 ### 2. Open Project
+
 ```bash
 open build/xcode/JuceProject.xcodeproj
 ```
 
 ### 3. Select Scheme
+
 Product → Scheme → JucePlugin_Standalone
 
 ### 4. Build and Run
+
 Product → Run (Cmd+R)
+
 ```
 
 **Success Criteria:**

@@ -402,7 +402,7 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `ci`, `build`
 
 ## Completion Checklist
 
-### Phase 1 Complete When:
+### Phase 1 Complete When
 
 - [ ] All P0 tasks checked off above
 - [ ] Tests pass on all platforms
@@ -411,7 +411,7 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `ci`, `build`
 - [ ] Stakeholder review approved
 - [ ] Tag: `v2.0.0-phase1`
 
-### Phase 2 Complete When:
+### Phase 2 Complete When
 
 - [ ] All P1 tasks checked off above
 - [ ] Build directory changes tested
@@ -420,7 +420,7 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `ci`, `build`
 - [ ] Breaking changes documented
 - [ ] Tag: `v2.0.0-phase2`
 
-### Phase 3 Complete When:
+### Phase 3 Complete When
 
 - [ ] All P2 tasks checked off above
 - [ ] Pluginval passing
@@ -429,7 +429,7 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `ci`, `build`
 - [ ] Documentation reorganized
 - [ ] Tag: `v2.0.0` (final)
 
-### Phase 4 Complete When:
+### Phase 4 Complete When
 
 - [ ] Optional features implemented as desired
 - [ ] All features documented
