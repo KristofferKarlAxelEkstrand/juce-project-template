@@ -5,7 +5,7 @@
 			"name": "default",
 			"displayName": "Default Build (Debug)",
 			"generator": "Unix Makefiles",
-			"binaryDir": "${sourceDir}/build",
+			"binaryDir": "${sourceDir}/build/default",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Debug"
 			},

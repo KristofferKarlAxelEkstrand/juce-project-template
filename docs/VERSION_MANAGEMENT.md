@@ -97,7 +97,7 @@ cmake --preset=default | grep "Plugin:"
 ### Metadata File
 
 ```bash
-cat build/plugin_metadata.sh | grep VERSION
+cat build/default/plugin_metadata.sh | grep VERSION
 # Output: export PROJECT_VERSION="1.0.0"
 ```
 

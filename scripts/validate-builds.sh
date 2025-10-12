@@ -3,7 +3,36 @@
 # JUCE Project Template Build Validation Script
 # Validates that plugin and standalone builds exist.
 
-set -e
+set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+
+# Add error handler
+trap 'echo "[ERROR] Script failed at line $LINENO" >&2' ERR
+
+# Add help message
+if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
+    cat << EOF
+Usage: ${0##*/} [BUILD_CONFIG] [BUILD_DIR_OVERRIDE]
+
+Validates that plugin and standalone builds exist in the expected locations.
+
+Arguments:
+    BUILD_CONFIG         Build configuration (Debug or Release, default: Debug)
+    BUILD_DIR_OVERRIDE   Optional: Override build directory (used by CI)
+
+Options:
+    -h, --help          Show this help message
+    
+Examples:
+    ${0##*/}                    # Validate Debug build
+    ${0##*/} Release            # Validate Release build
+    ${0##*/} Debug /custom/dir  # Validate with custom build directory
+    
+Output:
+    Checks for VST3 plugin, standalone app, and shared library artifacts.
+    Exits with status 0 if all critical artifacts found, 1 otherwise.
+EOF
+    exit 0
+fi
 
 echo "JUCE Project Template Build Validation"
 echo "======================================="
@@ -81,8 +110,8 @@ if ! check_exists "$ARTEFACTS_DIR" "Artefacts directory" -d; then
     exit 1
 fi
 
-declare -a missing_artifacts
-declare -a missing_optional_artifacts
+declare -a missing_artifacts=()
+declare -a missing_optional_artifacts=()
 
 # --- Artefact Checks ---
 # Shared Library (optional - internal build artifact)
@@ -128,10 +157,11 @@ fi
 echo
 echo "Build Test Summary"
 echo "=================="
-if [ ${#missing_artifacts[@]} -gt 0 ]; then
+# Use safe array existence/length checks to avoid unbound variable errors
+if [ "${missing_artifacts[@]+x}" ] && [ ${#missing_artifacts[@]} -gt 0 ]; then
     echo "ERROR: Critical build artifacts are missing: ${missing_artifacts[*]}"
     exit 1
-elif [ ${#missing_optional_artifacts[@]} -gt 0 ]; then
+elif [ "${missing_optional_artifacts[@]+x}" ] && [ ${#missing_optional_artifacts[@]} -gt 0 ]; then
     echo "Warning: Optional artifacts missing (not fatal): ${missing_optional_artifacts[*]}"
     echo "SUCCESS: All critical build artifacts found successfully!"
     exit 0
