@@ -5,7 +5,7 @@ repository.
 
 ## Repository Overview
 
-This is a JUCE 8.0.10 audio plugin project template providing a professional development environment with:
+This is a JUCE 8.0.10 audio plugin project template providing a development environment with:
 
 - Modern CMake build system with automatic JUCE dependency management
 - Cross-platform support (Windows, macOS, Linux)
