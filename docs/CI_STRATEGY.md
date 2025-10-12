@@ -19,36 +19,35 @@ The CI system uses a **tiered validation approach**:
 
 ### PRs to `develop` - Fast Feedback Loop
 
-**Goal:** Maximize developer velocity during feature development
+**Goal:** Maximum developer velocity during feature development
 
-**Jobs:** 3 parallel jobs (~12-18 minutes)
+**Jobs:** 2 parallel jobs (~5-8 minutes)
 
 - ✅ Lint (documentation quality)
 - ✅ Build ubuntu Debug (developer build validation)
-- ✅ Build Windows Release (primary platform validation)
 
 **Rationale:**
 
-- **Minimal build matrix** - Only essential builds for fast feedback
+- **Ultra-minimal validation** - Only absolute essentials for rapid iteration
+- **No Release builds at all** - All production builds deferred to `main` gate
 - **No CodeQL security scans** - Security happens at `main` gate, not during iteration
-- **Windows-focused** - Most JUCE developers use Windows, catch platform issues early
-- **Debug build included** - Validates developer workflow and debug assertions
-- **Skip Linux/macOS Release** - Validated at `main` gate before production
+- **Debug-only** - Fastest compile times, matches developer workflow
+- **Single platform** - Cross-platform issues caught at `main` gate
 
-**Why only Windows Release (not Linux/macOS)?**
+**Why NO Release builds on `develop`?**
 
-- Windows is primary development platform for most JUCE developers
-- Windows-specific issues (WASAPI, DirectSound) caught early
-- Linux/macOS cross-platform validation happens at `main` gate
-- **Saves ~10-15 CI minutes per PR** vs. full cross-platform matrix
-- Develop branch is for iteration speed, not release validation
+- **Speed is king** - 5-8 minutes vs. 25-30 minutes with Release builds
+- **Debug is sufficient** - Most issues caught by Debug assertions
+- **Release = production** - Only validate production builds at production gate (`main`)
+- **JUCE abstractions** - Cross-platform and Release-specific issues are rare
+- **Trust the process** - `main` gate catches everything before production
 
-**Why Debug build on Linux?**
+**Why only Ubuntu Debug?**
 
-- Most developers build Debug locally for development
-- Debug assertions catch issues Release builds miss
-- Validates debug symbols and developer workflow
-- Faster than Release builds (less optimization time)
+- **Platform-agnostic** - JUCE code works the same on all platforms in Debug
+- **Fast compilation** - Debug builds skip optimization passes
+- **Developer workflow** - Matches what developers build locally
+- **Assertions enabled** - Catches logic errors that Release builds miss
 
 **Why skip security on `develop`?**
 
