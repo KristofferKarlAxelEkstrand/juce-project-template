@@ -49,8 +49,16 @@ if [ ! -f "$METADATA_FILE" ]; then
     exit 1
 fi
 
-# Source the metadata
-source "$METADATA_FILE"
+# Safely extract expected variables from metadata file
+for var in PROJECT_NAME_TARGET PROJECT_NAME_PRODUCT; do
+    value=$(grep -E "^${var}=\"[^\"]*\"" "$METADATA_FILE" | head -n1 | cut -d'=' -f2- | tr -d '"')
+    if [ -z "$value" ]; then
+        echo "[ERROR] Variable $var not found or empty in $METADATA_FILE" >&2
+        exit 1
+    fi
+    # Use indirect assignment to set the variable
+    declare "$var=$value"
+done
 
 # Construct path to standalone application
 STANDALONE_DIR="$BUILD_PATH/${PROJECT_NAME_TARGET}_artefacts/$BUILD_CONFIG/Standalone"

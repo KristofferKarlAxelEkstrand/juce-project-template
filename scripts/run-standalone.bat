@@ -31,19 +31,23 @@ if not exist "%METADATA_FILE%" (
     exit /b 1
 )
 
-REM Parse metadata file (simplified for batch)
-REM Read PROJECT_NAME_TARGET and PROJECT_NAME_PRODUCT from metadata file
-for /f "tokens=2 delims==" %%a in ('findstr "PROJECT_NAME_TARGET=" "%METADATA_FILE%"') do (
-    set "PROJECT_NAME_TARGET=%%a"
-    REM Remove quotes and export prefix
-    set "PROJECT_NAME_TARGET=!PROJECT_NAME_TARGET:"=!"
+REM Subroutine to parse a variable from the metadata file
+:parse_metadata_var
+set "local_var_name=%1"
+set "local_found_val="
+for /f "tokens=1,* delims==" %%a in ('findstr "%local_var_name%=" "%METADATA_FILE%"') do (
+    set "local_found_val=%%b"
+    goto :found_var
 )
+:found_var
+if defined local_found_val (
+    set "%local_var_name%=!local_found_val:"=!"
+)
+goto :eof
 
-for /f "tokens=2 delims==" %%a in ('findstr "PROJECT_NAME_PRODUCT=" "%METADATA_FILE%"') do (
-    set "PROJECT_NAME_PRODUCT=%%a"
-    REM Remove quotes and export prefix
-    set "PROJECT_NAME_PRODUCT=!PROJECT_NAME_PRODUCT:"=!"
-)
+REM Parse metadata file by calling the subroutine
+call :parse_metadata_var PROJECT_NAME_TARGET
+call :parse_metadata_var PROJECT_NAME_PRODUCT
 
 if "%PROJECT_NAME_TARGET%"=="" (
     echo [ERROR] Could not read PROJECT_NAME_TARGET from metadata file

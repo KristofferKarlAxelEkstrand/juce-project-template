@@ -4,9 +4,11 @@ Evaluate all PR review comments and make decisions: Accept (implement), Reject (
 
 ## First
 
-- Git fetch --all
-- Git pull
-- See what branch is checked out
+```bash
+git fetch --all
+git pull
+git branch --show-current
+´´´
 
 ## Core Evaluation Questions
 

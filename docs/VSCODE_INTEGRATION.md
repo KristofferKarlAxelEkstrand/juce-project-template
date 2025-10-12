@@ -150,6 +150,19 @@ Create `.vscode/launch.json` for debugging:
 these paths to match the `PLUGIN_NAME` and `PLUGIN_TARGET` values in your
 `CMakeLists.txt`.
 
+For example, if your `CMakeLists.txt` has:
+
+```cmake
+set(PLUGIN_NAME "MyAwesomePlugin")
+set(PLUGIN_TARGET "MyPlugin")
+```
+
+You would update the paths in `launch.json` to:
+
+```json
+"program": "${workspaceFolder}/build/ninja/MyPlugin_artefacts/Debug/Standalone/MyAwesomePlugin.exe",
+```
+
 ### Using the Debugger
 
 1. **Set breakpoints**: Click left of line numbers in source files
