@@ -327,14 +327,57 @@ git commit -m "chore: Remove temporary PR #47 review working documents"
 - ✅ `PR##_CLEANUP_VERIFICATION.md` (internal verification only)
 - ✅ Any `PR##_*.md` working/scratch files
 
-**Files to KEEP:**
+**Files to KEEP (choose your strategy):**
+
+**Strategy A: Preserve All Review History** (default)
 
 - ✅ `docs/REVIEW_RESPONSES_PR##.md` (permanent historical record)
 - ✅ `docs/REVIEW_RESPONSE_SUMMARY_PR##.md` (permanent executive summary)
 
-### 4. Archive Old Review Responses (Optional)
+**Strategy B: Clean Slate After Merge** (aggressive cleanup)
 
-For older review response files (from previous PRs), consider archiving:
+- ❌ Delete all PR-specific review response files after merge
+- Only keep review responses that set important precedents
+- Reasoning: Once merged, the PR itself is the historical record
+
+### 4. Post-Merge Cleanup (Optional - Strategy B)
+
+**If you prefer a clean docs/ directory after PR merges:**
+
+```bash
+# After PR is successfully merged, remove PR-specific review docs
+rm docs/REVIEW_RESPONSES_PR47.md
+rm docs/REVIEW_RESPONSE_SUMMARY_PR47.md
+
+# Commit the cleanup
+git add -A
+git commit -m "chore: Remove PR #47 review responses after successful merge
+
+Review comments addressed and PR merged to main.
+PR history preserved in GitHub PR #47 discussion thread.
+Removing review response documents to keep docs/ directory focused."
+
+# Push cleanup
+git push origin develop
+```
+
+**When to use Strategy B (aggressive cleanup):**
+
+- PR successfully merged with all review comments addressed
+- Review responses don't set important precedents
+- GitHub PR discussion thread contains all necessary history
+- You prefer minimal docs/ directory clutter
+
+**When to use Strategy A (preserve history):**
+
+- Review responses contain important technical decisions
+- You want complete audit trail in repository
+- Review set precedents for future PRs
+- Organization requires comprehensive documentation retention
+
+### 5. Archive Old Review Responses (Alternative to Deletion)
+
+For older review response files (from previous PRs), consider archiving instead of deleting:
 
 ```bash
 # Create archive directory if needed
