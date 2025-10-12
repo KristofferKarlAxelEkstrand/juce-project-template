@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]  # Only run on PRs to main, not develop
   schedule:
     - cron: '34 3 * * 1'  # Weekly on Monday at 3:34 AM
 
