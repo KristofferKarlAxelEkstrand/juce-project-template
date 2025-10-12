@@ -7,6 +7,17 @@ applyTo: '.github/**/*'
 Configure GitHub repository settings, workflows, and automation to support the agent-creator-doer framework with practical,
 research-driven development.
 
+## Writing Principles
+
+- **Precise**: Configure exactly what is needed for CI/CD and automation
+- **Concise**: Keep workflow definitions clear and minimal
+- **Correct**: Test workflows to ensure they function properly
+- **Down-to-earth**: Use standard GitHub Actions patterns
+- **KISS**: Avoid overcomplicating automation logic
+- **Pedagogic**: Structure workflows so they are easy to understand and maintain
+
+Avoid decorative language, emojis, emoticons, and promotional descriptions in workflows and configurations.
+
 ## Repository Configuration
 
 - Set up comprehensive .gitignore for JUCE/CMake projects

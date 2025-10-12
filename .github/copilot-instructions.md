@@ -3,6 +3,19 @@
 This repository is a modern JUCE 8.0.10 audio plugin project template providing
 cross-platform build system, CI/CD integration, and fast development workflow patterns.
 
+## General Coding Principles
+
+Follow these principles for all code, documentation, and configuration:
+
+- **Precise**: Write exact code and documentation for specific needs
+- **Concise**: Keep implementations simple and direct
+- **Correct**: Verify all code compiles and functions properly
+- **Down-to-earth**: Use clear, practical solutions without over-engineering
+- **KISS**: Keep everything simple and straightforward
+- **Pedagogic**: Write code and documentation that is easy to understand
+
+Avoid decorative language, emojis, emoticons, and promotional adjectives in all files.
+
 ## Architecture Overview
 
 **Core Components:**
