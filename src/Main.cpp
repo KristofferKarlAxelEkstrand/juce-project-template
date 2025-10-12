@@ -1,4 +1,4 @@
-#include "MainComponent.h"
+#include "DSPJuceAudioProcessor.h"
 #include "PluginEditor.h"
 
 /**

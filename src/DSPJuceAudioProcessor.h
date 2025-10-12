@@ -55,7 +55,22 @@ public:
 
     //==============================================================================
     // Parameter access (thread-safe)
+    /**
+     * Sets the oscillator frequency.
+     *
+     * @param frequency The desired frequency in Hz. Valid range is [MIN_FREQUENCY, MAX_FREQUENCY].
+     *                  Values outside this range will be clamped.
+     * @threadsafe This method is thread-safe.
+     */
     void setFrequency(float frequency);
+
+    /**
+     * Sets the output gain.
+     *
+     * @param gain The desired gain (linear scale). Valid range is [MIN_GAIN, MAX_GAIN].
+     *             Values outside this range will be clamped.
+     * @threadsafe This method is thread-safe.
+     */
     void setGain(float gain);
     float getFrequency() const { return currentFrequency.load(); }
     float getGain() const { return currentGain.load(); }
@@ -71,8 +86,9 @@ private:
     std::atomic<float> currentGain{0.5f};
 
     // Constants
-    static constexpr float MIN_FREQUENCY = 50.0f;
-    static constexpr float MAX_FREQUENCY = 5000.0f;
+    // Frequency range covers the full human hearing range (20 Hz to 20,000 Hz)
+    static constexpr float MIN_FREQUENCY = 20.0f;
+    static constexpr float MAX_FREQUENCY = 20000.0f;
     static constexpr float DEFAULT_FREQUENCY = 440.0f;
     static constexpr float MIN_GAIN = 0.0f;
     static constexpr float MAX_GAIN = 1.0f;

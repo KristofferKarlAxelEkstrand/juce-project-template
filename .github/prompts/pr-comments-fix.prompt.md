@@ -4,6 +4,10 @@ Evaluate all PR review comments and make decisions: Accept (implement), Reject (
 
 ## First
 
+- Use `gh pr list` to identify the current PR and its number.
+- Confirm you are on the correct branch with `git branch --show-current`.
+- Fetch comments with `gh pr view <PR_NUMBER> --comments`.
+
 ```bash
 git fetch --all
 git pull
