@@ -182,7 +182,8 @@ git push origin test/ci-main-pr
 - ⏱️ Average PR duration (target: <20 min, goal: 15 min)
 - 🎯 Job completion success rate (target: >98%)
 - 📊 Windows-specific issues caught (target: ≥80% of all platform-specific issues)
-- 🔄 Rerun frequency (target: <10% of jobs require manual rerun)
+- 🔄 Rerun frequency (target: <10% of jobs require manual rerun per week,
+  calculated as [manually rerun jobs] / [total jobs executed])
 
 **Main PR metrics to track:**
 
