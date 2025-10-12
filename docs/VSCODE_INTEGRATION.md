@@ -111,7 +111,7 @@ Create `.vscode/launch.json` for debugging:
             "name": "Debug Standalone (Windows)",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.exe",
+                        "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -123,7 +123,7 @@ Create `.vscode/launch.json` for debugging:
             "name": "Debug Standalone (macOS)",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.app/Contents/MacOS/<PLUGIN_NAME>",
+                        "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.app/Contents/MacOS/<PLUGIN_NAME>",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build Standalone (Ninja Debug)"
