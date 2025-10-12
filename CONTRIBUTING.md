@@ -214,7 +214,7 @@ cmake --preset=default && cmake --build --preset=default
 cmake --preset=release && cmake --build --preset=release
 
 # Test standalone application
-./build/JucePlugin_artefacts/Debug/Standalone/Your\ Plugin
+./build/default/JucePlugin_artefacts/Debug/Standalone/Your\ Plugin
 
 # Verify plugin installation (platform-specific)
 ls -la ~/.vst3/Your\ Plugin.vst3/  # Linux

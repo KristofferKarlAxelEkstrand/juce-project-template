@@ -59,6 +59,9 @@ elif [ "$OS" = "windows" ]; then
     BUILD_DIR="$PROJECT_ROOT/build/vs2022"
 else
     preset_name=$(echo "$BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')
+    if [ "$preset_name" = "debug" ]; then
+        preset_name="default"
+    fi
     BUILD_DIR="$PROJECT_ROOT/build/$preset_name"
 fi
 

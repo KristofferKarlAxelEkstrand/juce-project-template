@@ -59,7 +59,7 @@ cmake --preset=default
 
 Choose the appropriate preset for your platform:
 
-- `default`: `build/` (Linux/macOS)
+- `default`: `build/default/` (Linux/macOS)
 - `vs2022`: `build/vs2022/` (Windows)
 - `ninja`: `build/ninja/` (all platforms)
 
@@ -82,7 +82,7 @@ Check build outputs:
 
 ```bash
 # List artefacts
-ls -la build/JucePlugin_artefacts/Debug/
+ls -la build/default/JucePlugin_artefacts/Debug/
 
 # Run validation
 ./scripts/validate-builds.sh Debug
@@ -90,7 +90,7 @@ ls -la build/JucePlugin_artefacts/Debug/
 
 ## Build Outputs
 
-Artefacts are in `build/JucePlugin_artefacts/<config>/`:
+Artefacts are in `build/<preset>/JucePlugin_artefacts/<config>/`:
 
 - `VST3/Your Plugin.vst3` - VST3 plugin
 - `AU/Your Plugin.component` - AU plugin (macOS only)
@@ -99,6 +99,7 @@ Artefacts are in `build/JucePlugin_artefacts/<config>/`:
 Plugin file names use the `PLUGIN_NAME` variable defined in `CMakeLists.txt`. For example, setting
 `PLUGIN_NAME` to "MyPlugin" will produce artefacts like `VST3/MyPlugin.vst3`,
 `AU/MyPlugin.component`, and `Standalone/MyPlugin[.exe|.app]`.
+`AU/MyPlugin.component`, and `Standalone/MyPlugin[.exe|.app]`.
 
 ## CMake Presets
 
@@ -106,7 +107,7 @@ Available presets in `CMakePresets.json`:
 
 | Preset | Generator | Platform | Build Dir |
 |--------|-----------|----------|-----------|
-| `default` | Unix Makefiles | Linux/macOS | `build/` |
+| `default` | Unix Makefiles | Linux/macOS | `build/default/` |
 | `release` | Unix Makefiles | Linux/macOS | `build/release/` |
 | `vs2022` | Visual Studio 17 | Windows | `build/vs2022/` |
 | `ninja` | Ninja | All | `build/ninja/` |
@@ -177,3 +178,15 @@ Use Release builds for production:
 cmake --preset=release
 cmake --build --preset=release
 ```
+
+## Backward Compatibility Note
+
+**Build Directory Structure Change:**
+
+The default preset now uses `build/default/` instead of `build/`. If you have existing builds in the old location:
+
+1. Remove old build directory: `rm -rf build/` (on Unix) or `rmdir /s build` (on Windows)
+2. Reconfigure with new structure: `cmake --preset=default`
+3. Build as normal: `cmake --build --preset=default`
+
+All presets now follow the consistent `build/<preset-name>/` pattern for easier navigation and management.

@@ -48,11 +48,11 @@ gain.process(context);        // Apply gain
 
 ```bash
 # Configure (90+ seconds - downloads JUCE 8.0.10 automatically)
-cmake --preset=default          # Linux/macOS (builds to build/)
+cmake --preset=default          # Linux/macOS (builds to build/default/)
 cmake --preset=vs2022           # Windows (builds to build/vs2022/)
 
 # Build (2m45s Debug, 4m30s Release)
-cmake --build --preset=default  # Creates VST3 + standalone in build/JucePlugin_artefacts/
+cmake --build --preset=default  # Creates VST3 + standalone in build/default/JucePlugin_artefacts/
 cmake --build build/vs2022 --config Release  # Windows Release build
 ```
 
@@ -66,7 +66,7 @@ Note: Actual paths depend on PLUGIN_NAME set in CMakeLists.txt
 
 **Cross-Platform Presets:**
 
-- `--preset=default`: Unix Makefiles for Linux/macOS → `build/`
+- `--preset=default`: Unix Makefiles for Linux/macOS → `build/default/`
 - `--preset=vs2022`: Visual Studio 2022 for Windows → `build/vs2022/`
 - `--preset=release`: Release builds for Linux/macOS → `build/release/`
 - `--preset=ninja`: Ninja builds for fast compilation → `build/ninja/`

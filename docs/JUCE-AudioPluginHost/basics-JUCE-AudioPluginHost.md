@@ -45,7 +45,7 @@ Now that you have the Projucer, you can build the AudioPluginHost.
 ## How to Use
 
 1. Launch AudioPluginHost.
-2. Go to `Options > Plugin Folders` and add the folder containing your built plugin (e.g., `build/JucePlugin_artefacts/Debug/VST3`).
+2. Go to `Options > Plugin Folders` and add the folder containing your built plugin (e.g., `build/default/JucePlugin_artefacts/Debug/VST3`).
 3. Click `Options > Scan for Plugins` to refresh the list.
 4. Drag your plugin from the list into the graph area to test.
 5. You can connect plugins, test audio/MIDI, and debug UI and parameter changes.

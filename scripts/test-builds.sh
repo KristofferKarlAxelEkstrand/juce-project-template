@@ -67,7 +67,7 @@ else
         BUILD_DIR="$PROJECT_ROOT/build/release"
         echo "Found Release build directory: $BUILD_DIR"
     else
-        BUILD_DIR="$PROJECT_ROOT/build"
+        BUILD_DIR="$PROJECT_ROOT/build/default"
         echo "Using default Debug build directory: $BUILD_DIR"
     fi
 fi
