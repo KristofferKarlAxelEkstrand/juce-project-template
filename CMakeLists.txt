@@ -15,7 +15,11 @@ cmake_policy(SET CMP0077 NEW) # option() honors normal variables
 # Compiler-specific options
 if(MSVC)
     # MSVC compiler options
-    add_compile_options(/W4 /permissive- /Zc:__cplusplus)
+    # /EHsc: Enable C++ exception handling (required by JUCE)
+    # /W4: Warning level 4
+    # /permissive-: Conformance mode for stricter C++ standards compliance
+    # /Zc:__cplusplus: Enable correct __cplusplus macro value
+    add_compile_options(/EHsc /W4 /permissive- /Zc:__cplusplus)
 else()
     # GCC/Clang compiler options - enable comprehensive warnings
     add_compile_options(-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wunused -Wformat=2)
