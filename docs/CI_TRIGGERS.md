@@ -6,7 +6,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 | Event | Lint | Build (ubuntu, Debug) | Build (ubuntu, Release) | Build (windows, Release) | Build (macos, Release) | CodeQL (C++) | CodeQL (JS/TS) | Release Jobs |
 |-------|------|----------------------|------------------------|-------------------------|------------------------|--------------|----------------|--------------|
-| **PR → `develop`** | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **PR → `develop`** | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **PR → `main`** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | **Push → `main`** | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
 | **Tag `v*.*.*`** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -18,21 +18,21 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 ### Pull Requests to `develop`
 
-**Workflows:** CI Build only (ultra-minimal validation)
+**Workflows:** CI Build only (balanced fast validation)
 
 **Jobs Running:**
 
 1. ✅ **Lint** (ubuntu-latest) - Markdown linting
 2. ✅ **Build** (ubuntu-latest, Debug) - Debug build validation
+3. ✅ **Build** (windows-latest, Release) - Windows release build
 
-#### Total: 2 parallel jobs
+#### Total: 3 parallel jobs
 
-**Purpose:** Absolute fastest feedback for feature development
+**Purpose:** Fast feedback with primary platform validation
 
 **What's NOT running:**
 
 - ❌ Ubuntu Release build (validated at `main` gate)
-- ❌ Windows Release build (validated at `main` gate)
 - ❌ macOS Release build (validated at `main` gate)
 - ❌ CodeQL security scans (validated at `main` gate)
 
@@ -117,7 +117,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 ### Total CI Job Count by Event
 
-- **PR to `develop`:** 2 jobs (lint + Debug only)
+- **PR to `develop`:** 3 jobs (lint + Debug + Windows Release)
 - **PR to `main`:** 7 jobs (full builds + lint + security)
 - **Push to `main`:** 2 jobs (security only)
 - **Version tag:** 4 jobs (release builds)
@@ -129,7 +129,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 **Approximate CI minutes per event:**
 
-- PR to `develop`: ~5-8 minutes (2 jobs × 2.5-4 min average)
+- PR to `develop`: ~12-18 minutes (3 jobs × 4-6 min average)
 - PR to `main`: ~35-45 minutes (7 jobs × 5-6 min average)
 - Push to `main`: ~10-15 minutes (2 jobs × 5-7 min)
 - Version tag: ~20-25 minutes (3 parallel builds + release)
