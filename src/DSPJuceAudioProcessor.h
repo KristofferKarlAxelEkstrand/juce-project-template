@@ -67,8 +67,8 @@ public:
     /**
      * Sets the output gain.
      *
-     * @param gainValue The desired gain (linear scale). Valid range is [MIN_GAIN, MAX_GAIN].
-     *                  Values outside this range will be clamped.
+     * @param gain The desired gain (linear scale). Valid range is [MIN_GAIN, MAX_GAIN].
+     *             Values outside this range will be clamped.
      * @threadsafe This method is thread-safe.
      */
     void setGain(float gain);
@@ -88,12 +88,6 @@ private:
     // Constants
     static constexpr float MIN_FREQUENCY = 20.0f;
     static constexpr float MAX_FREQUENCY = 20000.0f;
-    static constexpr float DEFAULT_FREQUENCY = 440.0f;
-    static constexpr float MIN_GAIN = 0.0f;
-    static constexpr float MAX_GAIN = 1.0f;
-    static constexpr float DEFAULT_GAIN = 0.5f;
-    static constexpr float MIN_FREQUENCY = 50.0f;
-    static constexpr float MAX_FREQUENCY = 5000.0f;
     static constexpr float DEFAULT_FREQUENCY = 440.0f;
     static constexpr float MIN_GAIN = 0.0f;
     static constexpr float MAX_GAIN = 1.0f;
