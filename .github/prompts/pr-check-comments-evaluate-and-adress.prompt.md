@@ -80,6 +80,7 @@ Create a comprehensive response document (`.temp-pr-reviews-docs/REVIEW_RESPONSE
 - Not tracked by git (in `.gitignore`)
 - Temporary working directory
 - Easily deleted after PR merge
+- Should be deleted manually after PR merge to keep the repository clean (e.g., run `rm -rf .temp-pr-reviews-docs/`)
 
 ```markdown
 # PR Review Comment Responses
