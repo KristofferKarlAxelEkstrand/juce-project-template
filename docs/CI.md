@@ -224,6 +224,42 @@ If builds pass on develop but fail on main:
 
 ## Configuration Reference
 
+### Caching Strategy
+
+The CI/CD workflows use multiple cache layers to optimize build times:
+
+#### JUCE Download Cache
+
+Caches the JUCE framework download to avoid repeated fetches from GitHub.
+
+**Cache Configuration**:
+
+```yaml
+path: ${{ github.workspace }}/.juce_cache
+key: ${{ runner.os }}-juce-8.0.10-${{ hashFiles('CMakeLists.txt') }}
+restore-keys: |
+  ${{ runner.os }}-juce-8.0.10-
+  ${{ runner.os }}-juce-
+```
+
+**Cache Invalidation**:
+
+- Automatically invalidates when JUCE version changes in CMakeLists.txt
+- Manual invalidation: Delete cache via GitHub UI (Actions > Caches)
+
+**Benefit**: Saves 2-3 minutes per build by avoiding JUCE re-download
+
+#### Why This Strategy
+
+The cache key includes:
+
+1. **Runner OS**: Different platforms need different binaries
+2. **JUCE Version**: Ensures correct version after upgrades
+3. **CMakeLists.txt hash**: Detects configuration changes that affect JUCE
+
+**Note**: We cache the FetchContent base directory, not the JUCE submodule directory. This works
+whether JUCE is provided as a submodule or downloaded by FetchContent.
+
 ### Workflow Files
 
 - **`.github/workflows/ci.yml`** - Main build workflow

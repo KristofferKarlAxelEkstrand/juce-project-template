@@ -60,7 +60,10 @@ jobs:
         id: cache-juce
         with:
           path: ${{ github.workspace }}/.juce_cache
-          key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**', 'third_party/JUCE/**') }}
+          key: ${{ runner.os }}-juce-8.0.10-${{ hashFiles('CMakeLists.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-juce-8.0.10-
+            ${{ runner.os }}-juce-
 
       - name: Configure CMake
         shell: bash

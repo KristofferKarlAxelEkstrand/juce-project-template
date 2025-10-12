@@ -47,9 +47,10 @@ jobs:
       if: matrix.language == 'c-cpp'
       uses: actions/cache@v4
       with:
-        path: third_party/JUCE
-        key: ${{ runner.os }}-juce-${{ hashFiles('CMakeLists.txt') }}
+        path: ${{ github.workspace }}/.juce_cache
+        key: ${{ runner.os }}-juce-8.0.10-${{ hashFiles('CMakeLists.txt') }}
         restore-keys: |
+          ${{ runner.os }}-juce-8.0.10-
           ${{ runner.os }}-juce-
 
     - name: Initialize CodeQL
@@ -65,7 +66,8 @@ jobs:
     - if: matrix.language == 'c-cpp'
       name: Build C++
       run: |
-        cmake -B build -DCMAKE_BUILD_TYPE=Release
+        FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
+        cmake -B build -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}"
         cmake --build build --config Release
 
     - name: Perform CodeQL Analysis

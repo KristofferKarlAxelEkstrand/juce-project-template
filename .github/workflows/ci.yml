@@ -76,33 +76,6 @@ jobs:
         submodules: 'recursive'
         lfs: true
 
-    - name: Verify JUCE submodule
-      if: steps.should_run.outputs.skip != 'true'
-      shell: bash
-      run: |
-        echo "=== Checking JUCE submodule status ==="
-        git submodule status
-        echo
-        if [ -f "third_party/JUCE/CMakeLists.txt" ]; then
-          echo "✅ JUCE submodule is present at third_party/JUCE"
-          JUCE_VERSION=$(grep 'project.*VERSION' third_party/JUCE/CMakeLists.txt | head -1 || echo "Version not found")
-          echo "JUCE Version info: $JUCE_VERSION"
-        else
-          echo "⚠️ JUCE submodule not found at third_party/JUCE"
-          echo "CMake will use FetchContent to download JUCE 8.0.10"
-        fi
-
-    - name: Ensure JUCE submodule is initialized
-      if: steps.should_run.outputs.skip != 'true'
-      shell: bash
-      run: |
-        if [ ! -d "third_party/JUCE" ] || [ -z "$(git -C third_party/JUCE rev-parse --show-toplevel 2>/dev/null)" ]; then
-          echo "Initializing submodules..."
-          git submodule update --init --recursive
-        else
-          echo "✅ JUCE submodule already present"
-        fi
-
     - name: Set build environment variables
       if: steps.should_run.outputs.skip != 'true'
       id: set_vars
@@ -148,8 +121,9 @@ jobs:
       id: cache-juce
       with:
         path: ${{ github.workspace }}/.juce_cache
-        key: ${{ runner.os }}-juce-${{ hashFiles('**/CMakeLists.txt', '**/cmake/**', 'third_party/JUCE/**') }}
+        key: ${{ runner.os }}-juce-8.0.10-${{ hashFiles('CMakeLists.txt') }}
         restore-keys: |
+          ${{ runner.os }}-juce-8.0.10-
           ${{ runner.os }}-juce-
       continue-on-error: true
 
@@ -174,16 +148,6 @@ jobs:
           xcodebuild -version || true
         fi
         echo
-        echo "=== Listing available CMake presets ==="
-        cmake --list-presets || echo "cmake --list-presets failed"
-        echo
-        echo "=== Dump CMakePresets.json (if present) ==="
-        if [ -f CMakePresets.json ]; then
-          sed -n '1,200p' CMakePresets.json || cat CMakePresets.json
-        else
-          echo "No CMakePresets.json in repo root"
-        fi
-        echo
         FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
         PRESET="${{ steps.set_vars.outputs.cmake_preset }}"
@@ -194,17 +158,20 @@ jobs:
         
         for i in 1 2 3; do
           echo "--- cmake attempt $i ---"
+          LOG_LEVEL="WARNING"
+          [ $i -gt 1 ] && LOG_LEVEL="DEBUG"
+          
           if [ "${{ runner.os }}" = "macOS" ]; then
             # Use Xcode generator for macOS to ensure proper AU building
             echo "Using Xcode generator for macOS"
-            if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
+            if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
               echo "CMake configuration successful on attempt $i."
               break
             fi
           else
             # Use preset for Windows/Linux
             echo "Using preset: ${PRESET}"
-            if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=DEBUG; then
+            if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
               echo "CMake configuration successful on attempt $i."
               break
             fi

@@ -100,6 +100,34 @@ Plugin file names use the `PLUGIN_NAME` variable defined in `CMakeLists.txt`. Fo
 `PLUGIN_NAME` to "MyPlugin" will produce artefacts like `VST3/MyPlugin.vst3`,
 `AU/MyPlugin.component`, and `Standalone/MyPlugin[.exe|.app]`.
 
+### Naming Conventions
+
+The build system follows consistent naming conventions with one intentional exception:
+
+**Project Files and Directories**: Use lowercase with hyphens
+
+- Workflow files: `ci.yml`, `codeql.yml`, `release.yml`
+- Build directories: `build/default`, `build/release`, `build/ninja`
+- Script files: `validate-builds.sh`, `build-ninja.sh`
+
+**JUCE-Generated Artifact Directories**: Use underscores (framework convention)
+
+- Artifact directories: `JucePlugin_artefacts` (uses PLUGIN_TARGET + `_artefacts`)
+- Shared libraries: `JucePlugin_SharedCode.lib` or `libJucePlugin_SharedCode.a`
+
+**Why the inconsistency?** JUCE framework uses underscores in its generated directory and file
+names. Overriding this would require custom CMake configuration and may break JUCE tooling
+expectations. Since this naming is limited to JUCE-generated paths and not exposed to end users,
+we preserve the framework convention.
+
+**User-Facing Plugin Names**: Can contain spaces
+
+- Example: `PLUGIN_NAME = "JUCE Project Template Plugin"`
+- Results in: `VST3/JUCE Project Template Plugin.vst3`
+
+When automating with these files, always quote paths in shell scripts to handle spaces correctly.
+For ZIP files and URLs, spaces are sanitized to hyphens (e.g., `JUCE-Project-Template-Plugin.zip`).
+
 ## CMake Presets
 
 Available presets in `CMakePresets.json`:
