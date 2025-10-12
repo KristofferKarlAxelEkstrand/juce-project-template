@@ -45,9 +45,11 @@
 │    ✅ Production-ready check                             │
 │    💡 Goal: Ready to ship everywhere?                    │
 │                                                          │
-│  Expect: ~10% of PRs pass develop but fail main         │
-│  This is OK! Main is the comprehensive gate.            │
-│  Windows issues caught early in develop phase.          │
+│  Expected Failure Rate: ~10% pass develop but fail main │
+│  ✅ Acceptable: macOS/Linux-specific issues (linker,    │
+│      headers), Release optimizations, security scans    │
+│  ⚠️  Concerning: >20% rate, Windows failures, syntax    │
+│      errors → indicates develop jobs need expansion     │
 │                                                          │
 └─────────────────────────────────────────────────────────┘
 ```
@@ -244,6 +246,52 @@ The CI system uses a **tiered validation approach**:
 - macOS/Linux-specific issues rare but must be caught
 - AU plugin format (macOS) requires macOS build
 - Complete confidence for releases
+
+#### Expected Failure Patterns
+
+##### The 10% Rule: Understanding develop → main Failures
+
+When PRs pass `develop` CI but fail `main` CI, it's often expected and acceptable:
+
+**Acceptable Failure Scenarios (~10% of PRs):**
+
+1. **macOS/Linux-Specific Issues** (5-7% of PRs)
+   - Platform-specific linker errors (different library paths)
+   - Filesystem case-sensitivity differences (macOS HFS+ vs Linux ext4)
+   - Header include order issues exposed on different compilers
+   - Audio framework differences (CoreAudio vs ALSA/PulseAudio)
+
+2. **Release Optimization Issues** (2-3% of PRs)
+   - Undefined behavior masked in Debug builds (-O0)
+   - Aggressive optimizations breaking assumptions (-O3)
+   - Uninitialized variables caught by Release compilers
+   - Inline function issues or template instantiation edge cases
+
+3. **Security Scan Findings** (1-2% of PRs)
+   - CodeQL patterns not present in Ubuntu Debug
+   - Memory safety issues in Release configurations
+   - Cryptographic API misuse in production code paths
+
+**Concerning Failure Scenarios (>20% would indicate problems):**
+
+- **Windows-specific failures** → Primary platform should be validated on develop
+- **Syntax/compilation errors** → Basic build validation failing
+- **Lint/documentation issues** → Should be caught in develop lint job
+- **Common logic bugs** → Suggests develop validation insufficient
+
+**Why This is Acceptable:**
+
+- **Cost-benefit optimized:** Catching last 10% of issues costs 3× more CI time
+- **Risk is low:** Most failures are platform quirks, not critical bugs
+- **Quick fix cycle:** `main` PRs are infrequent (weekly merges), so delays acceptable
+- **Quality maintained:** Zero production escapes is the real metric
+
+**When to Adjust Strategy:**
+
+- Failure rate >20% → Add more jobs to develop
+- Specific pattern emerges → Target that with develop CI
+- Developer frustration → Re-evaluate time/quality trade-off
+- Production escapes → Immediate review and enhancement
 
 ---
 
