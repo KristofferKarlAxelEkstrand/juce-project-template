@@ -16,7 +16,22 @@ Instructions avoid decorative language, emojis, emoticons, and promotional adjec
 
 ## Structure
 
-The Copilot instructions are organized into two levels:
+The Copilot instructions are organized into three levels:
+
+### Coding Agent Instructions
+
+**File**: `AGENTS.md`
+
+Provides contextual instructions for GitHub Copilot coding agent when working on issues and tasks:
+
+- Issue workflow and environment validation
+- Code modification guidelines for each file type
+- Build system commands and output locations
+- Git workflow and commit message format
+- Testing requirements and validation steps
+- Common tasks and troubleshooting
+
+This file guides the Copilot coding agent through the complete development workflow when assigned to issues.
 
 ### Repository-Wide Instructions
 
@@ -160,6 +175,7 @@ All instruction files must pass markdown linting before being committed.
 
 ## See Also
 
+- [AGENTS.md](../AGENTS.md) - Instructions for GitHub Copilot coding agent
 - [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
 - [Custom Instructions Guide](https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot)
 - [CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines
