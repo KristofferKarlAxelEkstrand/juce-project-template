@@ -3,14 +3,10 @@
 # JUCE Project Template Build Validation Script
 # Validates that plugin and standalone builds exist.
 
-set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-# Add error handler
-trap 'echo "[ERROR] Script failed at line $LINENO" >&2' ERR
-
-# Add help message
-if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
-    cat << EOF
+# --- Help Message ---
+HELP_MESSAGE=$(cat << EOF
 Usage: ${0##*/} [BUILD_CONFIG] [BUILD_DIR_OVERRIDE]
 
 Validates that plugin and standalone builds exist in the expected locations.
@@ -31,10 +27,10 @@ Output:
     Checks for VST3 plugin, standalone app, and shared library artifacts.
     Exits with status 0 if all critical artifacts found, 1 otherwise.
 EOF
-    exit 0
-fi
+)
+show_help "${1:-}" "$HELP_MESSAGE"
 
-echo "JUCE Project Template Build Validation"
+info "JUCE Project Template Build Validation"
 echo "======================================="
 echo
 
