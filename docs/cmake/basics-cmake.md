@@ -38,7 +38,7 @@ FetchContent_Declare(JUCE
 # Configure plugin formats and properties
 juce_add_plugin(JucePlugin  # Plugin target name (from PLUGIN_TARGET variable)
     FORMATS VST3 AU Standalone
-    PRODUCT_NAME "DSP-JUCE Plugin")
+    PRODUCT_NAME "Your Plugin Name")
 ```
 
 **Modern CMake Benefits**:

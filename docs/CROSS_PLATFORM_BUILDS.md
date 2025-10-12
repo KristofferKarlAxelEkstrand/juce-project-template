@@ -65,9 +65,9 @@ VS Code selects the correct block based on OS.
 
 ### Executable Extensions
 
-- Windows: `DSP-JUCE Plugin.exe`
-- macOS: `DSP-JUCE Plugin.app` (application bundle)
-- Linux: `DSP-JUCE Plugin` (no extension)
+- Windows: `Your Plugin.exe`
+- macOS: `Your Plugin.app` (application bundle)
+- Linux: `Your Plugin` (no extension)
 
 ### Path Separators
 

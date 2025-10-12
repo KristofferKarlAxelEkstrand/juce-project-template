@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# DSP-JUCE Build Testing Script
+# JUCE Project Template Build Testing Script
 # Tests that plugin and standalone builds work correctly
 
 set -e
 
-echo "DSP-JUCE Build Testing"
-echo "======================"
+echo "JUCE Project Template Build Testing"
+echo "===================================="
 echo
 
 # Determine build configuration: default to Debug if not specified

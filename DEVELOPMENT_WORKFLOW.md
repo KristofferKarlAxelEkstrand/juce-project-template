@@ -20,7 +20,7 @@ Default build task. Press `Ctrl+Shift+B`.
 
 Runs: `./scripts/build-ninja.bat` (Windows) or `./scripts/build-ninja.sh` (macOS/Linux)
 
-Output: `build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin[.exe|.app]`
+Output: `build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin[.exe|.app]`
 
 ### 2. Run Standalone
 
@@ -174,7 +174,7 @@ Verifies:
 Plugin metadata is centralized in `CMakeLists.txt`:
 
 ```cmake
-set(PLUGIN_NAME "DSP-JUCE Plugin")
+set(PLUGIN_NAME "Your Plugin Name")
 set(PLUGIN_TARGET "JucePlugin")
 set(PLUGIN_VERSION "1.0.0")
 ```
@@ -235,7 +235,7 @@ Ninja should rebuild in 1-3 seconds for small changes. If slow:
 
 ### VST3 Plugin
 
-Built to: `build/ninja/JucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/`
+Built to: `build/ninja/JucePlugin_artefacts/Debug/VST3/Your Plugin.vst3/`
 
 To test in a DAW:
 

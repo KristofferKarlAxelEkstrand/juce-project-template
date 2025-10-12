@@ -1,7 +1,10 @@
 # Plugin Development Roadmap: From Template to Feature-Complete Plugin
 
-This document outlines the plan for evolving the DSP-JUCE project from a foundational template into a
+This document outlines the plan for evolving your plugin from this JUCE project template into a
 functional audio plugin with a proper GUI, advanced DSP features, and robust testing.
+
+Note: This roadmap is for plugin developers using this template. The template itself provides
+the build system, CI/CD, and development workflow foundation.
 
 ---
 

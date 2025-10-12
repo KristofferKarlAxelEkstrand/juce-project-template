@@ -346,6 +346,6 @@ c068fba docs: Update CI strategy for ultra-minimal develop
 **Next action:** Create test PR to develop branch to verify 3-job execution  
 **Confidence:** High - Implementation matches approved strategy exactly
 
-**Implemented by:** GitHub Copilot (Expert DSP-JUCE Development Assistant)  
+**Implemented by:** GitHub Copilot (JUCE Template Development Assistant)  
 **Date:** October 12, 2025  
 **Branch:** `feature/smarter-ci-runs` (commit 30f6b4e)
