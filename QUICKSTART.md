@@ -40,7 +40,7 @@ open "build/JucePlugin_artefacts/Debug/Standalone/<PLUGIN_NAME>.app"
 ./build/JucePlugin_artefacts/Debug/Standalone/"<PLUGIN_NAME>"
 
 # On Windows
-./build/JucePlugin_artefacts/Debug/Standalone/"<PLUGIN_NAME>.exe"
+build\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
 ```
 
 > **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt` (default: "DSP-JUCE Plugin").
