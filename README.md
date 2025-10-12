@@ -124,7 +124,7 @@ Two simple commands build everything:
    cmake --build --preset=default
    ```
 
-**Output location**: `build/JucePlugin_artefacts/Debug/`
+**Output location**: `build/default/JucePlugin_artefacts/Debug/`
 
 - `VST3/Your Plugin.vst3` - VST3 plugin (name from PLUGIN_NAME in CMakeLists.txt)
 - `Standalone/Your Plugin` - Standalone application

@@ -118,7 +118,7 @@ if cmake --preset=default >/dev/null 2>&1; then
     print_status 0 "CMake configuration successful"
     
     # Check if we can generate build files
-    if [ -d "build" ] && [ -f "build/Makefile" ]; then
+    if [ -d "build/default" ] && [ -f "build/default/Makefile" ]; then
         print_status 0 "Build files generated successfully"
     else
         print_status 1 "Build files not generated properly"

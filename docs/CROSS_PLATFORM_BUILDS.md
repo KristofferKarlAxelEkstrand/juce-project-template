@@ -80,7 +80,7 @@ VS Code handles this automatically.
 
 CMake presets use different directories:
 
-- `default`: `build/` (Linux/macOS)
+- `default`: `build/default/` (Linux/macOS)
 - `vs2022`: `build/vs2022/` (Windows)
 - `ninja`: `build/ninja/` (all platforms)
 
@@ -90,7 +90,7 @@ CMake presets use different directories:
 
 | Preset | Generator | Platform | Build Dir |
 |--------|-----------|----------|-----------|
-| `default` | Unix Makefiles | Linux/macOS | `build/` |
+| `default` | Unix Makefiles | Linux/macOS | `build/default/` |
 | `vs2022` | Visual Studio 17 | Windows | `build/vs2022/` |
 | `ninja` | Ninja | All | `build/ninja/` |
 | `xcode` | Xcode | macOS | `build/xcode/` |
