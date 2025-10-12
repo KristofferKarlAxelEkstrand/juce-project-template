@@ -131,7 +131,9 @@ Two simple commands build everything:
 
 ### Customize Your Plugin
 
-Edit these values in `CMakeLists.txt` to create your own plugin:
+Follow the step-by-step guide in **[CUSTOMIZATION.md](CUSTOMIZATION.md)** to make this template your own.
+
+Quick start: Edit these values in `CMakeLists.txt`:
 
 ```cmake
 set(PLUGIN_NAME "Your Plugin Name")

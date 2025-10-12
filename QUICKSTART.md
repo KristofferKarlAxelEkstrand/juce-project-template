@@ -57,7 +57,7 @@ You built a working JUCE audio plugin that:
 
 **Customize Your Plugin:**
 
-1. Edit plugin name and metadata - See [BUILD.md](BUILD.md) for CMakeLists.txt configuration
+1. Follow the customization guide - [CUSTOMIZATION.md](CUSTOMIZATION.md)
 2. Add your DSP code - See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)
 3. Design your GUI - See [docs/JUCE](docs/JUCE) for JUCE basics
 

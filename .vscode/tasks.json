@@ -27,16 +27,13 @@
             "label": "Run Standalone",
             "type": "shell",
             "windows": {
-                "command": "${workspaceFolder}\\build\\ninja\\JucePlugin_artefacts\\Debug\\Standalone\\DSP-JUCE Plugin.exe"
+                "command": "${workspaceFolder}\\scripts\\run-standalone.bat"
             },
             "linux": {
-                "command": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
+                "command": "${workspaceFolder}/scripts/run-standalone.sh"
             },
             "osx": {
-                "command": "open",
-                "args": [
-                    "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
-                ]
+                "command": "${workspaceFolder}/scripts/run-standalone.sh"
             },
             "dependsOn": "Build Standalone (Ninja Debug)",
             "group": {
