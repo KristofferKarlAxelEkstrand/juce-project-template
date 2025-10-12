@@ -1,5 +1,6 @@
 ---
-applyTo: '.github/**/*'
+applyTo:
+  - '.github/**/*'
 ---
 
 # GitHub Configuration Instructions

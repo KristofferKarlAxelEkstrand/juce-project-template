@@ -1,5 +1,7 @@
 ---
-applyTo: '**/CMakeLists.txt,*.cmake'
+applyTo:
+  - '**/CMakeLists.txt'
+  - '*.cmake'
 ---
 
 # CMake Configuration Instructions

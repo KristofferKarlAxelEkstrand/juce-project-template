@@ -1,5 +1,7 @@
 ---
-applyTo: 'src/**/*.cpp,src/**/*.h'
+applyTo:
+  - src/**/*.cpp
+  - src/**/*.h
 ---
 
 # C++ Source Code Instructions

@@ -1,5 +1,6 @@
 ---
-applyTo: '**/*.md'
+applyTo:
+  - '**/*.md'
 ---
 
 # Documentation Instructions
