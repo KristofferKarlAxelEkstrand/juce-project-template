@@ -8,7 +8,7 @@ Evaluate all PR review comments and make decisions: Accept (implement), Reject (
 git fetch --all
 git pull
 git branch --show-current
-´´´
+```
 
 ## Core Evaluation Questions
 

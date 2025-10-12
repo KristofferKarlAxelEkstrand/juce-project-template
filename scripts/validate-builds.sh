@@ -64,10 +64,20 @@ fi
 
 # --- Load Plugin Metadata from CMake ---
 METADATA_FILE="$BUILD_DIR/plugin_metadata.sh"
+# shellcheck source=./metadata-utils.sh
+source "$(dirname "${BASH_SOURCE[0]}")/metadata-utils.sh"
+
 if [ -f "$METADATA_FILE" ]; then
-    source "$METADATA_FILE"
-    echo "Plugin: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
-    echo "Company: $PROJECT_COMPANY"
+    if extract_metadata_vars "$METADATA_FILE" PROJECT_NAME_PRODUCT PROJECT_VERSION PROJECT_COMPANY PROJECT_NAME_TARGET; then
+        echo "Plugin: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
+        echo "Company: $PROJECT_COMPANY"
+    else
+        echo "Warning: Failed to extract metadata from $METADATA_FILE. Using fallback values."
+        export PROJECT_NAME_TARGET="JucePlugin"
+        export PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
+        export PROJECT_VERSION="1.0.0"
+        export PROJECT_COMPANY="MyCompany"
+    fi
 else
     # Fallback to hardcoded values if CMake hasn't run yet
     echo "Warning: CMake metadata file not found at $METADATA_FILE"
