@@ -3,7 +3,36 @@
 # DSP-JUCE Setup Validation Script
 # This script validates that the development environment is properly configured
 
-set -e
+set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+
+# Add error handler
+trap 'echo "[ERROR] Script failed at line $LINENO" >&2' ERR
+
+# Add help message
+if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
+    cat << EOF
+Usage: ${0##*/} [OPTIONS]
+
+Validates the development environment is properly configured for JUCE development.
+
+Options:
+    -h, --help      Show this help message
+    
+Examples:
+    ${0##*/}
+    
+Checks:
+    - Required tools (CMake, GCC, Make, Node.js, NPM)
+    - Linux audio dependencies (ALSA, X11, FreeType, FontConfig)
+    - Project structure (CMakeLists.txt, source files, configs)
+    - NPM setup and documentation linting
+    - CMake configuration test
+    
+Output:
+    Reports status of each check. Exit code 0 if environment is ready.
+EOF
+    exit 0
+fi
 
 echo "🔧 DSP-JUCE Setup Validation"
 echo "============================="

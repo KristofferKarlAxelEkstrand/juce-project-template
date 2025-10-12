@@ -3,7 +3,41 @@
 # JUCE Project Template Build Testing Script
 # Tests that plugin and standalone builds work correctly
 
-set -e
+set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+
+# Add error handler
+trap 'echo "[ERROR] Script failed at line $LINENO" >&2' ERR
+
+# Add help message
+if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
+    cat << EOF
+Usage: ${0##*/} [BUILD_CONFIG]
+
+Tests that plugin and standalone builds work correctly.
+
+Arguments:
+    BUILD_CONFIG    Build configuration (Debug or Release, default: Debug)
+
+Options:
+    -h, --help     Show this help message
+    
+Examples:
+    ${0##*/}           # Test Debug build
+    ${0##*/} Release   # Test Release build
+    
+Checks:
+    - Build directory exists
+    - Shared library artifact
+    - VST3 plugin bundle and binary
+    - AU plugin (macOS only)
+    - Standalone application
+    - Plugin installation paths
+    
+Output:
+    Reports status of each artifact. Exits with status 0 if all found.
+EOF
+    exit 0
+fi
 
 echo "JUCE Project Template Build Testing"
 echo "===================================="
