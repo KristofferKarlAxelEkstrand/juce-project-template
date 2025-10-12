@@ -62,6 +62,50 @@
                 "reveal": "always",
                 "panel": "shared"
             }
+        },
+        {
+            "label": "Build Standalone (Ninja Release)",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\scripts\\build-ninja.bat",
+                "args": ["--config", "Release"]
+            },
+            "linux": {
+                "command": "${workspaceFolder}/scripts/build-ninja.sh",
+                "args": ["--config", "Release"]
+            },
+            "osx": {
+                "command": "${workspaceFolder}/scripts/build-ninja.sh",
+                "args": ["--config", "Release"]
+            },
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run Standalone (Release)",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\scripts\\run-standalone.bat",
+                "args": ["Release"]
+            },
+            "linux": {
+                "command": "${workspaceFolder}/scripts/run-standalone.sh",
+                "args": ["Release"]
+            },
+            "osx": {
+                "command": "${workspaceFolder}/scripts/run-standalone.sh",
+                "args": ["Release"]
+            },
+            "dependsOn": "Build Standalone (Ninja Release)",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
         }
     ]
 }
