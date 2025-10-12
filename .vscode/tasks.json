@@ -27,16 +27,13 @@
             "label": "Run Standalone",
             "type": "shell",
             "windows": {
-                "command": "${workspaceFolder}\\build\\ninja\\JucePlugin_artefacts\\Debug\\Standalone\\DSP-JUCE Plugin.exe"
+                "command": "${workspaceFolder}\\scripts\\run-standalone.bat"
             },
             "linux": {
-                "command": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin"
+                "command": "${workspaceFolder}/scripts/run-standalone.sh"
             },
             "osx": {
-                "command": "open",
-                "args": [
-                    "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
-                ]
+                "command": "${workspaceFolder}/scripts/run-standalone.sh"
             },
             "dependsOn": "Build Standalone (Ninja Debug)",
             "group": {
@@ -61,6 +58,50 @@
                 "command": "${workspaceFolder}/scripts/configure-ninja.sh"
             },
             "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Build Standalone (Ninja Release)",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\scripts\\build-ninja.bat",
+                "args": ["--config", "Release"]
+            },
+            "linux": {
+                "command": "${workspaceFolder}/scripts/build-ninja.sh",
+                "args": ["--config", "Release"]
+            },
+            "osx": {
+                "command": "${workspaceFolder}/scripts/build-ninja.sh",
+                "args": ["--config", "Release"]
+            },
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "Run Standalone (Release)",
+            "type": "shell",
+            "windows": {
+                "command": "${workspaceFolder}\\scripts\\run-standalone.bat",
+                "args": ["Release"]
+            },
+            "linux": {
+                "command": "${workspaceFolder}/scripts/run-standalone.sh",
+                "args": ["Release"]
+            },
+            "osx": {
+                "command": "${workspaceFolder}/scripts/run-standalone.sh",
+                "args": ["Release"]
+            },
+            "dependsOn": "Build Standalone (Ninja Release)",
+            "group": "test",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"

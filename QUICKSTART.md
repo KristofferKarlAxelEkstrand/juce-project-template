@@ -39,8 +39,8 @@ open "build/default/JucePlugin_artefacts/Debug/Standalone/<PLUGIN_NAME>.app"
 # On Linux
 ./build/default/JucePlugin_artefacts/Debug/Standalone/"<PLUGIN_NAME>"
 
-# On Windows (uses vs2022 preset)
-build\vs2022\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
+# On Windows (uses ninja preset)
+build\ninja\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
 ```
 
 > **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt` (default: "DSP-JUCE Plugin").
@@ -57,7 +57,7 @@ You built a working JUCE audio plugin that:
 
 **Customize Your Plugin:**
 
-1. Edit plugin name and metadata - See [BUILD.md](BUILD.md) for CMakeLists.txt configuration
+1. Follow the customization guide - [CUSTOMIZATION.md](CUSTOMIZATION.md)
 2. Add your DSP code - See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)
 3. Design your GUI - See [docs/JUCE](docs/JUCE) for JUCE basics
 
