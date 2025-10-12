@@ -4,18 +4,22 @@ Complete guide to using Ninja for fast JUCE plugin development with this templat
 
 ## Overview
 
-Ninja is a fast, minimal build system that provides significantly faster incremental builds compared to Visual Studio/MSBuild or Make. This template includes pre-configured scripts and VS Code tasks for Ninja.
+Ninja is a fast, minimal build system that provides significantly faster incremental builds
+compared to Visual Studio/MSBuild or Make. This template includes pre-configured scripts
+and VS Code tasks for Ninja.
 
 ## Why Ninja?
 
 ### Performance Benefits
 
 **Incremental build speed**:
+
 - Ninja: 1-3 seconds for small changes
 - MSBuild (Visual Studio): 10-30 seconds for same changes
 - Make: 5-15 seconds for same changes
 
 **Full build speed**:
+
 - Ninja: 2-5 minutes (Debug), 3-7 minutes (Release)
 - MSBuild: 3-6 minutes (Debug), 5-10 minutes (Release)
 - Make: Similar to Ninja on Unix platforms
@@ -35,15 +39,17 @@ Ninja is a fast, minimal build system that provides significantly faster increme
 **Option 1: Visual Studio Installer** (Recommended)
 
 Visual Studio 2022 includes Ninja:
+
 1. Open Visual Studio Installer
 2. Modify Visual Studio 2022
 3. Under "Individual components", search for "Ninja"
 4. Check "C++ CMake tools for Windows"
 5. Install
 
-Ninja will be available when using Developer Command Prompt or when scripts initialize vcvarsall.bat.
+Ninja will be available when using Developer Command Prompt or when scripts
+initialize vcvarsall.bat.
 
-**Option 2: Manual Installation**
+#### Option 2: Manual Installation
 
 1. Download from [Ninja releases](https://github.com/ninja-build/ninja/releases)
 2. Extract `ninja.exe` to a folder (e.g., `C:\Tools\Ninja`)
@@ -52,6 +58,7 @@ Ninja will be available when using Developer Command Prompt or when scripts init
    - Edit "Path" variable
    - Add folder path (e.g., `C:\Tools\Ninja`)
 4. Verify installation:
+
    ```cmd
    ninja --version
    ```
@@ -89,11 +96,13 @@ ninja --version
 ### Linux (Other Distributions)
 
 **Fedora/RHEL**:
+
 ```bash
 sudo dnf install ninja-build
 ```
 
 **Arch Linux**:
+
 ```bash
 sudo pacman -S ninja
 ```
@@ -190,23 +199,27 @@ cmake --build build/ninja --config Release
 ### When to Use Each
 
 **Use Ninja when**:
+
 - Fast iteration is priority
 - Cross-platform development
 - CI/CD automation
 - Command-line or VS Code workflow
 
 **Use MSBuild/Visual Studio when**:
+
 - Visual Studio IDE is primary environment
 - Windows-only development
 - Need Visual Studio debugger integration
 - Prefer GUI build tools
 
 **Use Unix Make when**:
+
 - Traditional Unix workflow
 - Ninja not available
 - Simple build requirements
 
 **Use Xcode when**:
+
 - macOS-only development
 - Xcode IDE is primary environment
 - Need Xcode-specific features
@@ -215,7 +228,7 @@ cmake --build build/ninja --config Release
 
 Ninja builds output to `build/ninja/`:
 
-```
+```text
 build/ninja/
 ├── CMakeCache.txt
 ├── build.ninja              # Ninja build file (auto-generated)
@@ -272,6 +285,7 @@ Fast edit-build-test cycle:
 ```
 
 **Or in VS Code**:
+
 1. Edit files
 2. Press `Ctrl+Shift+B`
 3. Run "Run Standalone" task
@@ -330,16 +344,19 @@ rm -rf build/ninja
 **Symptom**: `ninja: command not found` or `'ninja' is not recognized`
 
 **Windows fix**:
+
 1. Use Visual Studio Developer Command Prompt, or
 2. Run scripts (they initialize VS environment), or
 3. Install Ninja and add to PATH
 
 **macOS fix**:
+
 ```bash
 brew install ninja
 ```
 
 **Linux fix**:
+
 ```bash
 sudo apt-get install ninja-build
 ```
@@ -349,6 +366,7 @@ sudo apt-get install ninja-build
 **Symptom**: Ninja reports missing dependencies or targets
 
 **Fix**: Reconfigure CMake:
+
 ```bash
 ./scripts/configure-ninja.sh
 ```
@@ -358,11 +376,13 @@ sudo apt-get install ninja-build
 **Symptom**: Ninja rebuilds everything on every build
 
 **Causes**:
+
 - CMakeLists.txt timestamp changed (expected)
 - Source file moved or renamed (expected)
 - Build system corruption (needs clean rebuild)
 
 **Fix**: If corruption suspected:
+
 ```bash
 rm -rf build/ninja
 ./scripts/configure-ninja.sh
@@ -374,6 +394,7 @@ rm -rf build/ninja
 **Symptom**: VS Code tasks cannot find Ninja or build fails
 
 **Fix**:
+
 1. Ensure Ninja is installed
 2. Run "Configure Ninja" task first
 3. Check task output for specific errors
@@ -384,12 +405,14 @@ rm -rf build/ninja
 **Symptom**: Ninja builds are slower than expected
 
 **Possible causes**:
+
 1. **Antivirus scanning**: Exclude `build/` directory from real-time scanning
 2. **HDD instead of SSD**: Use SSD for build directory
 3. **Low RAM**: Close other applications during build
 4. **Debug build**: Use Release for faster runtime (slower compile)
 
 **Check parallel builds**:
+
 ```bash
 # Ninja auto-detects CPU cores
 # Force specific job count if needed
@@ -456,6 +479,7 @@ This regenerates build files but keeps build artifacts.
 ### Antivirus Exclusions
 
 Add to antivirus exclusions:
+
 - `build/` directory
 - `ninja.exe` (Windows)
 - Project source directory during builds
@@ -463,12 +487,14 @@ Add to antivirus exclusions:
 ### Parallel Job Count
 
 Ninja auto-detects optimal job count. Override only if:
+
 - Running out of RAM: Use `-j2` or `-j4`
 - Want faster builds on high-core CPU: Use `-j$(nproc)` (Linux) or `-j8` (manual)
 
 ### Precompiled Headers
 
 JUCE uses precompiled headers automatically. Ensure they are enabled:
+
 - First build will be slower (generates PCH)
 - Subsequent builds much faster (uses PCH)
 

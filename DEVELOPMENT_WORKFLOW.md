@@ -136,6 +136,7 @@ From command line:
 ```
 
 Or from VS Code:
+
 - `Ctrl+Shift+P` → Tasks: Run Task → Build Standalone (Ninja Release)
 
 Output: `build/ninja/JucePlugin_artefacts/Release/`

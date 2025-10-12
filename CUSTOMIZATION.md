@@ -54,12 +54,14 @@ set(PLUGIN_CODE "Dsp1")                   # 4 characters, first char uppercase
 ```
 
 **Rules**:
+
 - Must be exactly 4 characters
 - At least one uppercase letter required
 - `PLUGIN_CODE` first character should be uppercase (GarageBand compatibility)
 - These codes must be unique to your plugin
 
 **Examples**:
+
 - Manufacturer code: `"Jdoe"` (for John Doe)
 - Plugin code: `"Rvb1"` (for first reverb plugin)
 
@@ -80,6 +82,7 @@ project(JuceProject VERSION 0.0.1 LANGUAGES C CXX)
 After editing `CMakeLists.txt`, reconfigure CMake to apply changes:
 
 **VS Code users**:
+
 1. Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS)
 2. Select "Tasks: Run Task"
 3. Select "Configure Ninja"
@@ -119,6 +122,7 @@ cat build/default/plugin_metadata.sh | grep PROJECT_NAME_PRODUCT
 Build the plugin to verify everything works:
 
 **VS Code users**:
+
 - Press `Ctrl+Shift+B` to build
 
 **Command line**:
@@ -138,6 +142,7 @@ scripts\build-ninja.bat
 Run the standalone application:
 
 **VS Code users**:
+
 1. Press `Ctrl+Shift+P`
 2. Select "Tasks: Run Task"
 3. Select "Run Standalone"
@@ -227,6 +232,7 @@ NEEDS_MIDI_INPUT TRUE            # Change FALSE to TRUE
 Add AU (Audio Units) on macOS, or other formats:
 
 The template automatically builds AU on macOS. For other platforms, formats are:
+
 - Windows/Linux: VST3, Standalone
 - macOS: VST3, AU, Standalone
 
@@ -254,6 +260,7 @@ npm test
 **Cause**: Version mismatch or invalid codes
 
 **Fix**: Check that:
+
 1. `project(... VERSION ...)` matches `PLUGIN_VERSION`
 2. `PLUGIN_MANUFACTURER_CODE` and `PLUGIN_CODE` are exactly 4 characters
 3. Both codes have at least one uppercase letter
@@ -263,6 +270,7 @@ npm test
 **Cause**: VS Code tasks cache old plugin names
 
 **Fix**:
+
 1. Reconfigure CMake (Step 2)
 2. Restart VS Code
 3. The tasks dynamically read metadata and should work now
@@ -274,18 +282,21 @@ npm test
 **Fix**: Copy plugin to system directory:
 
 Windows:
+
 ```cmd
 copy "build\ninja\YourTarget_artefacts\Debug\VST3\Your Plugin.vst3" ^
      "C:\Program Files\Common Files\VST3\"
 ```
 
 macOS:
+
 ```bash
 cp -r "build/ninja/YourTarget_artefacts/Debug/VST3/Your Plugin.vst3" \
       "/Library/Audio/Plug-Ins/VST3/"
 ```
 
 Linux:
+
 ```bash
 cp -r "build/ninja/YourTarget_artefacts/Debug/VST3/Your Plugin.vst3" \
       "$HOME/.vst3/"

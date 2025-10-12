@@ -4,7 +4,8 @@ Test your changes locally before pushing to avoid CI failures and iterate faster
 
 ## Overview
 
-This guide shows how to replicate CI checks on your local machine. Running these checks before pushing saves time and reduces failed CI runs.
+This guide shows how to replicate CI checks on your local machine.
+Running these checks before pushing saves time and reduces failed CI runs.
 
 ## Quick Validation
 
@@ -42,13 +43,15 @@ Check that development tools are installed:
 ```
 
 **Checks**:
+
 - CMake version (3.22+)
 - C++ compiler availability
 - Git configuration
 - Platform-specific dependencies
 
 **Expected output**:
-```
+
+```text
 Checking development environment...
 [OK] CMake version: 3.22.0
 [OK] C++ compiler: g++ 11.4.0
@@ -67,12 +70,14 @@ npm test
 ```
 
 **Checks**:
+
 - Markdown syntax
 - Link validity
 - Style consistency
 
 **Expected output**:
-```
+
+```text
 > juce-project-template@0.0.1 test
 > markdownlint-cli2 "**/*.md"
 
@@ -87,17 +92,20 @@ All files passed
 Configure CMake with Ninja:
 
 **Windows**:
+
 ```cmd
 scripts\configure-ninja.bat
 ```
 
 **macOS/Linux**:
+
 ```bash
 ./scripts/configure-ninja.sh
 ```
 
 **Expected output**:
-```
+
+```text
 Configuring CMake with Ninja preset...
 -- Plugin: DSP-JUCE Plugin v0.0.1
 -- Build files written to: build/ninja
@@ -111,17 +119,20 @@ Configuration successful!
 Build Debug configuration:
 
 **Windows**:
+
 ```cmd
 scripts\build-ninja.bat
 ```
 
 **macOS/Linux**:
+
 ```bash
 ./scripts/build-ninja.sh
 ```
 
 **Expected output**:
-```
+
+```text
 Building with Ninja (Debug configuration)...
 [100%] Built target JucePlugin
 Build successful!
@@ -138,13 +149,15 @@ Check that all build artifacts exist:
 ```
 
 **Checks**:
+
 - VST3 plugin bundle
 - Standalone application
 - Shared library
 - Platform-specific formats (AU on macOS)
 
 **Expected output**:
-```
+
+```text
 Build artifacts validation (Debug):
 [OK] VST3 plugin
 [OK] Standalone application
@@ -157,11 +170,13 @@ All artifacts found!
 Build Release configuration:
 
 **Windows**:
+
 ```cmd
 scripts\build-ninja.bat --config Release
 ```
 
 **macOS/Linux**:
+
 ```bash
 ./scripts/build-ninja.sh --config Release
 ```
@@ -362,6 +377,7 @@ Fastest iteration cycle:
 **Fix**: Install required tools (see BUILD.md)
 
 **Platform-specific**:
+
 - Windows: Install Visual Studio 2022 with C++ workload
 - macOS: Install Xcode Command Line Tools
 - Linux: Install build-essential, CMake, JUCE dependencies
@@ -383,6 +399,7 @@ npm run lint:md:fix
 **Issue**: Different compiler versions or configurations
 
 **Fix**:
+
 1. Check CMake version matches CI (3.22+)
 2. Use same compiler as CI (MSVC 2022 on Windows, Clang on macOS, GCC on Linux)
 3. Clean build: Delete `build/` directory and reconfigure
@@ -392,6 +409,7 @@ npm run lint:md:fix
 **Issue**: Local cache or missing files
 
 **Fix**:
+
 1. Clean build: `rm -rf build/`
 2. Reconfigure and rebuild
 3. Run `./scripts/validate-builds.sh` to check all artifacts
@@ -432,12 +450,14 @@ Additional checks on `main` branch:
 ### Before Every Commit
 
 Minimum checks:
+
 - Build succeeds: `./scripts/build-ninja.sh`
 - Documentation lints: `npm test`
 
 ### Before Every Push
 
 Recommended checks:
+
 - Environment valid: `./scripts/validate-setup.sh`
 - Build succeeds: `./scripts/build-ninja.sh`
 - Artifacts valid: `./scripts/validate-builds.sh Debug`
@@ -446,6 +466,7 @@ Recommended checks:
 ### Before Every Pull Request
 
 Comprehensive checks:
+
 - All validation scripts pass
 - Both Debug and Release builds succeed
 - Code formatted: `clang-format --dry-run --Werror src/**`

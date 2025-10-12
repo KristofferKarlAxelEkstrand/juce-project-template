@@ -13,22 +13,26 @@ This template builds your plugin in multiple formats from a single codebase. Eac
 **Description**: Industry-standard plugin format by Steinberg
 
 **Platforms**:
+
 - Windows: Full support
 - macOS: Full support  
 - Linux: Full support
 
 **Extension**:
+
 - Windows: `.vst3` (folder containing DLL)
 - macOS: `.vst3` (bundle)
 - Linux: `.vst3` (folder containing SO)
 
 **Installation Path**:
+
 - Windows: `C:\Program Files\Common Files\VST3\`
 - macOS: `/Library/Audio/Plug-Ins/VST3/`
 - Linux: `~/.vst3/` or `/usr/lib/vst3/`
 
 **Build Output**:
-```
+
+```text
 build/ninja/JucePlugin_artefacts/Debug/VST3/Your Plugin.vst3/
 ├── Contents/              # macOS only
 │   ├── Info.plist
@@ -44,6 +48,7 @@ build/ninja/JucePlugin_artefacts/Debug/VST3/Your Plugin.vst3/
 **Description**: Apple's native plugin format
 
 **Platforms**:
+
 - macOS: Full support
 - Windows: Not supported
 - Linux: Not supported
@@ -53,7 +58,8 @@ build/ninja/JucePlugin_artefacts/Debug/VST3/Your Plugin.vst3/
 **Installation Path**: `/Library/Audio/Plug-Ins/Components/`
 
 **Build Output**:
-```
+
+```text
 build/ninja/JucePlugin_artefacts/Debug/AU/Your Plugin.component/
 └── Contents/
     ├── Info.plist
@@ -71,11 +77,13 @@ build/ninja/JucePlugin_artefacts/Debug/AU/Your Plugin.component/
 **Description**: Independent application (not a plugin)
 
 **Platforms**:
+
 - Windows: Full support (executable)
 - macOS: Full support (app bundle)
 - Linux: Full support (executable)
 
 **Extension**:
+
 - Windows: `.exe`
 - macOS: `.app` (bundle)
 - Linux: No extension (executable)
@@ -83,12 +91,14 @@ build/ninja/JucePlugin_artefacts/Debug/AU/Your Plugin.component/
 **Build Output**:
 
 **Windows**:
-```
+
+```text
 build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin.exe
 ```
 
 **macOS**:
-```
+
+```text
 build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin.app/
 └── Contents/
     ├── Info.plist
@@ -99,11 +109,13 @@ build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin.app/
 ```
 
 **Linux**:
-```
+
+```text
 build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin
 ```
 
 **Use Cases**:
+
 - Testing during development (faster than loading in DAW)
 - Distribution to users without DAW requirement
 - Live performance tools
@@ -137,6 +149,7 @@ endif()
 ```
 
 **Default behavior**:
+
 - Windows/Linux: VST3 + Standalone
 - macOS: VST3 + AU + Standalone
 
@@ -145,21 +158,25 @@ endif()
 To build only specific formats, edit `CMakeLists.txt`:
 
 **VST3 only**:
+
 ```cmake
 set(PLUGIN_FORMATS VST3)
 ```
 
 **Standalone only** (for testing):
+
 ```cmake
 set(PLUGIN_FORMATS Standalone)
 ```
 
 **All formats** (macOS):
+
 ```cmake
 set(PLUGIN_FORMATS VST3 AU Standalone)
 ```
 
 After changing formats:
+
 1. Reconfigure CMake: `./scripts/configure-ninja.sh`
 2. Rebuild: `./scripts/build-ninja.sh`
 
@@ -168,18 +185,21 @@ After changing formats:
 ### Installing VST3
 
 **Windows**:
+
 ```cmd
 xcopy /E /I "build\ninja\JucePlugin_artefacts\Debug\VST3\Your Plugin.vst3" ^
       "C:\Program Files\Common Files\VST3\Your Plugin.vst3"
 ```
 
 **macOS**:
+
 ```bash
 cp -r "build/ninja/JucePlugin_artefacts/Debug/VST3/Your Plugin.vst3" \
       "/Library/Audio/Plug-Ins/VST3/"
 ```
 
 **Linux**:
+
 ```bash
 cp -r "build/ninja/JucePlugin_artefacts/Debug/VST3/Your Plugin.vst3" \
       "$HOME/.vst3/"
@@ -201,16 +221,19 @@ cp -r "build/ninja/JucePlugin_artefacts/Debug/AU/Your Plugin.component" \
 **No installation needed**. Run directly:
 
 **Windows**:
+
 ```cmd
 build\ninja\JucePlugin_artefacts\Debug\Standalone\Your Plugin.exe
 ```
 
 **macOS**:
+
 ```bash
 open "build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin.app"
 ```
 
 **Linux**:
+
 ```bash
 ./build/ninja/JucePlugin_artefacts/Debug/Standalone/Your\ Plugin
 ```
@@ -234,16 +257,19 @@ set(PLUGIN_CODE "Plug")                     # 4-char unique code
 Metadata flows to:
 
 **VST3**:
+
 - Plugin name displayed in DAW
 - Version shown in plugin info
 - Manufacturer name in plugin browser
 
 **AU**:
+
 - Bundle identifier: `com.yourcompany.yourplugin`
 - Info.plist metadata
 - Audio Component description
 
 **Standalone**:
+
 - Application title
 - About dialog (if implemented)
 - System window title
@@ -253,11 +279,13 @@ Metadata flows to:
 ### VST3 Testing
 
 **Recommended DAWs**:
+
 - Reaper (free evaluation, cross-platform)
 - Tracktion Waveform Free (free, cross-platform)
 - Cakewalk by BandLab (free, Windows)
 
 **Steps**:
+
 1. Install VST3 to system directory
 2. Launch DAW
 3. Rescan plugins (varies by DAW)
@@ -267,11 +295,13 @@ Metadata flows to:
 ### AU Testing (macOS)
 
 **Recommended DAWs**:
+
 - GarageBand (free, included with macOS)
 - Logic Pro (paid)
 - Ableton Live (paid, AU support)
 
 **Steps**:
+
 1. Install AU to `/Library/Audio/Plug-Ins/Components/`
 2. Launch DAW
 3. AU validation happens automatically
@@ -281,6 +311,7 @@ Metadata flows to:
 ### Standalone Testing
 
 **Quick test**:
+
 1. Launch standalone app
 2. Select audio device in settings
 3. Test audio input/output
@@ -292,12 +323,14 @@ Metadata flows to:
 ### Plugin Not Found in DAW
 
 **VST3**:
+
 1. Verify installation path is correct
 2. Check DAW's VST3 search paths in preferences
 3. Rescan plugins in DAW
 4. Check file permissions (should be readable by all users)
 
 **AU**:
+
 1. Check Console.app for AU validation errors
 2. Run AU validation: `auval -v aufx Plug Mcmp` (replace codes)
 3. Verify Info.plist is correct
@@ -306,12 +339,14 @@ Metadata flows to:
 ### Plugin Crashes on Load
 
 **Debug**:
+
 1. Test standalone version first (isolates DAW issues)
 2. Check Debug build for assertions
 3. Use debugger attached to DAW process
 4. Review DAW's crash logs
 
 **Common causes**:
+
 - Uninitialized variables in constructor
 - Memory allocation in audio thread
 - Thread safety violations
@@ -320,11 +355,13 @@ Metadata flows to:
 ### Validation Errors (AU)
 
 **Check validation**:
+
 ```bash
 auval -v aufx Plug Mcmp  # Replace with your codes
 ```
 
 **Common issues**:
+
 - Invalid manufacturer/plugin codes
 - Mismatched bundle identifier
 - Missing required AU properties
@@ -333,6 +370,7 @@ auval -v aufx Plug Mcmp  # Replace with your codes
 ### GUI Issues
 
 **Check**:
+
 1. Test in standalone (fast iteration)
 2. Check for platform-specific code paths
 3. Verify resource loading (images, fonts)
@@ -370,7 +408,8 @@ auval -v aufx Plug Mcmp  # Replace with your codes
 ### VST3 Distribution
 
 **Windows**:
-```
+
+```text
 YourPlugin-v1.0.0-windows.zip
 └── Your Plugin.vst3/
     └── Contents/
@@ -379,7 +418,8 @@ YourPlugin-v1.0.0-windows.zip
 ```
 
 **macOS**:
-```
+
+```text
 YourPlugin-v1.0.0-macos.zip
 └── Your Plugin.vst3/
     └── Contents/
@@ -388,7 +428,8 @@ YourPlugin-v1.0.0-macos.zip
 ```
 
 **Linux**:
-```
+
+```text
 YourPlugin-v1.0.0-linux.tar.gz
 └── Your Plugin.vst3/
     └── Contents/
@@ -398,7 +439,7 @@ YourPlugin-v1.0.0-linux.tar.gz
 
 ### AU Distribution (macOS)
 
-```
+```text
 YourPlugin-v1.0.0-macos.zip
 └── Your Plugin.component/
     └── Contents/

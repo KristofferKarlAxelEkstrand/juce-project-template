@@ -4,13 +4,15 @@ Complete guide to using Visual Studio Code for JUCE plugin development with this
 
 ## Overview
 
-This template provides pre-configured VS Code tasks for fast build-test cycles. This guide covers task usage, debugging setup, and recommended extensions.
+This template provides pre-configured VS Code tasks for fast build-test cycles.
+This guide covers task usage, debugging setup, and recommended extensions.
 
 ## VS Code Tasks
 
 ### Available Tasks
 
 Access tasks via:
+
 - Press `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (macOS)
 - Type "Tasks: Run Task"
 - Select task from list
@@ -70,6 +72,7 @@ Reconfigures CMake when project structure changes.
 **Access**: `Ctrl+Shift+P` → Tasks: Run Task → Configure Ninja
 
 **Run when**:
+
 - Changing `CMakeLists.txt`
 - Adding or removing source files
 - Modifying plugin metadata
@@ -82,14 +85,17 @@ Reconfigures CMake when project structure changes.
 Install platform-specific debugger:
 
 **Windows**:
+
 - Visual Studio 2022 includes MSVC debugger
 - C/C++ extension for VS Code (Microsoft)
 
 **macOS**:
+
 - Install Xcode Command Line Tools
 - CodeLLDB extension for VS Code
 
 **Linux**:
+
 - Install GDB: `sudo apt-get install gdb`
 - C/C++ extension for VS Code (Microsoft)
 
@@ -189,12 +195,14 @@ Same steps as Windows.
 
 ### Essential Extensions
 
-**C/C++ (Microsoft)**
+#### C/C++ (Microsoft)
+
 - IntelliSense and code navigation
 - Debugging support
 - Install: `ms-vscode.cpptools`
 
-**CMake Tools (Microsoft)**
+#### CMake Tools (Microsoft)
+
 - CMake project support
 - Build configuration management
 - Install: `ms-vscode.cmake-tools`
@@ -202,22 +210,27 @@ Same steps as Windows.
 ### Platform-Specific Extensions
 
 **Windows**:
+
 - C/C++ Extension Pack: `ms-vscode.cpptools-extension-pack`
 
 **macOS**:
+
 - CodeLLDB: `vadimcn.vscode-lldb`
 
 **Linux**:
+
 - C/C++ Extension Pack: `ms-vscode.cpptools-extension-pack`
 
 ### Optional Extensions
 
 **Productivity**:
+
 - GitLens: Enhanced Git integration
 - Markdown All in One: Markdown editing and preview
 - Better Comments: Highlight TODO, FIXME, etc.
 
 **Code Quality**:
+
 - Clang-Format: Code formatting
 - Error Lens: Inline error messages
 - Code Spell Checker: Catch typos in code and comments
@@ -270,11 +283,13 @@ VS Code should auto-detect CMake configuration. If IntelliSense is not working:
 ### Build Performance
 
 **Ninja builds** are fastest:
+
 - Configuration: ~1 second
 - Incremental build: 1-3 seconds
 - Full rebuild: 2-5 minutes
 
 **Tips**:
+
 - Use Debug builds for development (faster compilation)
 - Use Release builds for performance testing
 - Keep build directory on fast storage (SSD)
@@ -297,6 +312,7 @@ Both configurations share the same build directory but different outputs.
 **Symptom**: Tasks menu is empty or tasks are missing
 
 **Fix**:
+
 1. Ensure `.vscode/tasks.json` exists
 2. Reload VS Code: `Ctrl+Shift+P` → "Reload Window"
 3. Check VS Code version (requires 1.70+)
@@ -306,6 +322,7 @@ Both configurations share the same build directory but different outputs.
 **Symptom**: Red squiggles in code, navigation not working
 
 **Fix**:
+
 1. Run "Configure Ninja" task
 2. Install C/C++ extension
 3. Reload VS Code
@@ -316,6 +333,7 @@ Both configurations share the same build directory but different outputs.
 **Symptom**: Debugging fails to start or attach
 
 **Fix**:
+
 1. Install platform-specific debug extension
 2. Check `launch.json` configuration
 3. Verify executable path matches your plugin name
@@ -326,6 +344,7 @@ Both configurations share the same build directory but different outputs.
 **Symptom**: Build task fails with errors
 
 **Fix**:
+
 1. Check CMakeLists.txt for syntax errors
 2. Run "Configure Ninja" task
 3. Review build output for specific errors
@@ -336,6 +355,7 @@ Both configurations share the same build directory but different outputs.
 **Symptom**: Debug task runs Release build or vice versa
 
 **Fix**:
+
 1. Check task name in tasks list
 2. Verify `--config` argument in task definition
 3. Clean and rebuild: Delete `build/ninja`, run "Configure Ninja"
