@@ -7,8 +7,8 @@ How to manage versions and create releases.
 Version is defined in two places in `CMakeLists.txt` (must match):
 
 ```cmake
-project(JuceProject VERSION 1.0.0 LANGUAGES C CXX)
-set(PLUGIN_VERSION "1.0.0")
+project(JuceProject VERSION 0.0.1 LANGUAGES C CXX)
+set(PLUGIN_VERSION "0.0.1")
 ```
 
 CMake build fails if versions do not match.
