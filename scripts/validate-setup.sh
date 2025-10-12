@@ -35,7 +35,7 @@ echo "============================="
 echo
 
 # Check required tools
-info "Checking Required Tools..."
+info "Checking Required Tools"
 echo "-------------------------------"
 
 command_exists cmake && success "CMake found: $(cmake --version | head -n1)" || { error "CMake not found"; exit 1; }
@@ -49,9 +49,8 @@ command_exists npm && success "NPM found: $(npm --version)" || { error "NPM not 
 echo
 
 # Check Linux audio dependencies
- if [[ "$OSTYPE" == "linux-gnu"* ]]; then
--    echo "🔊 Checking Linux Audio Dependencies..."
-+    info "Checking Linux Audio Dependencies..."
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    info "Checking Linux Audio Dependencies"
     echo "--------------------------------------"
     
     pkg-config --exists alsa && success "ALSA development libraries found" || { error "ALSA development libraries missing"; exit 1; }
@@ -63,7 +62,7 @@ echo
 fi
 
 # Check project files
-info "Checking Project Structure..."
+info "Checking Project Structure"
 echo "--------------------------------"
 
 [ -f "CMakeLists.txt" ] && success "CMakeLists.txt found" || { error "CMakeLists.txt missing"; exit 1; }
@@ -75,7 +74,7 @@ echo "--------------------------------"
 echo
 
 # Test NPM setup
-info "Testing NPM Setup..."
+info "Testing NPM Setup"
 echo "-----------------------"
 
 if [ -d "node_modules" ]; then
@@ -90,7 +89,7 @@ npm test && success "Documentation linting passed" || { error "Documentation lin
 echo
 
 # Test CMake configuration
-info "Testing CMake Configuration..."
+info "Testing CMake Configuration"
 echo "--------------------------------"
 
 # Determine preset based on OS

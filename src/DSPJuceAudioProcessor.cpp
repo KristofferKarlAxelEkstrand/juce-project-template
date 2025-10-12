@@ -66,10 +66,24 @@ void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce:
 juce::AudioProcessorEditor *DSPJuceAudioProcessor::createEditor() { return new DSPJuceAudioProcessorEditor(*this); }
 
 //==============================================================================
+/**
+ * Sets the oscillator frequency.
+ *
+ * @param frequency The desired frequency in Hz. Valid range is [MIN_FREQUENCY, MAX_FREQUENCY].
+ *                  Values outside this range will be clamped.
+ * @threadsafe This method is thread-safe.
+ */
 void DSPJuceAudioProcessor::setFrequency(float frequency) {
     currentFrequency.store(juce::jlimit(MIN_FREQUENCY, MAX_FREQUENCY, frequency));
 }
 
+/**
+ * Sets the output gain.
+ *
+ * @param gainValue The desired gain (linear scale). Valid range is [MIN_GAIN, MAX_GAIN].
+ *                  Values outside this range will be clamped.
+ * @threadsafe This method is thread-safe.
+ */
 void DSPJuceAudioProcessor::setGain(float gainValue) { currentGain.store(juce::jlimit(MIN_GAIN, MAX_GAIN, gainValue)); }
 
 //==============================================================================

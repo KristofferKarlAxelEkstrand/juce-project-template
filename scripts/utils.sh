@@ -29,9 +29,7 @@ error() {
 }
 
 # Error handling
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    trap 'error "Script failed at line $LINENO"' ERR
-fi
+trap 'error "Script failed at line $LINENO"' ERR
 
 # Help message utility
 show_help() {
