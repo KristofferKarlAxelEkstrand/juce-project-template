@@ -144,6 +144,31 @@ The remaining phases (2-4) from `CI_OPTIMIZATION_PLAN.md` offer additional oppor
 
 ---
 
+## Review Guidance
+
+**When to Revisit This Archive:**
+
+1. **Major CI/CD Changes** - Planning new optimization phases (e.g., Phase 2-4 from `CI_OPTIMIZATION_PLAN.md`)
+2. **Performance Degradation** - If CI times increase >30% from current baseline
+3. **Periodic Reviews** - Annual CI strategy assessment (recommended: Q1 each year)
+4. **Platform Expansion** - Adding new build targets or test matrices
+5. **Technology Shifts** - GitHub Actions feature updates that enable new patterns
+
+**How to Use Archived Insights:**
+
+- **Decision Rationale**: Understand why we chose 3-job strategy over 2-job or 5-job alternatives
+- **Avoided Pitfalls**: Phase 2-4 planning documents highlight complexity risks we deferred
+- **Success Metrics**: Baseline data for comparison (52% reduction, 250 min/week saved)
+- **Evolution Pattern**: See how requirements drove design (7→5→2→3 job refinement)
+
+**Archive Maintenance:**
+
+- Do NOT update archived plans - they are historical snapshots
+- Create NEW planning documents for future initiatives
+- Cross-reference archives in new plans to show evolution
+
+---
+
 **Archive Created:** October 12, 2025  
 **Reason:** Planning complete, implementation successful  
 **Status:** Reference only - see active docs in `../../`

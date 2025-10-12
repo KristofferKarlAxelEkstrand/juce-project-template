@@ -47,7 +47,9 @@
 │                                                          │
 │  Expected Failure Rate: ~10% pass develop but fail main │
 │  ✅ Acceptable: macOS/Linux-specific issues (linker,    │
-│      headers), Release optimizations, security scans    │
+│      headers, missing system libraries, rpath errors,   │
+│      case-sensitive file paths, glibc version mismatch),│
+│      Release optimizations, security scans              │
 │  ⚠️  Concerning: >20% rate, Windows failures, syntax    │
 │      errors → indicates develop jobs need expansion     │
 │                                                          │
@@ -79,15 +81,25 @@ The CI system uses a **tiered validation approach**:
 
 ## What Runs When (Trigger Matrix)
 
-### Visual Matrix
+### Build Jobs Matrix
 
-| Event | Lint | Build (ubuntu, Debug) | Build (ubuntu, Release) | Build (windows, Release) | Build (macos, Release) | CodeQL (C++) | CodeQL (JS/TS) |
-|-------|------|----------------------|------------------------|-------------------------|------------------------|--------------|----------------|
-| **PR → `develop`** | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ |
-| **PR → `main`** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Push → `main`** | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
-| **Tag `v*.*.*`** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **Weekly Schedule** | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ |
+| Event                | Lint | Build (ubuntu, Debug) | Build (ubuntu, Release) | Build (windows, Release) | Build (macos, Release) |
+|----------------------|------|----------------------|------------------------|-------------------------|------------------------|
+| **PR → `develop`**   | ✅   | ✅                   | ❌                     | ✅                      | ❌                     |
+| **PR → `main`**      | ✅   | ✅                   | ✅                     | ✅                      | ✅                     |
+| **Push → `main`**    | ❌   | ❌                   | ❌                     | ❌                      | ❌                     |
+| **Tag `v*.*.*`**     | ❌   | ❌                   | ❌                     | ❌                      | ❌                     |
+| **Weekly Schedule**  | ❌   | ❌                   | ❌                     | ❌                      | ❌                     |
+
+### CodeQL Security Scanning Matrix
+
+| Event                | CodeQL (C++) | CodeQL (JS/TS) |
+|----------------------|--------------|----------------|
+| **PR → `develop`**   | ❌           | ❌             |
+| **PR → `main`**      | ✅           | ✅             |
+| **Push → `main`**    | ✅           | ✅             |
+| **Tag `v*.*.*`**     | ❌           | ❌             |
+| **Weekly Schedule**  | ✅           | ✅             |
 
 **Note:** Tags trigger the Release workflow (4 jobs: Linux, Windows, macOS builds + GitHub Release)
 

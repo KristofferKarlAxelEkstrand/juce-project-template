@@ -180,12 +180,13 @@ git push origin test/ci-main-pr
 **Develop PR metrics to track:**
 
 - ⏱️ Average PR duration (target: <20 min, goal: 15 min)
-- 🎯 Job completion success rate
-- 📊 Windows-specific issues caught (should be high)
+- 🎯 Job completion success rate (target: >98%)
+- 📊 Windows-specific issues caught (target: ≥80% of all platform-specific issues)
+- 🔄 Rerun frequency (target: <10% of jobs require manual rerun)
 
 **Main PR metrics to track:**
 
-- ⚠️ Failure rate of PRs that passed develop (acceptable: <15%, expected: ~10%)
+- ⚠️ Failure rate of PRs that passed develop (acceptable: <15%, expected: ~10%, concerning: >20%)
 - 🐛 Types of issues caught only at main gate (macOS/Linux Release issues)
 - 💯 Zero production escapes (all issues caught before merge)
 
