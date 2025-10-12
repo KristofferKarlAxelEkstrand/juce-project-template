@@ -30,13 +30,13 @@ cmake --build --preset=ninja
 
 ```bash
 # On macOS
-open build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin.app
+open "build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
 
 # On Linux
-./build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin
+./build/ninja/JucePlugin_artefacts/Debug/Standalone/"DSP-JUCE Plugin"
 
 # On Windows
-build\ninja\JucePlugin_artefacts\Debug\Standalone\DSP-JUCE Plugin.exe
+"build\\ninja\\JucePlugin_artefacts\\Debug\\Standalone\\DSP-JUCE Plugin.exe"
 ```
 
 ## What You Just Built
@@ -78,8 +78,18 @@ Install CMake 3.22+:
 
 ### "JUCE download fails"
 
-Check internet connection. If behind firewall:
+Check internet connection. If behind a firewall, you have two options:
 
-1. Download JUCE manually: <https://github.com/juce-framework/JUCE/archive/refs/tags/8.0.10.zip>
-2. Extract to `third_party/JUCE`
-3. Initialize as submodule: `git submodule add https://github.com/juce-framework/JUCE.git third_party/JUCE`
+#### Option 1: Manual Download (Recommended)
+
+1. **Download JUCE manually**: [https://github.com/juce-framework/JUCE/archive/refs/tags/8.0.10.zip](https://github.com/juce-framework/JUCE/archive/refs/tags/8.0.10.zip)
+2. **Create directory**: `mkdir -p third_party`
+3. **Extract to**: `third_party/JUCE` (ensure the `.git` folder is not inside the extracted folder)
+
+#### Option 2: Git Submodule
+
+If you prefer to use Git, you can add JUCE as a submodule:
+
+```bash
+git submodule add https://github.com/juce-framework/JUCE.git third_party/JUCE
+```
