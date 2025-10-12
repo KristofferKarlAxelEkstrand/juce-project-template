@@ -27,20 +27,23 @@ cmake --preset=default
 cmake --build --preset=default
 ```
 
-> **Note:** For faster builds, install [Ninja](https://ninja-build.org/) and use the `ninja` preset instead of `default`.
+> **Note:** For faster builds, install [Ninja](https://ninja-build.org/) and use the `ninja` preset.
+> If you use `ninja`, the build output will be in the `build/ninja/` directory instead of `build/`.
 
 ### Step 3: Run Your Plugin (instant)
 
 ```bash
 # On macOS
-open "build/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
+open "build/JucePlugin_artefacts/Debug/Standalone/<PLUGIN_NAME>.app"
 
 # On Linux
-./build/JucePlugin_artefacts/Debug/Standalone/"DSP-JUCE Plugin"
+./build/JucePlugin_artefacts/Debug/Standalone/"<PLUGIN_NAME>"
 
 # On Windows
-./build/JucePlugin_artefacts/Debug/Standalone/"DSP-JUCE Plugin.exe"
+./build/JucePlugin_artefacts/Debug/Standalone/"<PLUGIN_NAME>.exe"
 ```
+
+> **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt` (default: "DSP-JUCE Plugin").
 
 ## What You Just Built
 
