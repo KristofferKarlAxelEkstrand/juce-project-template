@@ -1,7 +1,7 @@
 ---
 description: 'Expert DSP-JUCE developer specializing in real-time audio processing, modern C++20, and professional audio plugin development.'
 model: Gemini 2.5 Pro (copilot)
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'runTests', 'playwright']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'playwright/*', 'github/github-mcp-server/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'runTests']
 ---
 
 # DSP-JUCE Expert Development Assistant

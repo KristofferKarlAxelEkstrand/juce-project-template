@@ -31,25 +31,53 @@ jobs:
       run: npm test
 
   build:
-    name: Build
+    name: Build (${{ matrix.os }}, ${{ matrix.build_type }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        build_type: [Release]
         include:
+          # Ubuntu Debug - runs on ALL PRs (develop and main)
           - os: ubuntu-latest
             build_type: Debug
+            run_on_develop: true
+          # Windows Release - runs on ALL PRs (develop and main)
+          - os: windows-latest
+            build_type: Release
+            run_on_develop: true
+          # Ubuntu Release - runs ONLY on PRs to main
+          - os: ubuntu-latest
+            build_type: Release
+            run_on_develop: false
+          # macOS Release - runs ONLY on PRs to main
+          - os: macos-latest
+            build_type: Release
+            run_on_develop: false
 
     steps:
+    # Skip this job if it's a PR to develop and the job is marked as main-only
+    - name: Check if job should run
+      id: should_run
+      run: |
+        BASE_REF="${{ github.base_ref }}"
+        if [ -n "$BASE_REF" ] && [ "$BASE_REF" = "develop" ] && [ "${{ matrix.run_on_develop }}" = "false" ]; then
+          echo "Skipping job: PR to develop, job marked for main only"
+          echo "skip=true" >> $GITHUB_OUTPUT
+        else
+          echo "Running job"
+          echo "skip=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
+
     - uses: actions/checkout@v5
+      if: steps.should_run.outputs.skip != 'true'
       with:
         fetch-depth: 0
         submodules: 'recursive'
         lfs: true
 
     - name: Verify JUCE submodule
+      if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
         echo "=== Checking JUCE submodule status ==="
@@ -65,6 +93,7 @@ jobs:
         fi
 
     - name: Ensure JUCE submodule is initialized
+      if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
         if [ ! -d "third_party/JUCE" ] || [ -z "$(git -C third_party/JUCE rev-parse --show-toplevel 2>/dev/null)" ]; then
@@ -75,6 +104,7 @@ jobs:
         fi
 
     - name: Set build environment variables
+      if: steps.should_run.outputs.skip != 'true'
       id: set_vars
       run: |
         if [ "${{ runner.os }}" == "Windows" ]; then
@@ -93,7 +123,7 @@ jobs:
       shell: bash
 
     - name: Install Linux dependencies
-      if: runner.os == 'Linux'
+      if: steps.should_run.outputs.skip != 'true' && runner.os == 'Linux'
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -113,6 +143,7 @@ jobs:
           build-essential
 
     - name: Cache JUCE
+      if: steps.should_run.outputs.skip != 'true'
       uses: actions/cache@v4
       id: cache-juce
       with:
@@ -123,6 +154,7 @@ jobs:
       continue-on-error: true
 
     - name: Report cache status
+      if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
         if [ "${{ steps.cache-juce.outputs.cache-hit }}" = "true" ]; then
@@ -132,6 +164,7 @@ jobs:
         fi
 
     - name: Configure CMake with Retries
+      if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
         echo "=== cmake version ==="
@@ -198,7 +231,7 @@ jobs:
         done
 
     - name: Show CMake error logs
-      if: always()
+      if: steps.should_run.outputs.skip != 'true' && always()
       shell: bash
       run: |
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
@@ -214,7 +247,7 @@ jobs:
         fi
 
     - name: Upload CMake logs on failure
-      if: failure()
+      if: steps.should_run.outputs.skip != 'true' && failure()
       uses: actions/upload-artifact@v4
       with:
         name: cmake-logs-${{ matrix.os }}-${{ matrix.build_type }}
@@ -225,6 +258,7 @@ jobs:
         retention-days: 7
 
     - name: Build
+      if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
         if [ "${{ runner.os }}" = "macOS" ]; then
@@ -238,7 +272,7 @@ jobs:
         fi
 
     - name: List Xcode targets (macOS debug)
-      if: runner.os == 'macOS'
+      if: steps.should_run.outputs.skip != 'true' && runner.os == 'macOS'
       shell: bash
       run: |
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
@@ -253,7 +287,7 @@ jobs:
         fi
 
     - name: Show produced plugin artifacts (macOS debug)
-      if: runner.os == 'macOS'
+      if: steps.should_run.outputs.skip != 'true' && runner.os == 'macOS'
       shell: bash
       run: |
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
@@ -272,6 +306,7 @@ jobs:
         fi
 
     - name: Validate build artifacts
+      if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
@@ -287,6 +322,7 @@ jobs:
         bash scripts/validate-builds.sh ${{ matrix.build_type }} "${BUILD_DIR}"
 
     - name: Extract plugin metadata
+      if: steps.should_run.outputs.skip != 'true'
       id: plugin_meta
       shell: bash
       run: |
@@ -303,8 +339,8 @@ jobs:
         fi
 
     - name: Upload build artefacts
+      if: steps.should_run.outputs.skip != 'true' && matrix.build_type == 'Release'
       uses: actions/upload-artifact@v4
-      if: matrix.build_type == 'Release'
       with:
         name: ${{ steps.plugin_meta.outputs.target_name }}-${{ matrix.os }}
         path: ${{ steps.set_vars.outputs.build_dir }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release/

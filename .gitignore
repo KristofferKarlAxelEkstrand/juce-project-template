@@ -60,6 +60,9 @@ Thumbs.db
 *.temp
 *.log
 
+# Temporary PR review response documents
+.temp-pr-reviews-docs/
+
 # Plugin builds
 *.vst3
 *.au
