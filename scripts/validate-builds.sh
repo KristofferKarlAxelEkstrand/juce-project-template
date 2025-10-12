@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# DSP-JUCE Build Validation Script
+# JUCE Project Template Build Validation Script
 # Validates that plugin and standalone builds exist.
 
 set -e
 
-echo "DSP-JUCE Build Validation"
-echo "=========================="
+echo "JUCE Project Template Build Validation"
+echo "======================================="
 echo
 
 # --- Configuration ---

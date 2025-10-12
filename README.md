@@ -120,8 +120,8 @@ Two simple commands build everything:
 
 **Output location**: `build/JucePlugin_artefacts/Debug/`
 
-- `VST3/DSP-JUCE Plugin.vst3` - VST3 plugin
-- `Standalone/DSP-JUCE Plugin` - Standalone application
+- `VST3/Your Plugin.vst3` - VST3 plugin (name from PLUGIN_NAME in CMakeLists.txt)
+- `Standalone/Your Plugin` - Standalone application
 
 ### Customize Your Plugin
 

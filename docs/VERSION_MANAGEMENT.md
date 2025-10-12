@@ -82,7 +82,7 @@ Version from `CMakeLists.txt` flows to:
 | JUCE | `JucePlugin_VersionString` | "1.0.0" |
 | Metadata | `PROJECT_VERSION` | `export PROJECT_VERSION="1.0.0"` |
 | CI/CD | `$PROJECT_VERSION` | Workflow variable |
-| ZIP | Sanitized in workflow | `DSP-JUCE-Plugin-v1.0.0-windows.zip` |
+| ZIP | Sanitized in workflow | `Your-Plugin-v1.0.0-windows.zip` |
 | DAW | Plugin info | Displayed in DAW |
 
 ## Check Current Version
@@ -91,7 +91,7 @@ Version from `CMakeLists.txt` flows to:
 
 ```bash
 cmake --preset=default | grep "Plugin:"
-# Output: -- Plugin: DSP-JUCE Plugin v1.0.0
+# Output: -- Plugin: Your Plugin v1.0.0
 ```
 
 ### Metadata File
