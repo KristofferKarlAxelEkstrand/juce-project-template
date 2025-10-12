@@ -38,11 +38,11 @@ echo
 info "📋 Checking Required Tools..."
 echo "-------------------------------"
 
-command_exists cmake && success "CMake found: $(cmake --version | head -n1)" || (error "CMake not found" && exit 1)
-command_exists g++ && success "GCC found: $(g++ --version | head -n1)" || (error "GCC not found" && exit 1)
-command_exists make && success "Make found: $(make --version | head -n1)" || (error "Make not found" && exit 1)
-command_exists node && success "Node.js found: $(node --version)" || (error "Node.js not found" && exit 1)
-command_exists npm && success "NPM found: $(npm --version)" || (error "NPM not found" && exit 1)
+command_exists cmake && success "CMake found: $(cmake --version | head -n1)" || { error "CMake not found"; exit 1; }
+command_exists g++ && success "GCC found: $(g++ --version | head -n1)" || { error "GCC not found"; exit 1; }
+command_exists make && success "Make found: $(make --version | head -n1)" || { error "Make not found"; exit 1; }
+command_exists node && success "Node.js found: $(node --version)" || { error "Node.js not found"; exit 1; }
+command_exists npm && success "NPM found: $(npm --version)" || { error "NPM not found"; exit 1; }
 
 echo
 
@@ -51,10 +51,10 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     info "🔊 Checking Linux Audio Dependencies..."
     echo "--------------------------------------"
     
-    pkg-config --exists alsa && success "ALSA development libraries found" || (error "ALSA development libraries missing" && exit 1)
-    pkg-config --exists x11 && success "X11 development libraries found" || (error "X11 development libraries missing" && exit 1)
-    pkg-config --exists freetype2 && success "FreeType development libraries found" || (error "FreeType development libraries missing" && exit 1)
-    pkg-config --exists fontconfig && success "FontConfig development libraries found" || (error "FontConfig development libraries missing" && exit 1)
+    pkg-config --exists alsa && success "ALSA development libraries found" || { error "ALSA development libraries missing"; exit 1; }
+    pkg-config --exists x11 && success "X11 development libraries found" || { error "X11 development libraries missing"; exit 1; }
+    pkg-config --exists freetype2 && success "FreeType development libraries found" || { error "FreeType development libraries missing"; exit 1; }
+    pkg-config --exists fontconfig && success "FontConfig development libraries found" || { error "FontConfig development libraries missing"; exit 1; }
     
     echo
 fi
@@ -63,11 +63,11 @@ fi
 info "📁 Checking Project Structure..."
 echo "--------------------------------"
 
-[ -f "CMakeLists.txt" ] && success "CMakeLists.txt found" || (error "CMakeLists.txt missing" && exit 1)
-[ -f "CMakePresets.json" ] && success "CMakePresets.json found" || (error "CMakePresets.json missing" && exit 1)
-[ -f "package.json" ] && success "package.json found" || (error "package.json missing" && exit 1)
-[ -d "src" ] && success "src/ directory found" || (error "src/ directory missing" && exit 1)
-[ -d ".github/workflows" ] && success ".github/workflows/ directory found" || (error ".github/workflows/ directory missing" && exit 1)
+[ -f "CMakeLists.txt" ] && success "CMakeLists.txt found" || { error "CMakeLists.txt missing"; exit 1; }
+[ -f "CMakePresets.json" ] && success "CMakePresets.json found" || { error "CMakePresets.json missing"; exit 1; }
+[ -f "package.json" ] && success "package.json found" || { error "package.json missing"; exit 1; }
+[ -d "src" ] && success "src/ directory found" || { error "src/ directory missing"; exit 1; }
+[ -d ".github/workflows" ] && success ".github/workflows/ directory found" || { error ".github/workflows/ directory missing"; exit 1; }
 
 echo
 
@@ -79,10 +79,10 @@ if [ -d "node_modules" ]; then
     success "Node modules directory exists"
 else
     info "Installing NPM dependencies..."
-    npm install && success "NPM dependencies installed" || (error "NPM install failed" && exit 1)
+    npm install && success "NPM dependencies installed" || { error "NPM install failed"; exit 1; }
 fi
 
-npm test && success "Documentation linting passed" || (error "Documentation linting failed" && exit 1)
+npm test && success "Documentation linting passed" || { error "Documentation linting failed"; exit 1; }
 
 echo
 
