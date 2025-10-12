@@ -183,7 +183,10 @@ git push origin test/ci-main-pr
 - 🎯 Job completion success rate (target: >98%)
 - 📊 Windows-specific issues caught (target: ≥80% of all platform-specific issues)
 - 🔄 Rerun frequency (target: <10% of jobs require manual rerun per week,
-  calculated as [manually rerun jobs] / [total jobs executed])
+  calculated as [number of manual rerun events] / [number of initial job executions])
+  - *Definition*: "Manual rerun events" counts each time a job is manually rerun
+    (not automated retries). "Initial job executions" counts each job's first run
+    per PR (excluding reruns).
 
 **Main PR metrics to track:**
 

@@ -59,7 +59,8 @@ jobs:
     - name: Check if job should run
       id: should_run
       run: |
-        if [ -n "${{ github.base_ref }}" ] && [ "${{ github.base_ref }}" == "develop" ] && [ "${{ matrix.run_on_develop }}" == "false" ]; then
+        BASE_REF="${{ github.base_ref }}"
+        if [ -n "$BASE_REF" ] && [ "$BASE_REF" = "develop" ] && [ "${{ matrix.run_on_develop }}" = "false" ]; then
           echo "Skipping job: PR to develop, job marked for main only"
           echo "skip=true" >> $GITHUB_OUTPUT
         else
