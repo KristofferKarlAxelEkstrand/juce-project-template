@@ -3,6 +3,19 @@
 This repository is a modern JUCE 8.0.10 audio plugin project template providing
 cross-platform build system, CI/CD integration, and fast development workflow patterns.
 
+## General Coding Principles
+
+Follow these principles for all code, documentation, and configuration:
+
+- **Precise**: Write exact code and documentation for specific needs
+- **Concise**: Keep implementations simple and direct
+- **Correct**: Verify all code compiles and functions properly
+- **Down-to-earth**: Use clear, practical solutions without over-engineering
+- **KISS**: Keep everything simple and straightforward
+- **Pedagogic**: Write code and documentation that is easy to understand
+
+Avoid decorative language, emojis, emoticons, and promotional adjectives in all files.
+
 ## Architecture Overview
 
 **Core Components:**
@@ -49,10 +62,10 @@ gain.process(context);        // Apply gain
 ```bash
 # Configure (90+ seconds - downloads JUCE 8.0.10 automatically)
 cmake --preset=default          # Linux/macOS (builds to build/default/)
-cmake --preset=vs2022           # Windows (builds to build/vs2022/)
+cmake --preset=vs2022           # Windows (builds in build/vs2022/, artifacts in build/vs2022/JucePlugin_artefacts/...)
 
-# Build (2m45s Debug, 4m30s Release)
-cmake --build --preset=default  # Creates VST3 + standalone in build/default/JucePlugin_artefacts/
+# Build (2m4s Debug, 4m30s Release)
+cmake --build --preset=default  # Creates VST3 + standalone in build/default/JucePlugin_artefacts/ (Linux/macOS; see below for Windows paths)
 cmake --build build/vs2022 --config Release  # Windows Release build
 ```
 
@@ -286,8 +299,7 @@ sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-d
 ### Build Performance Issues
 
 - Debug builds are large (~197MB static library) but necessary for development
-- Use Release builds for distribution: `cmake --build build/vs2022 --config Release`
-- Clean builds take full time; incremental builds are much faster
+- Use Release builds for distribution: `cmake --build --preset=vs2022 --config Release`
 
 ## JUCE Development Anti-Patterns
 

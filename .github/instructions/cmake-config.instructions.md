@@ -1,11 +1,24 @@
 ---
-applyTo: '**/CMakeLists.txt,*.cmake'
+applyTo:
+  - '**/CMakeLists.txt'
+  - '*.cmake'
 ---
 
 # CMake Configuration Instructions
 
 Use modern CMake 3.22+ practices with proper JUCE integration. Focus on maintainable, cross-platform build
 configurations with C++20 support.
+
+## Writing Principles
+
+- **Precise**: Write exact CMake commands for specific needs
+- **Concise**: Keep build configurations minimal and clear
+- **Correct**: Verify configurations work on all target platforms
+- **Down-to-earth**: Use standard CMake patterns without unnecessary complexity
+- **KISS**: Avoid overcomplicating build logic
+- **Pedagogic**: Structure build files so they are easy to understand
+
+Avoid decorative comments, emojis, emoticons, and promotional language.
 
 ## Modern CMake Practices
 

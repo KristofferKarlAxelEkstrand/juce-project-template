@@ -12,7 +12,7 @@ Edit-build-test cycle in VS Code:
 
 ## VS Code Tasks
 
-Three tasks in `.vscode/tasks.json`:
+Five tasks in `.vscode/tasks.json`:
 
 ### 1. Build Standalone (Ninja Debug)
 
@@ -24,13 +24,29 @@ Output: `build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin[.exe|.app
 
 ### 2. Run Standalone
 
-Build and launch the standalone application.
+Build and launch the Debug standalone application.
 
 Access: `Ctrl+Shift+P` → Tasks: Run Task → Run Standalone
 
 Depends on: Build Standalone task (runs automatically first)
 
-### 3. Configure Ninja
+### 3. Build Standalone (Ninja Release)
+
+Build Release configuration with optimizations.
+
+Access: `Ctrl+Shift+P` → Tasks: Run Task → Build Standalone (Ninja Release)
+
+Output: `build/ninja/JucePlugin_artefacts/Release/Standalone/Your Plugin[.exe|.app]`
+
+### 4. Run Standalone (Release)
+
+Build and launch the Release standalone application.
+
+Access: `Ctrl+Shift+P` → Tasks: Run Task → Run Standalone (Release)
+
+Depends on: Build Standalone (Ninja Release) task
+
+### 5. Configure Ninja
 
 Reconfigure CMake. Run when:
 
@@ -39,6 +55,8 @@ Reconfigure CMake. Run when:
 - Changing build options
 
 Access: `Ctrl+Shift+P` → Tasks: Run Task → Configure Ninja
+
+See [docs/VSCODE_INTEGRATION.md](docs/VSCODE_INTEGRATION.md) for debugging setup and more VS Code features.
 
 ## Build Scripts
 
@@ -116,6 +134,10 @@ From command line:
 ./scripts/build-ninja.bat --config Release  # Windows
 ./scripts/build-ninja.sh --config Release   # macOS/Linux
 ```
+
+Or from VS Code:
+
+- `Ctrl+Shift+P` → Tasks: Run Task → Build Standalone (Ninja Release)
 
 Output: `build/ninja/JucePlugin_artefacts/Release/`
 
@@ -251,6 +273,9 @@ For development, use standalone application for faster iteration.
 ## See Also
 
 - [BUILD.md](BUILD.md) - Initial build setup
-- [VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) - Version and release workflow
+- [docs/VSCODE_INTEGRATION.md](docs/VSCODE_INTEGRATION.md) - VS Code debugging and tasks
+- [docs/NINJA.md](docs/NINJA.md) - Ninja build system guide
+- [docs/LOCAL_CI_TESTING.md](docs/LOCAL_CI_TESTING.md) - Local CI validation
+- [docs/VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) - Version and release workflow
 - [docs/CI.md](docs/CI.md) - CI/CD overview
 - [docs/CROSS_PLATFORM_BUILDS.md](docs/CROSS_PLATFORM_BUILDS.md) - Platform-specific details

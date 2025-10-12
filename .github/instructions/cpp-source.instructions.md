@@ -1,11 +1,24 @@
 ---
-applyTo: 'src/**/*.cpp,src/**/*.h'
+applyTo:
+  - src/**/*.cpp
+  - src/**/*.h
 ---
 
 # C++ Source Code Instructions
 
 Apply modern C++20 standards with JUCE framework best practices. Focus on performance, memory safety, and
 maintainable code.
+
+## Writing Principles
+
+- **Precise**: Write exact code that does what is needed, nothing more
+- **Concise**: Keep implementations simple and direct
+- **Correct**: Verify code compiles and follows JUCE patterns
+- **Down-to-earth**: Use clear, practical solutions without over-engineering
+- **KISS**: Keep code simple and straightforward
+- **Pedagogic**: Write code that is easy to understand and maintain
+
+Avoid decorative comments, emojis, emoticons, and promotional language in code and comments.
 
 ## Code Standards
 

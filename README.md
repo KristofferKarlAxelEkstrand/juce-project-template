@@ -3,7 +3,7 @@
 A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone).
 Designed for professional development with fast iteration, CI/CD integration, and deterministic builds.
 
-## 🚀 Quick Start (5 Minutes)
+## Quick Start (5 Minutes)
 
 New to this template? Start here: **[QUICKSTART.md](QUICKSTART.md)**
 
@@ -131,7 +131,9 @@ Two simple commands build everything:
 
 ### Customize Your Plugin
 
-Edit these values in `CMakeLists.txt` to create your own plugin:
+Follow the step-by-step guide in **[CUSTOMIZATION.md](CUSTOMIZATION.md)** to make this template your own.
+
+Quick start: Edit these values in `CMakeLists.txt`:
 
 ```cmake
 set(PLUGIN_NAME "Your Plugin Name")
@@ -255,7 +257,13 @@ This template includes comprehensive guides:
 
 - **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting
 - **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)**: Fast Ninja-based workflow setup
+- **[CUSTOMIZATION.md](CUSTOMIZATION.md)**: Step-by-step plugin customization guide
 - **[CONTRIBUTING.md](CONTRIBUTING.md)**: Git workflow, coding standards, and PR process
+- **[docs/VSCODE_INTEGRATION.md](docs/VSCODE_INTEGRATION.md)**: VS Code debugging and task usage
+- **[docs/NINJA.md](docs/NINJA.md)**: Ninja build system guide
+- **[docs/LOCAL_CI_TESTING.md](docs/LOCAL_CI_TESTING.md)**: Local validation before pushing
+- **[docs/PLUGIN_FORMATS.md](docs/PLUGIN_FORMATS.md)**: VST3, AU, and Standalone format guide
+- **[docs/COPILOT_INSTRUCTIONS.md](docs/COPILOT_INSTRUCTIONS.md)**: GitHub Copilot custom instructions setup
 - **[docs/JUCE/](docs/JUCE/)**: JUCE framework concepts and real-time audio safety
 - **[docs/cmake/](docs/cmake/)**: CMake build system and dependency management
 - **[docs/C++/](docs/C++/)**: Modern C++20 features for audio development
