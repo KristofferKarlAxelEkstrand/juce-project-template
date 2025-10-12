@@ -151,7 +151,8 @@ Run the standalone application:
 
 ```bash
 # Windows
-build\ninja\YourTarget_artefacts\Debug\Standalone\Your Plugin Name.exe
+# On Windows (uses ninja preset)
+build\ninja\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
 
 # macOS
 open "build/ninja/YourTarget_artefacts/Debug/Standalone/Your Plugin Name.app"
