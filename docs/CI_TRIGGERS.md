@@ -6,7 +6,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 | Event | Lint | Build (ubuntu, Debug) | Build (ubuntu, Release) | Build (windows, Release) | Build (macos, Release) | CodeQL (C++) | CodeQL (JS/TS) | Release Jobs |
 |-------|------|----------------------|------------------------|-------------------------|------------------------|--------------|----------------|--------------|
-| **PR → `develop`** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **PR → `develop`** | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
 | **PR → `main`** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | **Push → `main`** | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
 | **Tag `v*.*.*`** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -16,7 +16,25 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 ## Workflow Breakdown by Trigger
 
-### Pull Requests to `main` or `develop`
+### Pull Requests to `develop`
+
+**Workflows:** CI Build only (no security scanning)
+
+**Jobs Running:**
+
+1. ✅ **Lint** (ubuntu-latest) - Markdown linting
+2. ✅ **Build** (ubuntu-latest, Debug) - Debug build validation
+3. ✅ **Build** (ubuntu-latest, Release) - Linux release build
+4. ✅ **Build** (windows-latest, Release) - Windows release build
+5. ✅ **Build** (macos-latest, Release) - macOS release build
+
+#### Total: 5 parallel jobs
+
+**Purpose:** Fast feedback for feature development
+
+---
+
+### Pull Requests to `main`
 
 **Workflows:** CI Build + CodeQL Security Analysis
 
@@ -32,7 +50,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 #### Total: 7 parallel jobs
 
-**Purpose:** Comprehensive validation before merging
+**Purpose:** Comprehensive validation before production merge
 
 ---
 
@@ -90,15 +108,16 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 | Workflow | Triggers |
 |----------|----------|
 | **CI Build** (`ci.yml`) | PRs to `main` or `develop` |
-| **CodeQL Security** (`codeql.yml`) | PRs to `main`/`develop`, Pushes to `main`, Weekly schedule |
+| **CodeQL Security** (`codeql.yml`) | PRs to `main` only, Pushes to `main`, Weekly schedule |
 | **Release** (`release.yml`) | Version tags (`v*.*.*`) |
 
 ### Total CI Job Count by Event
 
-- **PR to `main` or `develop`:** 7 jobs
-- **Push to `main`:** 2 jobs
-- **Version tag:** 4 jobs
-- **Weekly schedule:** 2 jobs
+- **PR to `develop`:** 5 jobs (builds + lint only)
+- **PR to `main`:** 7 jobs (builds + lint + security)
+- **Push to `main`:** 2 jobs (security only)
+- **Version tag:** 4 jobs (release builds)
+- **Weekly schedule:** 2 jobs (security scan)
 
 ### Resource Usage Estimate
 
@@ -106,7 +125,8 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 **Approximate CI minutes per event:**
 
-- PR: ~35-45 minutes (7 jobs × 5-6 min average)
+- PR to `develop`: ~25-30 minutes (5 jobs × 5-6 min average)
+- PR to `main`: ~35-45 minutes (7 jobs × 5-6 min average)
 - Push to `main`: ~10-15 minutes (2 jobs × 5-7 min)
 - Version tag: ~20-25 minutes (3 parallel builds + release)
 - Weekly: ~10-15 minutes (2 jobs × 5-7 min)
@@ -118,7 +138,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 ### Current Behavior
 
 - **Every PR** runs full cross-platform builds (ubuntu Debug + 3× Release)
-- **CodeQL runs on every PR** regardless of code changes
+- **CodeQL runs on PRs to `main`** and pushes to `main` (not on PRs to `develop`)
 - **No path-based filtering** - even markdown-only changes trigger full builds
 
 ### Potential Improvements
