@@ -7,6 +7,17 @@ applyTo: 'scripts/**/*.sh,scripts/**/*.bat,**/*.sh,**/*.bat'
 Write maintainable, cross-platform shell scripts for build automation and project management. Focus on clarity,
 error handling, and user experience.
 
+## Writing Principles
+
+- **Precise**: Write scripts that do exactly what is needed
+- **Concise**: Keep scripts short and focused on single tasks
+- **Correct**: Test scripts on all target platforms
+- **Down-to-earth**: Use standard shell patterns and tools
+- **KISS**: Avoid complex logic when simple solutions work
+- **Pedagogic**: Write scripts that are easy to read and understand
+
+Avoid decorative output, emojis, emoticons, and promotional language in scripts and messages.
+
 ## Script Standards
 
 - Use `set -euo pipefail` in bash scripts for strict error handling

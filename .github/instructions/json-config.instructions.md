@@ -6,6 +6,17 @@ applyTo: '**/*.json,!node_modules/**,!build/**,!third_party/**'
 
 Maintain clean, well-structured JSON configuration files for build systems, package management, and IDE integration.
 
+## Writing Principles
+
+- **Precise**: Configure exactly what is needed, no extra properties
+- **Concise**: Keep configuration files minimal and focused
+- **Correct**: Validate JSON syntax and test configurations
+- **Down-to-earth**: Use standard configuration patterns
+- **KISS**: Avoid overcomplicating configuration structures
+- **Pedagogic**: Organize configuration so it is easy to understand
+
+Avoid decorative descriptions, emojis, emoticons, and promotional language in configuration comments.
+
 ## General Standards
 
 - Use 2-space indentation for readability

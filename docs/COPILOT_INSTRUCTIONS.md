@@ -3,6 +3,17 @@
 This repository is configured with comprehensive GitHub Copilot custom instructions to provide context-aware assistance
 for development tasks.
 
+All instructions follow these core principles:
+
+- **Precise**: Provide exact solutions for specific needs
+- **Concise**: Keep code and documentation simple and direct
+- **Correct**: Ensure all suggestions compile and function properly
+- **Down-to-earth**: Use clear, practical approaches without over-engineering
+- **KISS**: Keep everything simple and straightforward
+- **Pedagogic**: Generate code and documentation that is easy to understand
+
+Instructions avoid decorative language, emojis, emoticons, and promotional adjectives.
+
 ## Structure
 
 The Copilot instructions are organized into two levels:
@@ -125,8 +136,8 @@ Provide Copilot with clear context when asking questions:
 
 Make requests specific and actionable:
 
-- ❌ "Make this better"
-- ✅ "Refactor this function to avoid allocations in the audio callback"
+- Bad example: "Make this better"
+- Good example: "Refactor this function to avoid allocations in the audio callback"
 
 ### Iterative Refinement
 
