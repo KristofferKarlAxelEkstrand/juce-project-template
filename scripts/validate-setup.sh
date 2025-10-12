@@ -46,9 +46,9 @@ command_exists() {
 # Function to print status
 print_status() {
     if [ $1 -eq 0 ]; then
-        echo "✅ $2"
+        echo "[OK] $2"
     else
-        echo "❌ $2"
+        echo "[FAIL] $2"
         return 1
     fi
 }
@@ -107,7 +107,7 @@ npm test && print_status 0 "Documentation linting passed" || print_status 1 "Doc
 echo
 
 # Test CMake configuration
-echo "🔨 Testing CMake Configuration..."
+echo "Testing CMake Configuration..."
 echo "--------------------------------"
 
 # Clean any previous build
@@ -125,17 +125,17 @@ if cmake --preset=default >/dev/null 2>&1; then
     fi
 else
     print_status 1 "CMake configuration failed"
-    echo "  ℹ️  This may be due to missing system dependencies"
-    echo "  ℹ️  Check the README.md for platform-specific requirements"
+    echo "  Note: This may be due to missing system dependencies"
+    echo "  Note: Check the README.md for platform-specific requirements"
 fi
 
 echo
 
 # Summary
-echo "📊 Validation Summary"
+echo "Validation Summary"
 echo "===================="
-echo "If all items above show ✅, your development environment is ready!"
-echo "If any items show ❌, please install the missing dependencies."
+echo "If all items above show [OK], your development environment is ready!"
+echo "If any items show [FAIL], please install the missing dependencies."
 echo
 echo "Next steps:"
 echo "1. Fix any missing dependencies shown above"
