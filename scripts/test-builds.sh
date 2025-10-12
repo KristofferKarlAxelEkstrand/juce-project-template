@@ -72,6 +72,10 @@ else
     fi
 fi
 
+# --- Constants for Fallback Metadata ---
+FALLBACK_PROJECT_NAME_TARGET="JucePlugin"
+FALLBACK_PROJECT_NAME_PRODUCT="JUCE Project Template Plugin"
+
 # Load plugin metadata from CMake-generated file
 METADATA_FILE="$BUILD_DIR/plugin_metadata.sh"
 if [ -f "$METADATA_FILE" ]; then
@@ -80,8 +84,8 @@ if [ -f "$METADATA_FILE" ]; then
 else
     echo "[WARN] plugin_metadata.sh not found at $METADATA_FILE"
     echo "       Using fallback values. Run 'cmake --preset=<preset>' first."
-    PROJECT_NAME_TARGET="JucePlugin"
-    PROJECT_NAME_PRODUCT="JUCE Project Template Plugin"
+    PROJECT_NAME_TARGET="$FALLBACK_PROJECT_NAME_TARGET"
+    PROJECT_NAME_PRODUCT="$FALLBACK_PROJECT_NAME_PRODUCT"
 fi
 echo
 
