@@ -73,7 +73,13 @@ For each comment, consider:
 
 ## Output Format
 
-Create a comprehensive response document (`docs/REVIEW_RESPONSES.md`) with:
+Create a comprehensive response document (`.temp-pr-reviews-docs/REVIEW_RESPONSES_PR##.md`) with:
+
+**Note:** All review response files are created in `.temp-pr-reviews-docs/` directory which is:
+
+- Not tracked by git (in `.gitignore`)
+- Temporary working directory
+- Easily deleted after PR merge
 
 ```markdown
 # PR Review Comment Responses
