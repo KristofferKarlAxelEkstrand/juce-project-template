@@ -1,288 +1,256 @@
 # Development Workflow
 
-This document explains the fast, iterative development workflow for DSP-JUCE using VS Code and Ninja.
+Fast iterative development with Ninja and VS Code.
 
-## Quick Start: Edit → Build → Run
+## Quick Start
 
-The fastest development loop uses VS Code tasks with Ninja for sub-second incremental builds:
+Edit-build-test cycle in VS Code:
 
-1. **Edit** your source files in `src/`
-2. **Build** by pressing `Ctrl+Shift+B` (default build task)
-3. **Run** the standalone plugin with `Ctrl+Shift+P` → "Run Task" → "Run Standalone"
-
-## Why Ninja?
-
-Ninja provides dramatically faster incremental builds compared to Visual Studio's MSBuild:
-
-- **Configuration**: 1.2s (vs. 49.6s for initial configure)
-- **Full rebuild**: Similar to VS2022 (~2m45s for Debug)
-- **Incremental rebuild**: Sub-second for small changes (vs. 10-30s with MSBuild)
-- **Parallel compilation**: Optimal CPU utilization on multi-core systems
-
-This "hot-reload-like" experience makes development significantly faster.
+1. Edit source files in `src/`
+2. Press `Ctrl+Shift+B` to build (1-3 seconds)
+3. Run task "Run Standalone" to test (`Ctrl+Shift+P` → Tasks: Run Task → Run Standalone)
 
 ## VS Code Tasks
 
-Three automated tasks are configured in `.vscode/tasks.json`:
+Three tasks in `.vscode/tasks.json`:
 
-### 1. Build Standalone (Ninja Debug) - Default Task
+### 1. Build Standalone (Ninja Debug)
 
-**Shortcut**: `Ctrl+Shift+B`
+Default build task. Press `Ctrl+Shift+B`.
 
-Builds the Debug configuration using Ninja. This is the fastest way to compile changes.
+Runs: `./scripts/build-ninja.bat` (Windows) or `./scripts/build-ninja.sh` (macOS/Linux)
 
-```bash
-# What it does internally:
-./scripts/build-ninja.bat
-```
-
-**Output**: `build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.exe`
+Output: `build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin[.exe|.app]`
 
 ### 2. Run Standalone
 
-Builds and then launches the standalone plugin application. Use this to test your changes immediately.
+Build and launch the standalone application.
 
-```bash
-# Access via:
-Ctrl+Shift+P → Tasks: Run Task → Run Standalone
-```
+Access: `Ctrl+Shift+P` → Tasks: Run Task → Run Standalone
 
-**Auto-runs**: "Build Standalone (Ninja Debug)" task first via `dependsOn`
+Depends on: Build Standalone task (runs automatically first)
 
 ### 3. Configure Ninja
 
-Reconfigures the CMake build system. Only needed when:
+Reconfigure CMake. Run when:
 
-- CMakeLists.txt changes
+- Changing `CMakeLists.txt`
 - Adding/removing source files
 - Changing build options
 
-```bash
-# Access via:
-Ctrl+Shift+P → Tasks: Run Task → Configure Ninja
-```
+Access: `Ctrl+Shift+P` → Tasks: Run Task → Configure Ninja
 
 ## Build Scripts
 
-The project includes cross-platform build scripts that work on Windows, macOS, and Linux.
+Cross-platform scripts for Ninja builds.
 
-### Windows: scripts/configure-ninja.bat & build-ninja.bat
+### Windows
 
-Initializes Visual Studio environment and runs CMake/Ninja.
+Scripts initialize Visual Studio environment automatically:
 
 ```cmd
-# Configure
-scripts\configure-ninja.bat
-
-# Build
-scripts\build-ninja.bat
+scripts\\configure-ninja.bat  # Configure
+scripts\\build-ninja.bat      # Build
 ```
 
-**Features**:
+The scripts automatically detect your installed version of Visual Studio 2022 (Community,
+Professional, or Enterprise), set up the required build environment by running `vcvarsall.bat x64`,
+and then proceed with the build process.
 
-- Automatically initializes vcvarsall.bat x64 environment
-- Includes Ninja from Visual Studio installation
-- No manual environment setup required
+### macOS/Linux
 
-### macOS/Linux: scripts/configure-ninja.sh & build-ninja.sh
-
-Shell scripts for Unix-like systems.
+Shell scripts use system tools:
 
 ```bash
-# Configure
-./scripts/configure-ninja.sh
-
-# Build
-./scripts/build-ninja.sh
+./scripts/configure-ninja.sh  # Configure
+./scripts/build-ninja.sh      # Build
 ```
 
-**Requirements**:
+Requires:
 
 - CMake 3.22+
 - Ninja (install via `brew install ninja` or `apt-get install ninja-build`)
-- Clang or GCC with C++20 support
+- Clang or GCC with C++20
 
-### Cross-Platform VS Code Tasks
+## Common Tasks
 
-The `.vscode/tasks.json` automatically selects the correct script based on your OS:
-
-- **Windows**: Uses `.bat` files with MSVC toolchain
-- **macOS**: Uses `.sh` files with Clang
-- **Linux**: Uses `.sh` files with GCC/Clang
-
-**Output locations** (same structure on all platforms):
-
-- Standalone: `build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin[.exe|.app]`
-- VST3: `build/ninja/JucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/`
-- Shared Code: `build/ninja/Debug/JucePlugin_SharedCode[.lib|.a]`
-
-## Development Workflow Examples
-
-### Typical Edit-Build-Test Cycle
+### Edit-Build-Test Cycle
 
 ```bash
-# 1. Edit source files (MainComponent.cpp, PluginEditor.cpp, etc.)
-# 2. Press Ctrl+Shift+B to build
-# 3. Run task "Run Standalone" to test
-
-# Total time for small change: 1-3 seconds
+# 1. Edit MainComponent.cpp, PluginEditor.cpp, etc.
+# 2. Press Ctrl+Shift+B
+# 3. Run "Run Standalone" task
+# Total time: 1-3 seconds for small changes
 ```
 
-### Adding New Files
+### Add New Files
 
 ```bash
-# 1. Add files to src/ directory
-# 2. Update CMakeLists.txt target_sources()
+# 1. Create files in src/
+# 2. Add to target_sources() in CMakeLists.txt
 # 3. Run "Configure Ninja" task
-# 4. Build with Ctrl+Shift+B
+# 4. Press Ctrl+Shift+B
 ```
 
-### Changing Plugin Metadata
+### Change Plugin Metadata
+
+Edit `CMakeLists.txt`:
+
+```cmake
+set(PLUGIN_NAME "My Plugin")
+set(PLUGIN_VERSION "1.0.0")
+```
+
+Then:
 
 ```bash
-# 1. Edit PLUGIN_NAME, PLUGIN_VERSION, etc. in CMakeLists.txt
-# 2. Run "Configure Ninja" task
-# 3. Build with Ctrl+Shift+B
+# 1. Run "Configure Ninja" task
+# 2. Press Ctrl+Shift+B
 ```
+
+### Build Release Version
+
+From command line:
+
+```bash
+./scripts/build-ninja.bat --config Release  # Windows
+./scripts/build-ninja.sh --config Release   # macOS/Linux
+```
+
+Output: `build/ninja/JucePlugin_artefacts/Release/`
 
 ## Build Configurations
 
 ### Debug (Default)
 
-- Optimizations: Disabled (`/Od`)
-- Symbols: Full debug information (`/Zi`)
-- Size: Large (~12MB executable)
-- Speed: Fastest incremental builds
-- Use for: Day-to-day development
+- Optimizations: Disabled
+- Debug symbols: Full
+- Binary size: Large (~12MB)
+- Build speed: Fast
+- Use for: Daily development
 
 ### Release
 
-Switch to Release for performance testing or distribution:
+- Optimizations: Maximum
+- Debug symbols: Minimal
+- Binary size: Smaller (~8MB)
+- Build speed: Slower
+- Use for: Performance testing, distribution
+
+## Validation Scripts
+
+### validate-builds.sh
+
+Check build artefacts exist:
 
 ```bash
-# Using batch scripts directly:
-./scripts/build-ninja.bat --config Release
-
-# Output: build/ninja/JucePlugin_artefacts/Release/
+./scripts/validate-builds.sh Debug
+./scripts/validate-builds.sh Release
 ```
 
-- Optimizations: Maximum (`/O2`)
-- Symbols: Minimal
-- Size: Smaller (~8MB)
-- Speed: Slower builds but better runtime performance
-- Use for: Performance testing, distribution
+Verifies:
+
+- VST3 plugin
+- Standalone application
+- Shared code library
+
+### validate-setup.sh
+
+Check development environment:
+
+```bash
+./scripts/validate-setup.sh
+```
+
+Verifies:
+
+- CMake version
+- Compiler availability
+- Git configuration
+- JUCE dependencies (Linux)
+
+## Plugin Metadata Flow
+
+Plugin metadata is centralized in `CMakeLists.txt`:
+
+```cmake
+set(PLUGIN_NAME "DSP-JUCE Plugin")
+set(PLUGIN_TARGET "JucePlugin")
+set(PLUGIN_VERSION "1.0.0")
+```
+
+Metadata propagates to:
+
+- JUCE plugin macros (`JucePlugin_Name`, `JucePlugin_VersionString`)
+- Build artefact paths (`build/.../JucePlugin_artefacts/`)
+- Generated metadata file (`build/*/plugin_metadata.sh`)
+- CI/CD workflows
+- DAW plugin info
+
+See [docs/VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) for version workflow.
 
 ## Troubleshooting
 
-### Build fails with "exceptions not enabled"
+### Build Fails
 
-This is already fixed in CMakeLists.txt with `/EHsc` flag. If you see this error:
-
-1. Ensure you've pulled latest CMakeLists.txt changes
-2. Reconfigure with "Configure Ninja" task
-3. Rebuild
-
-### VS Code tasks not found
-
-Ensure `.vscode/tasks.json` exists. If missing, refer to `plugin-development-roadmap.md` Task 1.1.
-
-### Ninja not found
-
-The batch scripts use vcvarsall.bat which includes Ninja from Visual Studio installation:
+Ensure latest changes:
 
 ```bash
-# Verify Ninja is available:
+git pull
+./scripts/configure-ninja.sh  # or .bat on Windows
+./scripts/build-ninja.sh
+```
+
+### Tasks Not Found in VS Code
+
+Check `.vscode/tasks.json` exists. Reopen VS Code if recently added.
+
+### Ninja Not Found (Windows)
+
+Ninja is included with Visual Studio 2022. Verify:
+
+```cmd
 where ninja
-# Expected: C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja\ninja.exe
+# Should show: C:\Program Files\Microsoft Visual Studio\2022\...\ninja.exe
 ```
 
-### Slow incremental builds
+### Ninja Not Found (macOS/Linux)
 
-Ninja should provide sub-second builds for small changes. If slow:
-
-1. Check if you're editing headers included by many files
-2. Use `ninja -v` to see compilation command details
-3. Consider splitting large translation units
-
-## Performance Comparison
-
-Typical build times on Windows with Visual Studio 2022:
-
-| Configuration | Generator | First Build | Incremental (1 file) | Reconfigure |
-|--------------|-----------|-------------|---------------------|-------------|
-| Debug | Ninja | ~2m45s | 1-3s | 1.2s |
-| Debug | VS2022 | ~2m45s | 10-30s | 49.6s |
-| Release | Ninja | ~4m30s | 2-5s | 1.2s |
-| Release | VS2022 | ~4m30s | 15-40s | 49.6s |
-
-**Incremental builds are 10-30x faster with Ninja.**
-
-## Advanced Usage
-
-### Build from Command Line
+Install Ninja:
 
 ```bash
-# Quick rebuild:
-./scripts/build-ninja.bat
-
-# Clean rebuild:
-rm -rf build/ninja
-./scripts/configure-ninja.bat
-./scripts/build-ninja.bat
-
-# Build specific target:
-cd build/ninja
-ninja JucePlugin_Standalone
+brew install ninja           # macOS
+sudo apt-get install ninja-build  # Linux
 ```
 
-### Parallel Builds
+### Slow Incremental Builds
 
-Ninja automatically uses all CPU cores. To limit parallelism:
+Ninja should rebuild in 1-3 seconds for small changes. If slow:
 
-```bash
-# Use only 4 cores:
-ninja -j4
-```
+- Check if editing headers included by many files
+- Consider splitting large source files
+- Use `ninja -v` to see what is rebuilding
 
-### Verbose Output
+## Testing Plugins in DAW
 
-See exact compilation commands:
+### VST3 Plugin
 
-```bash
-ninja -v
-```
-
-## Integration with DAWs
-
-### Testing VST3 Plugin
-
-The VST3 plugin is built to:
-
-```text
-build/ninja/JucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/
-```
+Built to: `build/ninja/JucePlugin_artefacts/Debug/VST3/DSP-JUCE Plugin.vst3/`
 
 To test in a DAW:
 
-1. Copy the `.vst3` folder to your DAW's VST3 directory (e.g., `C:\Program Files\Common Files\VST3\`)
-2. Rescan plugins in your DAW
-3. Load "DSP-JUCE Plugin"
+1. Copy the `.vst3` folder to system VST3 directory:
+   - Windows: `C:\Program Files\Common Files\VST3\`
+   - macOS: `/Library/Audio/Plug-Ins/VST3/`
+   - Linux: `~/.vst3/`
+2. Rescan plugins in DAW
+3. Load plugin
 
-For development, use the standalone application first for faster iteration.
+For development, use standalone application for faster iteration.
 
-## Next Steps
+## See Also
 
-- [Task 1.2: Implement Basic UnitTest](plugin-development-roadmap.md#task-12-implement-basic-unittest)
-- [Testing with AudioPluginHost](docs/JUCE-AudioPluginHost/basics-JUCE-AudioPluginHost.md)
-- [Ninja Build System Basics](docs/ninja/basics-ninja.md)
-
-## Summary
-
-The Ninja-based workflow provides a production-ready development experience with:
-
-- **Speed**: 1-3 second incremental builds
-- **Simplicity**: Press `Ctrl+Shift+B` to build
-- **Integration**: Native VS Code task automation
-- **Reliability**: Proper MSVC toolchain initialization
-
-This is the recommended workflow for daily DSP-JUCE development.
+- [BUILD.md](BUILD.md) - Initial build setup
+- [VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) - Version and release workflow
+- [docs/CI_GUIDE.md](docs/CI_GUIDE.md) - CI/CD overview
+- [docs/CROSS_PLATFORM_BUILDS.md](docs/CROSS_PLATFORM_BUILDS.md) - Platform-specific details
