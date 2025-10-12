@@ -18,7 +18,7 @@
 	},
 	"lint-staged": {
 		"*.md": [
-			"markdownlint-cli2 --fix \"!.temp-pr-reviews-docs\""
+			"bash -c 'for file in \"$@\"; do [[ ! \"$file\" =~ AUDIT_(REPORT|ACTION_ITEMS)\\.md$ ]] && echo \"$file\"; done | xargs -r markdownlint-cli2 --fix' --"
 		]
 	}
 }

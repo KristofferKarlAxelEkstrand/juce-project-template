@@ -3,3 +3,7 @@ node_modules/
 build/
 third_party/
 .temp-pr-reviews-docs/
+
+# Audit reports contain structured sections with duplicate headings by design
+AUDIT_REPORT.md
+AUDIT_ACTION_ITEMS.md
