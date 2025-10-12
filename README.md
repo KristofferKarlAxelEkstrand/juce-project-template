@@ -256,6 +256,7 @@ This template includes comprehensive guides:
 - **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting
 - **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)**: Fast Ninja-based workflow setup
 - **[CONTRIBUTING.md](CONTRIBUTING.md)**: Git workflow, coding standards, and PR process
+- **[docs/COPILOT_INSTRUCTIONS.md](docs/COPILOT_INSTRUCTIONS.md)**: GitHub Copilot custom instructions setup
 - **[docs/JUCE/](docs/JUCE/)**: JUCE framework concepts and real-time audio safety
 - **[docs/cmake/](docs/cmake/)**: CMake build system and dependency management
 - **[docs/C++/](docs/C++/)**: Modern C++20 features for audio development
