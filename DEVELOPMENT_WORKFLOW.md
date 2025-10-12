@@ -49,11 +49,11 @@ Cross-platform scripts for Ninja builds.
 Scripts initialize Visual Studio environment automatically:
 
 ```cmd
-scripts\configure-ninja.bat  # Configure
-scripts\build-ninja.bat      # Build
+scripts\\configure-ninja.bat  # Configure
+scripts\\build-ninja.bat      # Build
 ```
 
-Detects VS 2022 (Community, Professional, or Enterprise) and runs `vcvarsall.bat x64`.
+Detects VS 2022 (Community, Professional, or Enterprise), runs `vcvarsall.bat x64`, and executes CMake/Ninja.
 
 ### macOS/Linux
 
@@ -249,6 +249,6 @@ For development, use standalone application for faster iteration.
 ## See Also
 
 - [BUILD.md](BUILD.md) - Initial build setup
-- [docs/VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) - Version and release workflow
+- [VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) - Version and release workflow
 - [docs/CI_GUIDE.md](docs/CI_GUIDE.md) - CI/CD overview
 - [docs/CROSS_PLATFORM_BUILDS.md](docs/CROSS_PLATFORM_BUILDS.md) - Platform-specific details

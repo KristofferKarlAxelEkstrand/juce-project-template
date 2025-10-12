@@ -11,7 +11,7 @@ project(JuceProject VERSION 0.0.1 LANGUAGES C CXX)
 set(PLUGIN_VERSION "0.0.1")
 ```
 
-CMake build fails if versions do not match.
+CMake configure fails if versions do not match. Update to `1.0.0` for first production release.
 
 ## Semantic Versioning
 

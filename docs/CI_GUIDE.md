@@ -56,7 +56,7 @@ Automated release workflow (4 jobs):
 
 ### Preparing Release
 
-1. Update version in `CMakeLists.txt` (see [VERSION_MANAGEMENT.md](VERSION_MANAGEMENT.md))
+1. Update version in `CMakeLists.txt` (see [VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md))
 2. Merge `develop` to `main` via PR
 3. Full CI validation runs
 4. After merge, create version tag (`v1.0.0`)
