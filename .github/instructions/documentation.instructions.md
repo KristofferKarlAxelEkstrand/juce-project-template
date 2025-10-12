@@ -1,5 +1,6 @@
 ---
-applyTo: '**/*.md'
+applyTo:
+  - '**/*.md'
 ---
 
 # Documentation Instructions
@@ -7,15 +8,29 @@ applyTo: '**/*.md'
 Create clear, actionable documentation that focuses on practical usage and implementation guidance. Avoid unnecessary
 decorative elements.
 
+## Writing Principles
+
+Follow KISS (Keep It Simple Stupid) and maintain a down-to-earth, pedagogic approach:
+
+- **Precise**: State exact requirements and steps. Provide exact information
+- **Concise**: Use short sentences. One concept per sentence
+- **Correct**: Verify all information. Test all code examples
+- **Down-to-earth**: Use plain language and practical examples
+- **KISS**: Keep explanations simple and direct
+- **Pedagogic**: Explain concepts step-by-step. Assume reader is learning
+- **Direct**: State what the reader needs to know without preamble
+- **Practical**: Focus on implementation and usage
+- **Helpful**: Solve real problems users face
+- **Honest**: Document limitations and known issues
+- **Consistent**: Use same terms and patterns throughout
+
 ## Documentation Style
 
 ### Language Guidelines
 
-- **Concise**: Use short sentences. One concept per sentence.
-- **Simple**: Choose common words over complex alternatives.
-- **Descriptive**: State facts directly. Explain what, how, and why.
-- **Correct**: Verify all information. Test all code examples.
-- **Pedagogic**: Explain concepts step-by-step. Assume reader is learning.
+- **Simple**: Choose common words over complex alternatives
+- **Descriptive**: State facts directly. Explain what, how, and why
+- **Clear**: Avoid ambiguity and jargon when simpler terms exist
 
 ### Formatting Rules
 
@@ -57,20 +72,12 @@ decorative elements.
 - Document validation and testing approaches
 - Include success metrics and evaluation criteria
 
-## Writing Principles
+## What to Avoid
 
-Follow KISS (Keep It Simple Stupid):
-
-- **Be direct**: State what the reader needs to know
-- **Be practical**: Focus on implementation and usage
-- **Be helpful**: Solve real problems users face
-- **Be honest**: Document limitations and known issues
-- **Be consistent**: Use same terms and patterns throughout
-
-Avoid:
-
-- Promotional language or marketing speak
+- Decorative language or marketing speak
+- Emojis, emoticons, and decorative symbols
+- Promotional adjectives (amazing, powerful, seamless, elegant)
 - Unnecessary adjectives and adverbs
 - Complex sentence structures
 - Assumptions about reader knowledge
-- Emoticons, emojis, and decorative punctuation
+- Em-dashes and decorative punctuation
