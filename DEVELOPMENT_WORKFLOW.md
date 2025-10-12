@@ -167,7 +167,6 @@ Verifies:
 - Git configuration
 - JUCE dependencies (Linux)
 
-
 ## Plugin Metadata Flow
 
 Plugin metadata is centralized in `CMakeLists.txt`:
@@ -230,7 +229,6 @@ Ninja should rebuild in 1-3 seconds for small changes. If slow:
 - Consider splitting large source files
 - Use `ninja -v` to see what is rebuilding
 
-
 ## Testing Plugins in DAW
 
 ### VST3 Plugin
@@ -254,4 +252,3 @@ For development, use standalone application for faster iteration.
 - [docs/VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) - Version and release workflow
 - [docs/CI_GUIDE.md](docs/CI_GUIDE.md) - CI/CD overview
 - [docs/CROSS_PLATFORM_BUILDS.md](docs/CROSS_PLATFORM_BUILDS.md) - Platform-specific details
-

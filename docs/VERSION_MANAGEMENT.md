@@ -111,7 +111,6 @@ git describe --tags --abbrev=0
 # Output: v1.0.0
 ```
 
-
 ## Troubleshooting
 
 ### Version Mismatch Error
@@ -143,4 +142,3 @@ Reconfigure CMake to regenerate metadata:
 ```bash
 cmake --preset=default
 ```
-

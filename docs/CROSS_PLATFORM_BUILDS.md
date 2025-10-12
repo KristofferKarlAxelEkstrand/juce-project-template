@@ -110,7 +110,7 @@ Presets use conditions to select correct generator:
 
 ## Testing Builds
 
-### Windows
+### Test on Windows
 
 ```cmd
 scripts\configure-ninja.bat
@@ -119,7 +119,7 @@ scripts\build-ninja.bat
 
 Or use VS Code: Press `Ctrl+Shift+B`
 
-### macOS/Linux
+### Test on macOS/Linux
 
 ```bash
 ./scripts/configure-ninja.sh
