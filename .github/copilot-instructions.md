@@ -1,14 +1,14 @@
-# DSP-JUCE Development Environment
+# JUCE Project Template Development Environment
 
-This repository is a modern JUCE 8.0.10 audio plugin development environment
-demonstrating real-time audio processing, cross-platform plugin builds, and modern C++20 patterns.
+This repository is a modern JUCE 8.0.10 audio plugin project template providing
+cross-platform build system, CI/CD integration, and fast development workflow patterns.
 
 ## Architecture Overview
 
 **Core Components:**
 
-- `src/MainComponent.h/cpp`: `DSPJuceAudioProcessor` implementing sine-wave synthesizer with thread-safe parameter control
-- `src/PluginEditor.h/cpp`: GUI editor with frequency/gain sliders using immediate parameter updates  
+- `src/MainComponent.h/cpp`: Example `DSPJuceAudioProcessor` demonstrating thread-safe parameter control
+- `src/PluginEditor.h/cpp`: Example GUI editor showing immediate parameter updates pattern
 - `src/Main.cpp`: Plugin entry point supporting both VST3 plugin and standalone builds
 - `CMakeLists.txt`: Modern CMake with FetchContent auto-downloading JUCE 8.0.10
 
@@ -58,9 +58,11 @@ cmake --build build/vs2022 --config Release  # Windows Release build
 
 **Output Locations (Windows vs2022 preset):**
 
-- VST3: `build/vs2022/JucePlugin_artefacts/Release/VST3/DSP-JUCE Plugin.vst3/`
-- Standalone: `build/vs2022/JucePlugin_artefacts/Release/Standalone/DSP-JUCE Plugin.exe`
-- Library: `build/vs2022/JucePlugin_artefacts/Release/DSP-JUCE Plugin_SharedCode.lib`
+- VST3: `build/vs2022/JucePlugin_artefacts/Release/VST3/Your Plugin.vst3/`
+- Standalone: `build/vs2022/JucePlugin_artefacts/Release/Standalone/Your Plugin.exe`
+- Library: `build/vs2022/JucePlugin_artefacts/Release/Your Plugin_SharedCode.lib`
+
+Note: Actual paths depend on PLUGIN_NAME set in CMakeLists.txt
 
 **Cross-Platform Presets:**
 
@@ -107,7 +109,7 @@ npm test                     # Validate documentation
   - `cmake-config.instructions.md`: CMake best practices for **/CMakeLists.txt
   - `documentation.instructions.md`: Markdown conventions for **/*.md
   - `github-config.instructions.md`: GitHub workflow patterns for .github/**/*
-- `build/vs2022/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
+- `build/<preset>/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
 
 **Code Patterns:**
 
@@ -159,13 +161,13 @@ style: Apply clang-format to source files
 ## Project Structure and Key Files
 
 ```text
-dsp-juce/
-├── src/                     # JUCE application source code
+juce-project-template/
+├── src/                     # Example plugin source code
 │   ├── Main.cpp            # Plugin entry point for both standalone and plugin formats
 │   ├── MainComponent.h     # AudioProcessor interface for audio processing
-│   ├── MainComponent.cpp   # Real-time audio processing with DSP
+│   ├── MainComponent.cpp   # Example real-time audio processing with DSP
 │   ├── PluginEditor.h      # AudioProcessorEditor interface for GUI
-│   └── PluginEditor.cpp    # GUI implementation with parameter controls
+│   └── PluginEditor.cpp    # Example GUI implementation with parameter controls
 ├── .github/                # GitHub configuration and instructions
 ├── CMakeLists.txt          # Modern CMake with JUCE 8.0.10 FetchContent
 ├── CMakePresets.json       # Cross-platform build presets

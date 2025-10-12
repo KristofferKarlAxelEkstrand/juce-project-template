@@ -6,7 +6,7 @@
 /**
  * @brief AudioProcessor for both plugin and standalone builds
  *
- * This processor provides a simple audio synthesizer with frequency and gain controls.
+ * This processor provides an example audio synthesizer with frequency and gain controls.
  * It demonstrates modern JUCE patterns including:
  * - Real-time audio processing with juce::dsp modules
  * - Thread-safe parameter handling between GUI and audio threads

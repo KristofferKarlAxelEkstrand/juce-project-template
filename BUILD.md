@@ -92,9 +92,9 @@ ls -la build/JucePlugin_artefacts/Debug/
 
 Artefacts are in `build/JucePlugin_artefacts/<config>/`:
 
-- `VST3/DSP-JUCE Plugin.vst3` - VST3 plugin
-- `AU/DSP-JUCE Plugin.component` - AU plugin (macOS only)
-- `Standalone/DSP-JUCE Plugin[.exe|.app]` - Standalone application
+- `VST3/Your Plugin.vst3` - VST3 plugin
+- `AU/Your Plugin.component` - AU plugin (macOS only)
+- `Standalone/Your Plugin[.exe|.app]` - Standalone application
 
 Plugin file names use the `PLUGIN_NAME` variable defined in `CMakeLists.txt`. For example, setting
 `PLUGIN_NAME` to "MyPlugin" will produce artefacts like `VST3/MyPlugin.vst3`,

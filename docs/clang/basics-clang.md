@@ -1,6 +1,6 @@
-# Clang in DSP-JUCE
+# Clang in JUCE Project Template
 
-This document explains how Clang is used for code formatting and quality enforcement in the DSP-JUCE project.
+This document explains how Clang is used for code formatting and quality enforcement in this JUCE project template.
 
 ## Purpose
 

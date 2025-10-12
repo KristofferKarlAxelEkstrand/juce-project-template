@@ -1,6 +1,6 @@
-# Contributing to DSP-JUCE
+# Contributing to JUCE Project Template
 
-Thank you for contributing to DSP-JUCE. This guide outlines the development workflow,
+Thank you for contributing to the JUCE Project Template. This guide outlines the development workflow,
 coding standards, and contribution process.
 
 ## Development Setup
@@ -16,7 +16,7 @@ coding standards, and contribution process.
 ```bash
 # Clone and configure
 git clone <your-fork-url>
-cd dsp-juce
+cd juce-project-template
 cmake --preset=default
 
 # Install documentation tools
@@ -214,10 +214,10 @@ cmake --preset=default && cmake --build --preset=default
 cmake --preset=release && cmake --build --preset=release
 
 # Test standalone application
-./build/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE\ Plugin
+./build/JucePlugin_artefacts/Debug/Standalone/Your\ Plugin
 
 # Verify plugin installation (platform-specific)
-ls -la ~/.vst3/DSP-JUCE\ Plugin.vst3/  # Linux
+ls -la ~/.vst3/Your\ Plugin.vst3/  # Linux
 ```
 
 ### Performance Testing
@@ -283,6 +283,6 @@ npm run lint:md:fix
 
 ## Questions?
 
-- Open a [GitHub issue](https://github.com/KristofferKarlAxelEkstrand/dsp-juce/issues) for bugs or feature requests
+- Open a [GitHub issue](https://github.com/KristofferKarlAxelEkstrand/juce-project-template/issues) for bugs or feature requests
 - Check existing [documentation](docs/) for technical details
 - Review [JUCE examples](https://github.com/juce-framework/JUCE/tree/master/examples) for reference implementations

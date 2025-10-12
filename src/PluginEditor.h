@@ -5,9 +5,9 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 /**
- * @brief AudioProcessorEditor for the DSP-JUCE plugin
+ * @brief AudioProcessorEditor for JUCE plugin template
  *
- * This editor provides a GUI for controlling the audio processor parameters.
+ * This editor provides an example GUI for controlling audio processor parameters.
  * It demonstrates modern JUCE patterns including:
  * - Thread-safe parameter control between GUI and audio threads
  * - Modern visual design with gradients and proper spacing

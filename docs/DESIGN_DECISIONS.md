@@ -1,6 +1,6 @@
 # Design Decisions
 
-This document explains key architectural decisions in the DSP-JUCE project.
+This document explains key architectural decisions in the JUCE Project Template.
 
 ## Build Script Duplication vs. Shared Configuration
 
