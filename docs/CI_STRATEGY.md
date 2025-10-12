@@ -21,20 +21,34 @@ The CI system uses a **tiered validation approach**:
 
 **Goal:** Maximize developer velocity during feature development
 
-**Jobs:** 5 parallel jobs (~25-30 minutes)
+**Jobs:** 3 parallel jobs (~12-18 minutes)
 
 - ✅ Lint (documentation quality)
 - ✅ Build ubuntu Debug (developer build validation)
-- ✅ Build ubuntu Release (Linux production build)
-- ✅ Build Windows Release (Windows production build)
-- ✅ Build macOS Release (macOS production build)
+- ✅ Build Windows Release (primary platform validation)
 
 **Rationale:**
 
+- **Minimal build matrix** - Only essential builds for fast feedback
 - **No CodeQL security scans** - Security happens at `main` gate, not during iteration
-- **Focus on build success** - Does the code compile and pass basic quality checks?
-- **Cross-platform confidence** - Catch platform-specific issues early
-- **Debug build included** - Validates developer workflow and debug symbols
+- **Windows-focused** - Most JUCE developers use Windows, catch platform issues early
+- **Debug build included** - Validates developer workflow and debug assertions
+- **Skip Linux/macOS Release** - Validated at `main` gate before production
+
+**Why only Windows Release (not Linux/macOS)?**
+
+- Windows is primary development platform for most JUCE developers
+- Windows-specific issues (WASAPI, DirectSound) caught early
+- Linux/macOS cross-platform validation happens at `main` gate
+- **Saves ~10-15 CI minutes per PR** vs. full cross-platform matrix
+- Develop branch is for iteration speed, not release validation
+
+**Why Debug build on Linux?**
+
+- Most developers build Debug locally for development
+- Debug assertions catch issues Release builds miss
+- Validates debug symbols and developer workflow
+- Faster than Release builds (less optimization time)
 
 **Why skip security on `develop`?**
 
@@ -51,7 +65,11 @@ The CI system uses a **tiered validation approach**:
 
 **Jobs:** 7 parallel jobs (~35-45 minutes)
 
-- ✅ All 5 build jobs from `develop`
+- ✅ Lint (documentation quality)
+- ✅ Build ubuntu Debug (developer build validation)
+- ✅ Build ubuntu Release (Linux production build)
+- ✅ Build Windows Release (Windows production build)
+- ✅ Build macOS Release (macOS production build)
 - ✅ CodeQL C++ security analysis
 - ✅ CodeQL JavaScript/TypeScript security analysis
 

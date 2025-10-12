@@ -6,7 +6,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 | Event | Lint | Build (ubuntu, Debug) | Build (ubuntu, Release) | Build (windows, Release) | Build (macos, Release) | CodeQL (C++) | CodeQL (JS/TS) | Release Jobs |
 |-------|------|----------------------|------------------------|-------------------------|------------------------|--------------|----------------|--------------|
-| **PR → `develop`** | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **PR → `develop`** | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
 | **PR → `main`** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | **Push → `main`** | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
 | **Tag `v*.*.*`** | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ |
@@ -18,19 +18,23 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 ### Pull Requests to `develop`
 
-**Workflows:** CI Build only (no security scanning)
+**Workflows:** CI Build only (minimal fast validation)
 
 **Jobs Running:**
 
 1. ✅ **Lint** (ubuntu-latest) - Markdown linting
 2. ✅ **Build** (ubuntu-latest, Debug) - Debug build validation
-3. ✅ **Build** (ubuntu-latest, Release) - Linux release build
-4. ✅ **Build** (windows-latest, Release) - Windows release build
-5. ✅ **Build** (macos-latest, Release) - macOS release build
+3. ✅ **Build** (windows-latest, Release) - Windows release build
 
-#### Total: 5 parallel jobs
+#### Total: 3 parallel jobs
 
-**Purpose:** Fast feedback for feature development
+**Purpose:** Fastest possible feedback for feature development
+
+**What's NOT running:**
+
+- ❌ Linux Release build (validated at `main` gate)
+- ❌ macOS Release build (validated at `main` gate)
+- ❌ CodeQL security scans (validated at `main` gate)
 
 ---
 
@@ -113,7 +117,7 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 ### Total CI Job Count by Event
 
-- **PR to `develop`:** 5 jobs (builds + lint only)
+- **PR to `develop`:** 3 jobs (lint + Debug + Windows only)
 - **PR to `main`:** 7 jobs (builds + lint + security)
 - **Push to `main`:** 2 jobs (security only)
 - **Version tag:** 4 jobs (release builds)
@@ -121,11 +125,11 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 ### Resource Usage Estimate
 
-**Most expensive event:** Pull Requests (7 jobs with full cross-platform builds)
+**Most expensive event:** Pull Requests to `main` (7 jobs with full cross-platform builds)
 
 **Approximate CI minutes per event:**
 
-- PR to `develop`: ~25-30 minutes (5 jobs × 5-6 min average)
+- PR to `develop`: ~12-18 minutes (3 jobs × 4-6 min average)
 - PR to `main`: ~35-45 minutes (7 jobs × 5-6 min average)
 - Push to `main`: ~10-15 minutes (2 jobs × 5-7 min)
 - Version tag: ~20-25 minutes (3 parallel builds + release)
@@ -137,9 +141,31 @@ This document shows which GitHub Actions workflows and jobs run for different ev
 
 ### Current Behavior
 
-- **Every PR** runs full cross-platform builds (ubuntu Debug + 3× Release)
+- **PRs to `develop`** run minimal builds (Debug + Windows only)
+- **PRs to `main`** run full cross-platform builds (ubuntu Debug + 3× Release)
 - **CodeQL runs on PRs to `main`** and pushes to `main` (not on PRs to `develop`)
-- **No path-based filtering** - even markdown-only changes trigger full builds
+- **No path-based filtering** - even markdown-only changes trigger builds
+
+### Rationale
+
+**Why only Windows Release on `develop`?**
+
+- Most developers use Windows for JUCE development
+- Catches Windows-specific issues early
+- Linux/macOS validated at `main` gate before production
+- Saves ~10-15 CI minutes per PR (2 fewer builds)
+
+**Why Debug build on `develop`?**
+
+- Validates developer workflow (most devs build Debug locally)
+- Debug assertions catch issues Release builds miss
+- Fast compilation (< Release build time)
+
+**Why skip Linux/macOS Release on `develop`?**
+
+- Cross-platform issues caught at `main` gate
+- Release builds are slower than Debug
+- Develop branch is for iteration, not release validation
 
 ### Potential Improvements
 
