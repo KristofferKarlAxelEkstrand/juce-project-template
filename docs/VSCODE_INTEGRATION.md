@@ -111,7 +111,7 @@ Create `.vscode/launch.json` for debugging:
             "name": "Debug Standalone (Windows)",
             "type": "cppvsdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.exe",
+            "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -123,7 +123,7 @@ Create `.vscode/launch.json` for debugging:
             "name": "Debug Standalone (macOS)",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app/Contents/MacOS/DSP-JUCE Plugin",
+            "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.app/Contents/MacOS/<PLUGIN_NAME>",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build Standalone (Ninja Debug)"
@@ -132,7 +132,7 @@ Create `.vscode/launch.json` for debugging:
             "name": "Debug Standalone (Linux)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin",
+            "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -145,7 +145,10 @@ Create `.vscode/launch.json` for debugging:
 }
 ```
 
-**Important**: Replace `"DSP-JUCE Plugin"` with your actual plugin name from `PLUGIN_NAME` in `CMakeLists.txt`.
+**Important**: The launch configuration uses placeholders like `<PLUGIN_NAME>` and
+`<PLUGIN_TARGET>`. These are not automatically replaced. You must manually update
+these paths to match the `PLUGIN_NAME` and `PLUGIN_TARGET` values in your
+`CMakeLists.txt`.
 
 ### Using the Debugger
 

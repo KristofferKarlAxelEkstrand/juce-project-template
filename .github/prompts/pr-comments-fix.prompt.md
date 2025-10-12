@@ -2,6 +2,12 @@
 
 Evaluate all PR review comments and make decisions: Accept (implement), Reject (explain why), or Acknowledge (informational).
 
+## First
+
+- Git fetch --all
+- Git pull
+- See what branch is checked out
+
 ## Core Evaluation Questions
 
 For each comment ask:
