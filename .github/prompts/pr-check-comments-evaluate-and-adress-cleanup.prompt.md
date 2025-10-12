@@ -211,6 +211,7 @@ Before marking PR as ready to merge:
 - [ ] Related documentation updated (if applicable)
 - [ ] Commit messages follow conventions
 - [ ] PR description/comment updated with resolution summary
+- [ ] Temporary PR files removed (PR##_*.md from root directory)
 - [ ] No temporary or test files in commits
 - [ ] Git history is clean and logical
 - [ ] All validation scripts pass
@@ -218,7 +219,47 @@ Before marking PR as ready to merge:
 
 ## Post-Cleanup Actions
 
-### 1. Request Final Approval
+### 1. Clean Up and Remove Temporary Files
+
+**IMPORTANT:** Before requesting final approval, remove all temporary PR-related files:
+
+```bash
+# List temporary files created during review
+ls -1 PR*_*.md 2>/dev/null
+
+# Example files to delete:
+# - PR47_MERGE_READY_COMMENT.md (after posting content to GitHub)
+# - PR47_CLEANUP_VERIFICATION.md (internal working document)
+# - Any other working/scratch files
+
+# After posting comment content to GitHub PR, delete temporary files
+rm PR47_MERGE_READY_COMMENT.md
+rm PR47_CLEANUP_VERIFICATION.md
+
+# Or for any PR number:
+# rm PR${PR_NUMBER}_*.md
+
+# Commit the cleanup
+git add -A
+git commit -m "chore: Remove temporary PR review working documents"
+
+# Verify clean state
+git status
+```
+
+**What to delete:**
+
+- Temporary comment files (used to draft PR comments, delete after posting)
+- Verification reports (internal use only)
+- Any scratch/working markdown files in root directory
+
+**What to keep:**
+
+- `docs/REVIEW_RESPONSES_PR*.md` - Permanent historical record
+- `docs/REVIEW_RESPONSE_SUMMARY_PR*.md` - Permanent executive summary
+- All documentation in `docs/` directory
+
+### 2. Request Final Approval
 
 If all cleanup tasks complete successfully:
 
@@ -232,6 +273,7 @@ All review comments addressed and cleanup complete:
 ✅ All rejections technically justified
 ✅ Documentation updated and validated
 ✅ Markdown linting passes
+✅ Temporary files cleaned up
 ✅ No blockers or concerns
 
 Requesting final approval for merge to [main/develop].
@@ -246,13 +288,77 @@ If reviewer requests changes after your response:
 - Document what changed and why
 - Update implementation status
 
-### 3. Archive Planning (Post-Merge)
+### 3. Clean Up Temporary PR Files
 
-After PR is merged, consider:
+**Before merging**, remove temporary files created during the review process:
 
-- Moving detailed review responses to an archive directory if they're very large
-- Updating any project documentation with lessons learned
-- Adding review patterns to contribution guidelines if broadly applicable
+```bash
+# List all PR-related temporary files in root directory
+ls -1 *PR*_*.md 2>/dev/null
+
+# Common temporary files to remove:
+# - PR##_MERGE_READY_COMMENT.md (copy content to PR, then delete)
+# - PR##_CLEANUP_VERIFICATION.md (internal use only, delete after review)
+# - Any other PR##_*.md working documents
+```
+
+**Cleanup actions:**
+
+1. **Copy PR comment content** - Post `PR##_MERGE_READY_COMMENT.md` content to GitHub PR
+2. **Delete temporary files** - Remove all `PR##_*.md` files from root directory
+3. **Keep review responses** - Preserve `docs/REVIEW_RESPONSES_PR##.md` and summary as historical record
+4. **Commit cleanup** - Add cleanup commit before merge
+
+**Example cleanup:**
+
+```bash
+# After posting comment to GitHub PR #47
+rm PR47_MERGE_READY_COMMENT.md
+rm PR47_CLEANUP_VERIFICATION.md
+
+# Commit the cleanup
+git add -A
+git commit -m "chore: Remove temporary PR #47 review working documents"
+```
+
+**Files to DELETE:**
+
+- ✅ `PR##_MERGE_READY_COMMENT.md` (after posting to GitHub)
+- ✅ `PR##_CLEANUP_VERIFICATION.md` (internal verification only)
+- ✅ Any `PR##_*.md` working/scratch files
+
+**Files to KEEP:**
+
+- ✅ `docs/REVIEW_RESPONSES_PR##.md` (permanent historical record)
+- ✅ `docs/REVIEW_RESPONSE_SUMMARY_PR##.md` (permanent executive summary)
+
+### 4. Archive Old Review Responses (Optional)
+
+For older review response files (from previous PRs), consider archiving:
+
+```bash
+# Create archive directory if needed
+mkdir -p docs/archive/review-responses
+
+# Move old review responses (without PR numbers or very old)
+git mv docs/REVIEW_RESPONSES.md docs/archive/review-responses/
+git mv docs/REVIEW_RESPONSE_SUMMARY.md docs/archive/review-responses/
+
+# Update references if needed
+git commit -m "docs: Archive historical review responses"
+```
+
+**When to archive:**
+
+- Old review responses without PR numbers (ambiguous historical records)
+- Review responses from merged PRs older than 6 months
+- Very large review response files (>100KB) cluttering docs directory
+
+**When to keep in docs/:**
+
+- Recent PR review responses (last 3-6 months)
+- Review responses that set important precedents
+- Cross-referenced responses used in other documentation
 
 ## Troubleshooting
 
