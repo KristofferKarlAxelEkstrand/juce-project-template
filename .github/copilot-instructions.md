@@ -109,6 +109,8 @@ npm test                     # Validate documentation
   - `cmake-config.instructions.md`: CMake best practices for **/CMakeLists.txt
   - `documentation.instructions.md`: Markdown conventions for **/*.md
   - `github-config.instructions.md`: GitHub workflow patterns for .github/**/*
+  - `scripts.instructions.md`: Shell script best practices for scripts/**/*.{sh,bat}
+  - `workflows.instructions.md`: GitHub Actions workflow patterns for .github/workflows/*.yml
 - `build/<preset>/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
 
 **Code Patterns:**

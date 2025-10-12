@@ -163,6 +163,7 @@ Once you have a successful build:
 ### Developer Experience
 
 - **VS Code integration**: Pre-configured tasks for one-keystroke builds (`Ctrl+Shift+B`)
+- **GitHub Copilot**: Custom instructions for C++, CMake, scripts, and documentation
 - **Cross-platform scripts**: Build scripts work on Windows, macOS, and Linux
 - **Real-time safe example**: Demonstrates thread-safe parameter handling with `std::atomic`
 - **Modern C++20**: Uses lambdas, `constexpr`, structured bindings, and RAII patterns
@@ -250,6 +251,7 @@ This template includes comprehensive guides:
 - **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting
 - **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)**: Fast Ninja-based workflow setup
 - **[CONTRIBUTING.md](CONTRIBUTING.md)**: Git workflow, coding standards, and PR process
+- **[docs/COPILOT_INSTRUCTIONS.md](docs/COPILOT_INSTRUCTIONS.md)**: GitHub Copilot custom instructions setup
 - **[docs/JUCE/](docs/JUCE/)**: JUCE framework concepts and real-time audio safety
 - **[docs/cmake/](docs/cmake/)**: CMake build system and dependency management
 - **[docs/C++/](docs/C++/)**: Modern C++20 features for audio development
