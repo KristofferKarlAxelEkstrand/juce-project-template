@@ -60,7 +60,7 @@ endif()
 # Edit these values to create a new plugin. All build outputs, scripts, and
 # source code will automatically use these values.
 
-set(PLUGIN_NAME "DSP-JUCE Plugin")        # User-facing product name (can contain spaces)
+set(PLUGIN_NAME "JUCE Project Template Plugin")        # User-facing product name (can contain spaces)
 set(PLUGIN_TARGET "JucePlugin")        # CMake target name (no spaces, used for directories)
 set(PLUGIN_VERSION "${PROJECT_VERSION}")  # Use version from project()
 set(PLUGIN_COMPANY_NAME "MyCompany")      # Company/developer name

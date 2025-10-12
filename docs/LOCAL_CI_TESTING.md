@@ -107,7 +107,7 @@ scripts\configure-ninja.bat
 
 ```text
 Configuring CMake with Ninja preset...
--- Plugin: DSP-JUCE Plugin v0.0.1
+-- Plugin: JUCE Project Template Plugin v0.0.1
 -- Build files written to: build/ninja
 Configuration successful!
 ```

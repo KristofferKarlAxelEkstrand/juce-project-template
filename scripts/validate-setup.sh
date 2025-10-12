@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DSP-JUCE Setup Validation Script
+# JUCE Project Template Setup Validation Script
 # This script validates that the development environment is properly configured
 
 source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
@@ -30,7 +30,7 @@ EOF
 )
 show_help "${1:-}" "$HELP_MESSAGE"
 
-info "DSP-JUCE Setup Validation"
+info "JUCE Project Template Setup Validation"
 echo "============================="
 echo
 

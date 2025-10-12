@@ -1,7 +1,7 @@
 {
-	"name": "dsp-juce-docs",
+	"name": "juce-project-template-docs",
 	"version": "1.0.0",
-	"description": "Documentation and tooling for the dsp-juce project.",
+	"description": "Documentation and tooling for the JUCE Project Template project.",
 	"scripts": {
 		"format": "prettier --write \"**/*.md\"",
 		"test": "npm run lint:md",

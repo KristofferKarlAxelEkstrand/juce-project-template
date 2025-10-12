@@ -1,6 +1,6 @@
-# DSP-JUCE Project Documentation
+# JUCE Project Template Documentation
 
-This directory contains all technical documentation for the DSP-JUCE project.
+This directory contains all technical documentation for the JUCE Project Template project.
 
 ## Core Concepts
 

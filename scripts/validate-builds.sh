@@ -70,7 +70,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/metadata-utils.sh"
 
 set_fallback_metadata() {
     export PROJECT_NAME_TARGET="JucePlugin"
-    export PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
+    export PROJECT_NAME_PRODUCT="JUCE Project Template Plugin"
     export PROJECT_VERSION="1.0.0"
     export PROJECT_COMPANY="MyCompany"
 }
