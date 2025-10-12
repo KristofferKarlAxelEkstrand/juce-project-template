@@ -160,10 +160,11 @@ fi
 echo
 echo "Build Test Summary"
 echo "=================="
-if [ ${#missing_artifacts[@]} -gt 0 ]; then
+# Use safe array existence/length checks to avoid unbound variable errors
+if [ "${missing_artifacts[@]+x}" ] && [ ${#missing_artifacts[@]} -gt 0 ]; then
     echo "ERROR: Critical build artifacts are missing: ${missing_artifacts[*]}"
     exit 1
-elif [ ${#missing_optional_artifacts[@]} -gt 0 ]; then
+elif [ "${missing_optional_artifacts[@]+x}" ] && [ ${#missing_optional_artifacts[@]} -gt 0 ]; then
     echo "Warning: Optional artifacts missing (not fatal): ${missing_optional_artifacts[*]}"
     echo "SUCCESS: All critical build artifacts found successfully!"
     exit 0
