@@ -160,14 +160,19 @@ fi
 echo
 echo "Build Test Summary"
 echo "=================="
+# Temporarily disable nounset for array checks (arrays can trigger unbound errors even when declared)
+set +u
 if [ ${#missing_artifacts[@]} -gt 0 ]; then
+    set -u
     echo "ERROR: Critical build artifacts are missing: ${missing_artifacts[*]}"
     exit 1
 elif [ ${#missing_optional_artifacts[@]} -gt 0 ]; then
+    set -u
     echo "Warning: Optional artifacts missing (not fatal): ${missing_optional_artifacts[*]}"
     echo "SUCCESS: All critical build artifacts found successfully!"
     exit 0
 else
+    set -u
     echo "SUCCESS: All expected build artifacts found successfully!"
     exit 0
 fi
