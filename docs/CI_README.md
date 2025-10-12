@@ -1,111 +1,67 @@
-# CI/CD Strategy Documentation
+# CI/CD Documentation
 
-This directory contains comprehensive documentation for the DSP-JUCE CI/CD optimization strategy.
+Documentation for CI/CD strategy and implementation.
 
-## 📚 Documentation Overview
+## Documents
 
-### Active Documents (Implementation Complete)
+### CI_GUIDE.md (Primary Reference)
 
-**Primary Reference:**
+Main CI/CD guide for developers.
 
-- **`CI_GUIDE.md`** - Main CI/CD guide (combines strategy, triggers, and usage)
+Contents:
 
-**Implementation Details:**
-
-- **`CI_IMPLEMENTATION.md`** - Technical implementation details and testing guide
-
-### Archived Documents (Planning Phase)
-
-The following documents were created during the planning phase and are kept for historical reference:
-
-- `CI_STRATEGY.md` - Original strategic rationale (consolidated into CI_GUIDE.md)
-- `CI_TRIGGERS.md` - Original trigger matrix (consolidated into CI_GUIDE.md)
-- `CI_SUMMARY.md` - Original executive summary (consolidated into CI_GUIDE.md)
-- `CI_STRATEGY_REVIEW.md` - Expert review and approval (archived after implementation)
-- `CI_OPTIMIZATION_PLAN.md` - 4-phase implementation roadmap (archived after Phase 1 complete)
-
-## 🚀 Quick Start
-
-**For Developers:**
-
-1. Read **`CI_GUIDE.md`** - Understand the CI strategy and what runs when
-2. Review **`CI_IMPLEMENTATION.md`** - See implementation details if needed
-
-**For Reviewers:**
-
-1. Start with **`CI_GUIDE.md`** - Complete overview
-2. Check **`CI_IMPLEMENTATION.md`** - Technical validation
-
-## 📖 Document Purposes
-
-### CI_GUIDE.md (Main Reference)
-
-**What:** Comprehensive guide to the CI/CD strategy  
-**When:** Read before contributing, reference when debugging CI  
-**Contents:**
-
-- Strategy overview and philosophy
-- Visual trigger matrix (what runs when)
-- Quick reference for developers
-- Success metrics and monitoring
+- What runs when (develop vs main)
+- Developer workflow
+- Local validation
+- Troubleshooting
 
 ### CI_IMPLEMENTATION.md (Technical Details)
 
-**What:** Implementation completion summary with testing guide  
-**When:** Reference during testing, troubleshooting, or future modifications  
-**Contents:**
+Implementation details and testing guide.
 
-- Technical implementation details
-- How the skip logic works
-- Testing strategy and success criteria
+Contents:
+
+- Technical implementation
+- Skip logic details
+- Testing strategy
 - Rollback procedures
 
-## 🔄 Future Optimization Phases
+## Quick Start
 
-**Phase 1: ✅ Complete** - Conditional build matrix (implemented)
+For developers:
 
-**Phase 2: 📋 Planned** - Path-based filtering
+1. Read CI_GUIDE.md to understand what runs when
+2. Use local validation before pushing
+3. Review CI_IMPLEMENTATION.md for technical details if needed
 
-- Skip builds on doc-only changes
-- Additional 10-15% resource savings
+## Current Configuration
 
-**Phase 3: 📋 Planned** - Cache optimization
+### PRs to develop
 
-- Faster builds via dependency caching
-- Sub-12 minute develop PRs
+3 jobs, 15 minutes:
 
-**Phase 4: 📋 Planned** - Separate lint workflow
+- Lint
+- Build ubuntu Debug
+- Build Windows Release
 
-- Non-blocking documentation checks
-- Lint runs separately from builds
+Coverage: 90% of issues
 
-See `CI_IMPLEMENTATION.md` for detailed phase descriptions.
+### PRs to main
 
-## 📊 Current Configuration (Phase 1)
+7 jobs, 40 minutes:
 
-### PR to `develop` Branch
+- Lint
+- Build ubuntu Debug
+- Build ubuntu Release
+- Build Windows Release
+- Build macOS Release
+- CodeQL (C++)
+- CodeQL (JavaScript/TypeScript)
 
-**Jobs:** 3 parallel jobs (~15 minutes)
+Coverage: 100%
 
-- ✅ Lint (documentation quality)
-- ✅ Build ubuntu Debug (developer workflow)
-- ✅ Build Windows Release (primary platform)
+## Resource Impact
 
-### PR to `main` Branch
-
-**Jobs:** 7 parallel jobs (~40 minutes)
-
-- ✅ Lint + 4 builds + 2 CodeQL scans
-- ✅ Comprehensive validation
-
-### Resource Impact
-
-- **Savings:** 52% reduction (250 CI minutes/week)
-- **Speed:** 2.7× faster develop PRs
-- **Coverage:** ~90% on develop, 100% on main
-
----
-
-**Last Updated:** October 12, 2025  
-**Implementation Status:** ✅ Phase 1 Complete  
-**Branch:** `feature/smarter-ci-runs`
+- Savings: 52% reduction (250 CI minutes/week)
+- Speed: 2.7x faster develop PRs
+- Coverage: 90% on develop, 100% on main
