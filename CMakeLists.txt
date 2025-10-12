@@ -160,6 +160,7 @@ juce_add_plugin(${PLUGIN_TARGET}
 target_sources(${PLUGIN_TARGET} PRIVATE
     src/Main.cpp
     src/DSPJuceAudioProcessor.cpp
+    src/DSPJuceAudioProcessor.h
     src/PluginEditor.cpp
     src/PluginEditor.h
 )
