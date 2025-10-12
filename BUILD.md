@@ -99,7 +99,6 @@ Artefacts are in `build/<preset>/JucePlugin_artefacts/<config>/`:
 Plugin file names use the `PLUGIN_NAME` variable defined in `CMakeLists.txt`. For example, setting
 `PLUGIN_NAME` to "MyPlugin" will produce artefacts like `VST3/MyPlugin.vst3`,
 `AU/MyPlugin.component`, and `Standalone/MyPlugin[.exe|.app]`.
-`AU/MyPlugin.component`, and `Standalone/MyPlugin[.exe|.app]`.
 
 ## CMake Presets
 
