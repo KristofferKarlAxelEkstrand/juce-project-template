@@ -39,7 +39,7 @@ open "build/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
 ./build/JucePlugin_artefacts/Debug/Standalone/"DSP-JUCE Plugin"
 
 # On Windows
-"build\\JucePlugin_artefacts\\Debug\\Standalone\\DSP-JUCE Plugin.exe"
+./build/JucePlugin_artefacts/Debug/Standalone/"DSP-JUCE Plugin.exe"
 ```
 
 ## What You Just Built
