@@ -1,136 +1,179 @@
 # Build Instructions
 
-Complete build setup for DSP-JUCE on Windows, macOS, and Linux.
+Build the project on Windows, macOS, and Linux.
 
 ## Prerequisites
 
-**Required Software**:
+Required software:
 
-- **CMake**: 3.22 or higher
-- **C++20 Compiler**: MSVC 2019+, GCC 10+, or Clang 11+
-- **Git**: For dependency management
+- CMake 3.22 or higher
+- C++20 compiler (MSVC 2019+, GCC 10+, or Clang 11+)
+- Git
 
-### Platform Setup
+### Windows
 
-#### Windows
+Install Visual Studio 2019 or later with "Desktop development with C++" workload.
 
-Install Visual Studio 2019+ with "Desktop development with C++" workload.
+Verify installation:
 
 ```powershell
-# Verify installation
 cmake --version
-cl  # MSVC compiler check
+cl
 ```
 
-#### macOS
+### macOS
+
+Install Xcode command line tools and CMake:
 
 ```bash
-# Install Xcode tools and Homebrew
 xcode-select --install
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install cmake
 
-# Verify installation  
 cmake --version
 clang++ --version
 ```
 
-#### Linux (Ubuntu/Debian)
+### Linux (Ubuntu/Debian)
+
+Install build tools and JUCE dependencies:
 
 ```bash
-# Install dependencies
 sudo apt-get update && sudo apt-get install -y \
     build-essential cmake git \
     libasound2-dev libx11-dev libxcomposite-dev libxcursor-dev \
     libxinerama-dev libxrandr-dev libfreetype6-dev libfontconfig1-dev \
     libgl1-mesa-dev libwebkit2gtk-4.1-dev pkg-config
 
-# Verify installation
 cmake --version && g++ --version
 ```
 
-## Build Process
+## Build Steps
 
-**IMPORTANT**: Each step takes significant time. Do not cancel operations.
+### 1. Configure (90 seconds)
 
-### Step 1: Configure (90+ seconds)
-
-Downloads JUCE 8.0.10 and generates platform-specific build files.
+Download JUCE and generate build files:
 
 ```bash
 cmake --preset=default
 ```
 
-### Step 2: Build (2m45s+ Debug, 4m30s+ Release)  
+Choose the appropriate preset for your platform:
 
-Compiles all source code and JUCE modules.
+- `default`: `build/` (Linux/macOS)
+- `vs2022`: `build/vs2022/` (Windows)
+- `ninja`: `build/ninja/` (all platforms)
+
+### 2. Build (3-5 minutes)
+
+Compile source code and JUCE modules:
 
 ```bash
-# Debug build (faster compilation, larger binaries)
+# Debug build
 cmake --build --preset=default
 
-# Release build (optimized, smaller binaries)
-cmake --preset=release && cmake --build --preset=release
+# Release build
+cmake --preset=release
+cmake --build --preset=release
 ```
 
-### Step 3: Validation
+### 3. Verify Build
+
+Check build outputs:
 
 ```bash
-# Check build artefacts exist
+# List artefacts
 ls -la build/JucePlugin_artefacts/Debug/
 
-# Run validation script
-./scripts/validate-setup.sh
+# Run validation
+./scripts/validate-builds.sh Debug
 ```
 
-### Build Artefacts
+## Build Outputs
 
-The compiled binaries are placed in the `build/JucePlugin_artefacts/` directory,
-organized by build configuration (e.g., `Debug`, `Release`).
+Artefacts are in `build/JucePlugin_artefacts/<config>/`:
 
-- **VST3 Plugin**: `VST3/DSP-JUCE Plugin.vst3`
-- **AU Plugin** (macOS): `AU/DSP-JUCE Plugin.component`
-- **Standalone Application**: `Standalone/DSP-JUCE Plugin` (or `.exe` on Windows)
+- `VST3/DSP-JUCE Plugin.vst3` - VST3 plugin
+- `AU/DSP-JUCE Plugin.component` - AU plugin (macOS only)
+- `Standalone/DSP-JUCE Plugin[.exe|.app]` - Standalone application
+
+Plugin file names use the `PLUGIN_NAME` variable defined in `CMakeLists.txt`. For example, setting
+`PLUGIN_NAME` to "MyPlugin" will produce artefacts like `VST3/MyPlugin.vst3`,
+`AU/MyPlugin.component`, and `Standalone/MyPlugin[.exe|.app]`.
+
+## CMake Presets
+
+Available presets in `CMakePresets.json`:
+
+| Preset | Generator | Platform | Build Dir |
+|--------|-----------|----------|-----------|
+| `default` | Unix Makefiles | Linux/macOS | `build/` |
+| `release` | Unix Makefiles | Linux/macOS | `build/release/` |
+| `vs2022` | Visual Studio 17 | Windows | `build/vs2022/` |
+| `ninja` | Ninja | All | `build/ninja/` |
+| `xcode` | Xcode | macOS | `build/xcode/` |
+
+Usage:
+
+```bash
+# Configure with preset
+cmake --preset=ninja
+
+# Build with preset
+cmake --build --preset=ninja
+```
 
 ## Troubleshooting
 
-### Build Failures
+### CMake Configure Fails
 
-**CMake Configure Fails**:
+Check CMake version:
 
 ```bash
-# Check CMake version
 cmake --version  # Must be 3.22+
-
-# Clear cache and retry
-rm -rf build/ && cmake --preset=default
 ```
 
-**Compiler Errors**:
+Clear cache and retry:
 
-```bash  
-# Verify C++20 support
-g++ -std=c++20 --version  # Linux
+```bash
+rm -rf build/
+cmake --preset=default
+```
+
+### Compiler Errors
+
+Verify C++20 support:
+
+```bash
+g++ -std=c++20 --version      # Linux
 clang++ -std=c++20 --version  # macOS
-cl /std:c++20  # Windows (in Developer Command Prompt)
+cl /std:c++20                 # Windows (in Developer Command Prompt)
 ```
 
-**JUCE Download Fails**:
+### JUCE Download Fails
 
-- Check internet connection and firewall settings
-- Verify Git can access GitHub: `git clone https://github.com/juce-framework/JUCE.git /tmp/test-juce`
+Check internet connection and firewall.
 
-### Plugin Installation
+Test Git access:
 
-**VST3 Not Found by DAW**:
+```bash
+git clone https://github.com/juce-framework/JUCE.git /tmp/test-juce
+```
 
-1. **Linux**: Check `~/.vst3/DSP-JUCE Plugin.vst3/` exists
-2. **Windows**: Copy to `%PROGRAMFILES%\Common Files\VST3\`  
-3. **macOS**: Copy to `/Library/Audio/Plug-Ins/VST3/`
-4. Rescan plugins in your DAW
+### Plugin Not Found by DAW
 
-**Performance Issues**:
+Install plugin to system directory:
 
-- Use Release builds for production: `cmake --preset=release`
-- Ensure no debug symbols in audio thread
-- Check sample rate and buffer size compatibility
+- Linux: `~/.vst3/`
+- Windows: `%PROGRAMFILES%\Common Files\VST3\`
+- macOS: `/Library/Audio/Plug-Ins/VST3/`
+
+Then rescan plugins in your DAW.
+
+### Performance Issues
+
+Use Release builds for production:
+
+```bash
+cmake --preset=release
+cmake --build --preset=release
+```

@@ -1,0 +1,5 @@
+# Markdownlint ignore patterns
+node_modules/
+build/
+third_party/
+.temp-pr-reviews-docs/
