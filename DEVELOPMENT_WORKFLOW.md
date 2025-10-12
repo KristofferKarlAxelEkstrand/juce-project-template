@@ -252,5 +252,5 @@ For development, use standalone application for faster iteration.
 
 - [BUILD.md](BUILD.md) - Initial build setup
 - [VERSION_MANAGEMENT.md](docs/VERSION_MANAGEMENT.md) - Version and release workflow
-- [docs/CI_GUIDE.md](docs/CI_GUIDE.md) - CI/CD overview
+- [docs/CI.md](docs/CI.md) - CI/CD overview
 - [docs/CROSS_PLATFORM_BUILDS.md](docs/CROSS_PLATFORM_BUILDS.md) - Platform-specific details
