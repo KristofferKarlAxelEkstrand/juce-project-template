@@ -86,6 +86,7 @@ private:
     std::atomic<float> currentGain{0.5f};
 
     // Constants
+    // Frequency range covers the full human hearing range (20 Hz to 20,000 Hz)
     static constexpr float MIN_FREQUENCY = 20.0f;
     static constexpr float MAX_FREQUENCY = 20000.0f;
     static constexpr float DEFAULT_FREQUENCY = 440.0f;
