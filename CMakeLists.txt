@@ -159,8 +159,7 @@ juce_add_plugin(${PLUGIN_TARGET}
 # Add source files
 target_sources(${PLUGIN_TARGET} PRIVATE
     src/Main.cpp
-    src/MainComponent.cpp
-    src/MainComponent.h
+    src/DSPJuceAudioProcessor.cpp
     src/PluginEditor.cpp
     src/PluginEditor.h
 )

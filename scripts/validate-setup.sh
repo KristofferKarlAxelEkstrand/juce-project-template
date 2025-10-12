@@ -39,8 +39,10 @@ info "📋 Checking Required Tools..."
 echo "-------------------------------"
 
 command_exists cmake && success "CMake found: $(cmake --version | head -n1)" || { error "CMake not found"; exit 1; }
-command_exists g++ && success "GCC found: $(g++ --version | head -n1)" || { error "GCC not found"; exit 1; }
-command_exists make && success "Make found: $(make --version | head -n1)" || { error "Make not found"; exit 1; }
+if [[ "$OSTYPE" != "msys" && "$OSTYPE" != "cygwin" ]]; then
+    command_exists g++ && success "GCC found: $(g++ --version | head -n1)" || { error "GCC not found"; exit 1; }
+    command_exists make && success "Make found: $(make --version | head -n1)" || { error "Make not found"; exit 1; }
+fi
 command_exists node && success "Node.js found: $(node --version)" || { error "Node.js not found"; exit 1; }
 command_exists npm && success "NPM found: $(npm --version)" || { error "NPM not found"; exit 1; }
 
@@ -90,21 +92,40 @@ echo
 info "⚙️ Testing CMake Configuration..."
 echo "--------------------------------"
 
-# Clean any previous build
-info "Cleaning previous build directory..."
-rm -rf build
+# Determine preset based on OS
+case "$(uname -s)" in
+    CYGWIN*|MINGW*|MSYS*)
+        preset="vs2022"
+        ;;
+    *)
+        preset="default"
+        ;;
+esac
 
-# Try to configure with default preset
-info "Attempting to configure with CMake..."
-if cmake --preset=default >/dev/null 2>&1; then
+
+# Try to configure with the determined preset
+info "Attempting to configure with CMake using preset '$preset'..."
+if cmake --preset=$preset >/dev/null 2>&1; then
     success "CMake configuration successful"
     
+    build_dir="build/$preset"
     # Check if we can generate build files
-    if [ -d "build/default" ] && [ -f "build/default/Makefile" ]; then
-        success "Build files generated successfully"
+    if [ "$preset" = "vs2022" ]; then
+        # On Windows, check for the solution file
+        if [ -d "$build_dir" ] && [ -f "$build_dir/JuceProject.sln" ]; then
+            success "Build files generated successfully"
+        else
+            error "Build files not generated properly"
+            exit 1
+        fi
     else
-        error "Build files not generated properly"
-        exit 1
+        # On Linux/macOS, check for the Makefile
+        if [ -d "$build_dir" ] && [ -f "$build_dir/Makefile" ]; then
+            success "Build files generated successfully"
+        else
+            error "Build files not generated properly"
+            exit 1
+        fi
     fi
 else
     error "CMake configuration failed"
