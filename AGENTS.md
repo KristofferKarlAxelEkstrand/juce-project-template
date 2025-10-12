@@ -225,7 +225,7 @@ npm run lint:md:fix
 Edit these values in `CMakeLists.txt`:
 
 ```cmake
-set(PLUGIN_NAME "DSP-JUCE Plugin")
+set(PLUGIN_NAME "JUCE Project Template Plugin")
 set(PLUGIN_TARGET "JucePlugin")
 set(PLUGIN_VERSION "0.0.1")
 set(PLUGIN_COMPANY_NAME "MyCompany")

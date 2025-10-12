@@ -43,7 +43,8 @@ open "build/default/JucePlugin_artefacts/Debug/Standalone/<PLUGIN_NAME>.app"
 build\ninja\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
 ```
 
-> **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt` (default: "DSP-JUCE Plugin").
+> **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt`
+> (default: "JUCE Project Template Plugin").
 
 ## What You Just Built
 

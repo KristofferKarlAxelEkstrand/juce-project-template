@@ -3,14 +3,10 @@
 # JUCE Project Template Build Validation Script
 # Validates that plugin and standalone builds exist.
 
-set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-# Add error handler
-trap 'echo "[ERROR] Script failed at line $LINENO" >&2' ERR
-
-# Add help message
-if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
-    cat << EOF
+# --- Help Message ---
+HELP_MESSAGE=$(cat << EOF
 Usage: ${0##*/} [BUILD_CONFIG] [BUILD_DIR_OVERRIDE]
 
 Validates that plugin and standalone builds exist in the expected locations.
@@ -31,10 +27,10 @@ Output:
     Checks for VST3 plugin, standalone app, and shared library artifacts.
     Exits with status 0 if all critical artifacts found, 1 otherwise.
 EOF
-    exit 0
-fi
+)
+show_help "${1:-}" "$HELP_MESSAGE"
 
-echo "JUCE Project Template Build Validation"
+info "JUCE Project Template Build Validation"
 echo "======================================="
 echo
 
@@ -58,7 +54,12 @@ if [ -n "$OVERRIDE_BUILD_DIR" ]; then
 elif [ "$OS" = "windows" ]; then
     BUILD_DIR="$PROJECT_ROOT/build/vs2022"
 else
-    preset_name=$(echo "$BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')
+    # On Linux/macOS, preset name matches the lowercase build config, but 'Debug' uses the 'default' preset.
+    if [ "$BUILD_CONFIG" = "Debug" ]; then
+        preset_name="default"
+    else
+        preset_name=$(echo "$BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')
+    fi
     BUILD_DIR="$PROJECT_ROOT/build/$preset_name"
 fi
 
@@ -67,26 +68,31 @@ METADATA_FILE="$BUILD_DIR/plugin_metadata.sh"
 # shellcheck source=./metadata-utils.sh
 source "$(dirname "${BASH_SOURCE[0]}")/metadata-utils.sh"
 
+set_fallback_metadata() {
+    export PROJECT_NAME_TARGET="JucePlugin"
+    export PROJECT_NAME_PRODUCT="JUCE Project Template Plugin"
+    export PROJECT_VERSION="1.0.0"
+    export PROJECT_COMPANY="MyCompany"
+}
+
 if [ -f "$METADATA_FILE" ]; then
     if extract_metadata_vars "$METADATA_FILE" PROJECT_NAME_PRODUCT PROJECT_VERSION PROJECT_COMPANY PROJECT_NAME_TARGET; then
         echo "Plugin: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
         echo "Company: $PROJECT_COMPANY"
     else
         echo "Warning: Failed to extract metadata from $METADATA_FILE. Using fallback values."
-        export PROJECT_NAME_TARGET="JucePlugin"
-        export PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
-        export PROJECT_VERSION="1.0.0"
-        export PROJECT_COMPANY="MyCompany"
+        set_fallback_metadata
     fi
 else
     # Fallback to hardcoded values if CMake hasn't run yet
     echo "Warning: CMake metadata file not found at $METADATA_FILE"
-    echo "   Run 'cmake --preset=<preset>' first to generate metadata."
+    if [ "$OS" = "windows" ]; then
+        echo "   Run 'cmake --preset=vs2022' first to generate metadata."
+    else
+        echo "   Run 'cmake --preset=<preset>' first to generate metadata."
+    fi
     echo "   Using fallback values for validation..."
-    export PROJECT_NAME_TARGET="JucePlugin"
-    export PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
-    export PROJECT_VERSION="1.0.0"
-    export PROJECT_COMPANY="MyCompany"
+    set_fallback_metadata
 fi
 
 echo

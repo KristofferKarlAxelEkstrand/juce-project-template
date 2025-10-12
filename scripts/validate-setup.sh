@@ -1,16 +1,12 @@
 #!/bin/bash
 
-# DSP-JUCE Setup Validation Script
+# JUCE Project Template Setup Validation Script
 # This script validates that the development environment is properly configured
 
-set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
-# Add error handler
-trap 'echo "[ERROR] Script failed at line $LINENO" >&2' ERR
-
-# Add help message
-if [[ "${1:-}" == "--help" ]] || [[ "${1:-}" == "-h" ]]; then
-    cat << EOF
+# --- Help Message ---
+HELP_MESSAGE=$(cat << EOF
 Usage: ${0##*/} [OPTIONS]
 
 Validates the development environment is properly configured for JUCE development.
@@ -31,116 +27,123 @@ Checks:
 Output:
     Reports status of each check. Exit code 0 if environment is ready.
 EOF
-    exit 0
-fi
+)
+show_help "${1:-}" "$HELP_MESSAGE"
 
-echo "🔧 DSP-JUCE Setup Validation"
+info "JUCE Project Template Setup Validation"
 echo "============================="
 echo
 
-# Function to check if command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
-
-# Function to print status
-print_status() {
-    if [ $1 -eq 0 ]; then
-        echo "[OK] $2"
-    else
-        echo "[FAIL] $2"
-        return 1
-    fi
-}
-
 # Check required tools
-echo "📋 Checking Required Tools..."
+info "Checking Required Tools"
 echo "-------------------------------"
 
-command_exists cmake && print_status 0 "CMake found: $(cmake --version | head -n1)" || print_status 1 "CMake not found"
-command_exists g++ && print_status 0 "GCC found: $(g++ --version | head -n1)" || print_status 1 "GCC not found"
-command_exists make && print_status 0 "Make found: $(make --version | head -n1)" || print_status 1 "Make not found"
-command_exists node && print_status 0 "Node.js found: $(node --version)" || print_status 1 "Node.js not found"
-command_exists npm && print_status 0 "NPM found: $(npm --version)" || print_status 1 "NPM not found"
+command_exists cmake && success "CMake found: $(cmake --version | head -n1)" || { error "CMake not found"; exit 1; }
+if [[ "$OSTYPE" != "msys" && "$OSTYPE" != "cygwin" ]]; then
+    command_exists g++ && success "GCC found: $(g++ --version | head -n1)" || { error "GCC not found"; exit 1; }
+    command_exists make && success "Make found: $(make --version | head -n1)" || { error "Make not found"; exit 1; }
+fi
+command_exists node && success "Node.js found: $(node --version)" || { error "Node.js not found"; exit 1; }
+command_exists npm && success "NPM found: $(npm --version)" || { error "NPM not found"; exit 1; }
 
 echo
 
 # Check Linux audio dependencies
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-    echo "🔊 Checking Linux Audio Dependencies..."
+    info "Checking Linux Audio Dependencies"
     echo "--------------------------------------"
     
-    pkg-config --exists alsa && print_status 0 "ALSA development libraries found" || print_status 1 "ALSA development libraries missing"
-    pkg-config --exists x11 && print_status 0 "X11 development libraries found" || print_status 1 "X11 development libraries missing"
-    pkg-config --exists freetype2 && print_status 0 "FreeType development libraries found" || print_status 1 "FreeType development libraries missing"
-    pkg-config --exists fontconfig && print_status 0 "FontConfig development libraries found" || print_status 1 "FontConfig development libraries missing"
+    pkg-config --exists alsa && success "ALSA development libraries found" || { error "ALSA development libraries missing"; exit 1; }
+    pkg-config --exists x11 && success "X11 development libraries found" || { error "X11 development libraries missing"; exit 1; }
+    pkg-config --exists freetype2 && success "FreeType development libraries found" || { error "FreeType development libraries missing"; exit 1; }
+    pkg-config --exists fontconfig && success "FontConfig development libraries found" || { error "FontConfig development libraries missing"; exit 1; }
     
     echo
 fi
 
 # Check project files
-echo "📁 Checking Project Structure..."
+info "Checking Project Structure"
 echo "--------------------------------"
 
-[ -f "CMakeLists.txt" ] && print_status 0 "CMakeLists.txt found" || print_status 1 "CMakeLists.txt missing"
-[ -f "CMakePresets.json" ] && print_status 0 "CMakePresets.json found" || print_status 1 "CMakePresets.json missing"
-[ -f "package.json" ] && print_status 0 "package.json found" || print_status 1 "package.json missing"
-[ -f ".clang-format" ] && print_status 0 ".clang-format found" || print_status 1 ".clang-format missing"
-[ -d "src" ] && print_status 0 "src/ directory found" || print_status 1 "src/ directory missing"
-[ -d ".github/workflows" ] && print_status 0 ".github/workflows/ directory found" || print_status 1 ".github/workflows/ directory missing"
+[ -f "CMakeLists.txt" ] && success "CMakeLists.txt found" || { error "CMakeLists.txt missing"; exit 1; }
+[ -f "CMakePresets.json" ] && success "CMakePresets.json found" || { error "CMakePresets.json missing"; exit 1; }
+[ -f "package.json" ] && success "package.json found" || { error "package.json missing"; exit 1; }
+[ -d "src" ] && success "src/ directory found" || { error "src/ directory missing"; exit 1; }
+[ -d ".github/workflows" ] && success ".github/workflows/ directory found" || { error ".github/workflows/ directory missing"; exit 1; }
 
 echo
 
 # Test NPM setup
-echo "📦 Testing NPM Setup..."
+info "Testing NPM Setup"
 echo "-----------------------"
 
 if [ -d "node_modules" ]; then
-    print_status 0 "Node modules directory exists"
+    success "Node modules directory exists"
 else
-    echo "Installing NPM dependencies..."
-    npm install && print_status 0 "NPM dependencies installed" || print_status 1 "NPM install failed"
+    info "Installing NPM dependencies..."
+    npm install && success "NPM dependencies installed" || { error "NPM install failed"; exit 1; }
 fi
 
-npm test && print_status 0 "Documentation linting passed" || print_status 1 "Documentation linting failed"
+npm test && success "Documentation linting passed" || { error "Documentation linting failed"; exit 1; }
 
 echo
 
 # Test CMake configuration
-echo "Testing CMake Configuration..."
+info "Testing CMake Configuration"
 echo "--------------------------------"
 
-# Clean any previous build
-rm -rf build
+# Determine preset based on OS
+case "$(uname -s)" in
+    CYGWIN*|MINGW*|MSYS*)
+        preset="vs2022"
+        ;;
+    *)
+        preset="default"
+        ;;
+esac
 
-# Try to configure with default preset
-if cmake --preset=default >/dev/null 2>&1; then
-    print_status 0 "CMake configuration successful"
+
+# Try to configure with the determined preset
+info "Attempting to configure with CMake using preset '$preset'..."
+if cmake --preset="$preset" >/dev/null 2>&1; then
+    success "CMake configuration successful"
     
+    build_dir="build/$preset"
     # Check if we can generate build files
-    if [ -d "build/default" ] && [ -f "build/default/Makefile" ]; then
-        print_status 0 "Build files generated successfully"
+    if [ "$preset" = "vs2022" ]; then
+        # On Windows, check for the solution file
+        if [ -d "$build_dir" ] && [ -f "$build_dir/JuceProject.sln" ]; then
+            success "Build files generated successfully"
+        else
+            error "Build files not generated properly"
+            exit 1
+        fi
     else
-        print_status 1 "Build files not generated properly"
+        # On Linux/macOS, check for the Makefile
+        if [ -d "$build_dir" ] && [ -f "$build_dir/Makefile" ]; then
+            success "Build files generated successfully"
+        else
+            error "Build files not generated properly"
+            exit 1
+        fi
     fi
 else
-    print_status 1 "CMake configuration failed"
-    echo "  Note: This may be due to missing system dependencies"
-    echo "  Note: Check the README.md for platform-specific requirements"
+    error "CMake configuration failed"
+    warn "  Note: This may be due to missing system dependencies"
+    warn "  Note: Check the BUILD.md for platform-specific requirements"
+    exit 1
 fi
 
 echo
 
 # Summary
-echo "Validation Summary"
+info "✅ Validation Summary"
 echo "===================="
-echo "If all items above show [OK], your development environment is ready!"
-echo "If any items show [FAIL], please install the missing dependencies."
+success "If all items above show [SUCCESS], your development environment is ready!"
 echo
-echo "Next steps:"
-echo "1. Fix any missing dependencies shown above"
-echo "2. Run: cmake --preset=default"
-echo "3. Run: cmake --build --preset=default"
-echo "4. Run the built application"
+info "Next steps:"
+echo "1. Run: cmake --preset=default"
+echo "2. Run: cmake --build --preset=default"
+echo "3. Run the built application from the build/default/JucePlugin_artefacts/Debug/Standalone directory"
 echo
-echo "For help, see README.md or open an issue on GitHub."
+info "For help, see QUICKSTART.md or open an issue on GitHub."

@@ -1,4 +1,4 @@
-#include "MainComponent.h"
+#include "DSPJuceAudioProcessor.h"
 #include "PluginEditor.h"
 
 //==============================================================================
@@ -66,11 +66,17 @@ void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce:
 juce::AudioProcessorEditor *DSPJuceAudioProcessor::createEditor() { return new DSPJuceAudioProcessorEditor(*this); }
 
 //==============================================================================
+/**
+ * @copydoc DSPJuceAudioProcessor::setFrequency
+ */
 void DSPJuceAudioProcessor::setFrequency(float frequency) {
     currentFrequency.store(juce::jlimit(MIN_FREQUENCY, MAX_FREQUENCY, frequency));
 }
 
-void DSPJuceAudioProcessor::setGain(float gainValue) { currentGain.store(juce::jlimit(MIN_GAIN, MAX_GAIN, gainValue)); }
+/**
+ * @copydoc DSPJuceAudioProcessor::setGain
+ */
+void DSPJuceAudioProcessor::setGain(float gain) { currentGain.store(juce::jlimit(MIN_GAIN, MAX_GAIN, gain)); }
 
 //==============================================================================
 void DSPJuceAudioProcessor::getStateInformation(juce::MemoryBlock &destData) {

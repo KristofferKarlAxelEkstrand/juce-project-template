@@ -17,7 +17,7 @@ All plugin metadata is centralized in `CMakeLists.txt`. Edit these values:
 Open `CMakeLists.txt` and locate the metadata section (around line 63):
 
 ```cmake
-set(PLUGIN_NAME "DSP-JUCE Plugin")        # Change to your plugin name
+set(PLUGIN_NAME "JUCE Project Template Plugin")        # Change to your plugin name
 set(PLUGIN_TARGET "JucePlugin")           # Change to your target name (no spaces)
 set(PLUGIN_VERSION "0.0.1")               # Keep for initial development
 set(PLUGIN_COMPANY_NAME "MyCompany")      # Change to your company name

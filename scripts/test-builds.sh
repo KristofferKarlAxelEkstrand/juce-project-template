@@ -81,7 +81,7 @@ else
     echo "[WARN] plugin_metadata.sh not found at $METADATA_FILE"
     echo "       Using fallback values. Run 'cmake --preset=<preset>' first."
     PROJECT_NAME_TARGET="JucePlugin"
-    PROJECT_NAME_PRODUCT="DSP-JUCE Plugin"
+    PROJECT_NAME_PRODUCT="JUCE Project Template Plugin"
 fi
 echo
 
