@@ -3,6 +3,12 @@
 A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone).
 Designed for professional development with fast iteration, CI/CD integration, and deterministic builds.
 
+## 🚀 Quick Start (5 Minutes)
+
+New to this template? Start here: **[QUICKSTART.md](QUICKSTART.md)**
+
+Already familiar? Continue below for full documentation.
+
 ## What This Template Provides
 
 This template gives you a working JUCE 8.0.10 project with:
