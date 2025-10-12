@@ -63,16 +63,22 @@ else
     BUILD_DIR="$PROJECT_ROOT/build/$preset_name"
 fi
 
+# --- Constants for Fallback Metadata ---
+FALLBACK_PROJECT_NAME_TARGET="JucePlugin"
+FALLBACK_PROJECT_NAME_PRODUCT="JUCE Project Template Plugin"
+FALLBACK_PROJECT_VERSION="1.0.0"
+FALLBACK_PROJECT_COMPANY="MyCompany"
+
 # --- Load Plugin Metadata from CMake ---
 METADATA_FILE="$BUILD_DIR/plugin_metadata.sh"
 # shellcheck source=./metadata-utils.sh
 source "$(dirname "${BASH_SOURCE[0]}")/metadata-utils.sh"
 
 set_fallback_metadata() {
-    export PROJECT_NAME_TARGET="JucePlugin"
-    export PROJECT_NAME_PRODUCT="JUCE Project Template Plugin"
-    export PROJECT_VERSION="1.0.0"
-    export PROJECT_COMPANY="MyCompany"
+    export PROJECT_NAME_TARGET="$FALLBACK_PROJECT_NAME_TARGET"
+    export PROJECT_NAME_PRODUCT="$FALLBACK_PROJECT_NAME_PRODUCT"
+    export PROJECT_VERSION="$FALLBACK_PROJECT_VERSION"
+    export PROJECT_COMPANY="$FALLBACK_PROJECT_COMPANY"
 }
 
 if [ -f "$METADATA_FILE" ]; then
