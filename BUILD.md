@@ -57,7 +57,7 @@ Download JUCE and generate build files:
 cmake --preset=default
 ```
 
-The preset determines the build directory:
+Choose the appropriate preset for your platform:
 
 - `default`: `build/` (Linux/macOS)
 - `vs2022`: `build/vs2022/` (Windows)
@@ -96,7 +96,9 @@ Artefacts are in `build/JucePlugin_artefacts/<config>/`:
 - `AU/DSP-JUCE Plugin.component` - AU plugin (macOS only)
 - `Standalone/DSP-JUCE Plugin[.exe|.app]` - Standalone application
 
-Paths use `PLUGIN_NAME` from `CMakeLists.txt`.
+Plugin file names use the `PLUGIN_NAME` variable defined in `CMakeLists.txt`. For example, setting
+`PLUGIN_NAME` to "MyPlugin" will produce artefacts like `VST3/MyPlugin.vst3`,
+`AU/MyPlugin.component`, and `Standalone/MyPlugin[.exe|.app]`.
 
 ## CMake Presets
 

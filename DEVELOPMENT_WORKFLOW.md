@@ -53,7 +53,9 @@ scripts\\configure-ninja.bat  # Configure
 scripts\\build-ninja.bat      # Build
 ```
 
-Detects VS 2022 (Community, Professional, or Enterprise), runs `vcvarsall.bat x64`, and executes CMake/Ninja.
+The scripts automatically detect your installed version of Visual Studio 2022 (Community,
+Professional, or Enterprise), set up the required build environment by running `vcvarsall.bat x64`,
+and then proceed with the build process.
 
 ### macOS/Linux
 
