@@ -6,7 +6,7 @@ CI/CD strategy and what runs when.
 
 CI uses tiered validation:
 
-- **PRs to `develop`**: Fast feedback (15 min) - lint, debug build, Windows release
+- **PRs to `develop`**: Fast feedback (15 min) - lint, debug build, Windows Release build
 - **PRs to `main`**: Full validation (40 min) - all platforms, all configs, security scans
 - **Tags `v*.*.*`**: Automated releases with cross-platform builds
 

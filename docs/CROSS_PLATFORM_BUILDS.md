@@ -24,7 +24,7 @@ Features:
 
 - Auto-detect Visual Studio 2022 (Community, Professional, Enterprise)
 - Initialize x64 developer environment
-- Include MSVC, Ninja, and CMake in PATH
+- Make MSVC, Ninja, and CMake available in activated build environment
 
 ### macOS/Linux
 
