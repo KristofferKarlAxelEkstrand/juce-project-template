@@ -22,21 +22,24 @@ cd juce-project-template
 ### Step 2: Build (3-4 minutes first time)
 
 ```bash
-cmake --preset=ninja
-cmake --build --preset=ninja
+# Build with default tools (e.g., Make, MSBuild)
+cmake --preset=default
+cmake --build --preset=default
 ```
+
+> **Note:** For faster builds, install [Ninja](https://ninja-build.org/) and use the `ninja` preset instead of `default`.
 
 ### Step 3: Run Your Plugin (instant)
 
 ```bash
 # On macOS
-open "build/ninja/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
+open "build/JucePlugin_artefacts/Debug/Standalone/DSP-JUCE Plugin.app"
 
 # On Linux
-./build/ninja/JucePlugin_artefacts/Debug/Standalone/"DSP-JUCE Plugin"
+./build/JucePlugin_artefacts/Debug/Standalone/"DSP-JUCE Plugin"
 
 # On Windows
-"build\\ninja\\JucePlugin_artefacts\\Debug\\Standalone\\DSP-JUCE Plugin.exe"
+"build\\JucePlugin_artefacts\\Debug\\Standalone\\DSP-JUCE Plugin.exe"
 ```
 
 ## What You Just Built
@@ -78,18 +81,12 @@ Install CMake 3.22+:
 
 ### "JUCE download fails"
 
-Check internet connection. If behind a firewall, you have two options:
+If the automatic download of JUCE fails during the `cmake --preset` step (e.g., due to a firewall), you can download it manually:
 
-#### Option 1: Manual Download (Recommended)
-
-1. **Download JUCE manually**: [https://github.com/juce-framework/JUCE/archive/refs/tags/8.0.10.zip](https://github.com/juce-framework/JUCE/archive/refs/tags/8.0.10.zip)
+1. **Download JUCE**: Get the `Source code (zip)` for version **8.0.10** from the [JUCE releases page](https://github.com/juce-framework/JUCE/releases/tag/8.0.10).
 2. **Create directory**: `mkdir -p third_party`
-3. **Extract to**: `third_party/JUCE` (ensure the `.git` folder is not inside the extracted folder)
+3. **Extract to**: `third_party/JUCE`
 
-#### Option 2: Git Submodule
+After extracting, your directory structure should look like this: `third_party/JUCE/README.md`.
 
-If you prefer to use Git, you can add JUCE as a submodule:
-
-```bash
-git submodule add https://github.com/juce-framework/JUCE.git third_party/JUCE
-```
+Then, run the build commands again.
