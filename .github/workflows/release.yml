@@ -122,11 +122,25 @@ jobs:
             zip -r "${{ github.workspace }}/${{ steps.plugin_meta.outputs.zip_name }}" VST3 Standalone
           fi
 
+      - name: Generate checksum
+        shell: bash
+        run: |
+          cd "${{ github.workspace }}"
+          if command -v sha256sum >/dev/null 2>&1; then
+            sha256sum "${{ steps.plugin_meta.outputs.zip_name }}" > "${{ steps.plugin_meta.outputs.zip_name }}.sha256"
+          else
+            shasum -a 256 "${{ steps.plugin_meta.outputs.zip_name }}" > "${{ steps.plugin_meta.outputs.zip_name }}.sha256"
+          fi
+          echo "Checksum generated:"
+          cat "${{ steps.plugin_meta.outputs.zip_name }}.sha256"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.plugin_meta.outputs.zip_name }}
-          path: ${{ steps.plugin_meta.outputs.zip_name }}
+          path: |
+            ${{ steps.plugin_meta.outputs.zip_name }}
+            ${{ steps.plugin_meta.outputs.zip_name }}.sha256
 
   create_release:
     name: Create GitHub Release
@@ -144,6 +158,21 @@ jobs:
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/*/*.zip
-          body: "Automated release for version ${{ github.ref_name }}."
+          files: |
+            artifacts/*/*.zip
+            artifacts/*/*.sha256
+          body: |
+            Automated release for version ${{ github.ref_name }}.
+            
+            ## Verification
+            
+            Verify integrity of downloaded files using SHA256 checksums:
+            
+            ```bash
+            # Linux/macOS
+            sha256sum -c <filename>.sha256
+            
+            # Windows (PowerShell)
+            Get-FileHash <filename>.zip -Algorithm SHA256
+            ```
           fail_on_unmatched_files: true

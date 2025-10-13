@@ -39,7 +39,8 @@ Automated release process triggered by version tags:
 - Builds for Windows, Linux, macOS
 - Runs validation scripts
 - Creates ZIP files of build artifacts
-- Creates GitHub Release with downloadable artifacts
+- Generates SHA256 checksums for integrity verification
+- Creates GitHub Release with downloadable artifacts and checksums
 
 ## What Runs When
 
@@ -282,6 +283,15 @@ The cache key includes:
 **Note**: We cache the FetchContent base directory, not the JUCE submodule directory. This works
 whether JUCE is provided as a submodule or downloaded by FetchContent.
 
+#### Artifact Retention
+
+Different retention policies optimize storage costs:
+
+- **Release artifacts**: 30 days (compression level 6 for balance)
+- **Debug artifacts**: Not uploaded (build locally for debugging)
+- **CMake logs**: 7 days (compression level 9 for small size, failures only)
+- **Release builds**: Permanent (attached to GitHub Releases)
+
 ### Workflow Files
 
 - **`.github/workflows/ci.yml`** - Main build workflow
@@ -298,6 +308,7 @@ whether JUCE is provided as a submodule or downloaded by FetchContent.
   - Triggers on version tags (`v*.*.*`)
   - Creates cross-platform builds
   - Packages and uploads release artifacts
+  - Generates SHA256 checksums for security verification
 
 ### CI Strategy Implementation
 

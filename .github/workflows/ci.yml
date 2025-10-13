@@ -233,6 +233,7 @@ jobs:
           ${{ steps.set_vars.outputs.build_dir }}/CMakeFiles/CMakeOutput.log
         if-no-files-found: ignore
         retention-days: 7
+        compression-level: 9
 
     - name: Build
       if: steps.should_run.outputs.skip != 'true'
@@ -337,3 +338,4 @@ jobs:
         name: ${{ steps.plugin_meta.outputs.target_name }}-${{ matrix.os }}
         path: ${{ steps.set_vars.outputs.build_dir }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release/
         retention-days: 30
+        compression-level: 6
