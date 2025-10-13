@@ -56,6 +56,10 @@ jobs:
             libwebkit2gtk-4.1-dev \
             ccache
 
+      - name: Install macOS ccache
+        if: matrix.os == 'macos-latest'
+        run: brew install ccache
+
       - name: Cache JUCE
         uses: actions/cache@v4
         id: cache-juce
@@ -87,15 +91,22 @@ jobs:
       - name: Build with CMake
         shell: bash
         run: |
-          # Enable ccache for compilation on Linux
-          if [ "${{ matrix.os }}" == "ubuntu-latest" ] && command -v ccache >/dev/null 2>&1; then
-            export CC="ccache gcc"
-            export CXX="ccache g++"
-            echo "Using ccache for compilation"
+          # Enable ccache for compilation with platform-appropriate compiler
+          if command -v ccache >/dev/null 2>&1; then
+            if [ "${{ matrix.os }}" == "macos-latest" ]; then
+              export CC="ccache clang"
+              export CXX="ccache clang++"
+              echo "Using ccache with clang/clang++ (macOS)"
+            elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+              export CC="ccache gcc"
+              export CXX="ccache g++"
+              echo "Using ccache with gcc/g++ (Linux)"
+            fi
+            ccache --zero-stats
           fi
           cmake --build ${{ matrix.build_path }} --config Release
 
-      - name: Validate build artifacts
+      - name: Validate build artefacts
         run: bash scripts/validate-builds.sh Release ${{ matrix.build_path }}
         shell: bash
 
@@ -111,7 +122,7 @@ jobs:
           ZIP_NAME=$(echo "$PROJECT_NAME_PRODUCT" | sed 's/ /-/g')
           echo "zip_name=${ZIP_NAME}-${{ github.ref_name }}-${{ matrix.platform_id }}.zip" >> $GITHUB_OUTPUT
 
-      - name: Archive plugin artifacts
+      - name: Archive plugin artefacts
         shell: bash
         run: |
           ARTIFACT_DIR="${{ matrix.build_path }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release"
@@ -134,7 +145,7 @@ jobs:
           echo "Checksum generated:"
           cat "${{ steps.plugin_meta.outputs.zip_name }}.sha256"
 
-      - name: Upload artifact
+      - name: Upload artefact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.plugin_meta.outputs.zip_name }}
@@ -150,17 +161,17 @@ jobs:
       contents: write # Required to create a release
 
     steps:
-      - name: Download all build artifacts
+      - name: Download all build artefacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: artefacts
 
       - name: Create Release and Upload Assets
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            artifacts/*/*.zip
-            artifacts/*/*.sha256
+            artefacts/*/*.zip
+            artefacts/*/*.sha256
           body: |
             Automated release for version ${{ github.ref_name }}.
             

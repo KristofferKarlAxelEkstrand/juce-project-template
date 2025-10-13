@@ -15,11 +15,12 @@ This document provides a comprehensive audit of the CI/CD setup with actionable 
 
 **Priority Improvements**:
 
-1. Fix naming inconsistencies (artifact directories use underscores, should use hyphens)
-2. Optimize caching strategy (cache keys too broad, missing build cache)
-3. Reduce redundant dependency installations
-4. Improve artifact upload efficiency
-5. Add build time monitoring
+1. Optimize caching strategy (cache keys too broad, missing build cache)
+2. Reduce redundant dependency installations
+3. Improve artifact upload efficiency
+
+**Note on Naming Conventions**: Artifact directory naming (e.g., `JucePlugin_artefacts` with underscores) was
+evaluated but intentionally kept to maintain JUCE framework compatibility. See BUILD.md for detailed rationale.
 
 **Resource Impact**: Estimated 15-25% additional time savings possible with recommended changes.
 
@@ -45,7 +46,6 @@ This document provides a comprehensive audit of the CI/CD setup with actionable 
 4. **Verbose logging**: `--log-level=DEBUG` in CMake configuration creates large logs
 5. **macOS uses Xcode generator inconsistently**: CI uses Xcode but presets define `release` preset for Unix Makefiles
 6. **Artifact upload only for Release builds**: Debug builds not saved for debugging
-7. **No timing metrics**: Cannot track build time trends
 
 **Recommendations**:
 
@@ -54,8 +54,11 @@ This document provides a comprehensive audit of the CI/CD setup with actionable 
 - **MEDIUM PRIORITY**: Add ccache/sccache for C++ compilation caching (30-50% faster rebuilds)
 - **MEDIUM PRIORITY**: Change CMake log level to WARNING in production, DEBUG only on failure
 - **MEDIUM PRIORITY**: Align macOS preset usage with CI (both use Xcode or both use Unix Makefiles)
-- **LOW PRIORITY**: Add build timing step to track performance trends
 - **LOW PRIORITY**: Upload Debug artifacts with shorter retention (7 days vs 30 for Release)
+
+**Future Enhancements** (not critical for current workflow):
+
+- Add build timing metrics to track performance trends over time
 
 ### 1.2 codeql.yml (73 lines)
 

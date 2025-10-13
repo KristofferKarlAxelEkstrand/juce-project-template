@@ -239,11 +239,17 @@ jobs:
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
-        # Enable ccache for compilation
+        # Enable ccache for compilation with platform-appropriate compiler
         if command -v ccache >/dev/null 2>&1; then
-          export CC="ccache gcc"
-          export CXX="ccache g++"
-          echo "Using ccache for compilation"
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            export CC="ccache clang"
+            export CXX="ccache clang++"
+            echo "Using ccache with clang/clang++ (macOS)"
+          else
+            export CC="ccache ${CC:-cc}"
+            export CXX="ccache ${CXX:-c++}"
+            echo "Using ccache with default compiler"
+          fi
           ccache --zero-stats
         fi
         
@@ -279,12 +285,12 @@ jobs:
           echo "No .xcodeproj found in ${BUILD_DIR}"
         fi
 
-    - name: Show produced plugin artifacts (macOS debug)
+    - name: Show produced plugin artefacts (macOS debug)
       if: steps.should_run.outputs.skip != 'true' && runner.os == 'macOS'
       shell: bash
       run: |
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
-        echo "=== Searching for plugin artifacts ==="
+        echo "=== Searching for plugin artefacts ==="
         echo "Looking for .component, .vst3, .app files:"
         find "${BUILD_DIR}" -type d \( -name "*.component" -o -name "*.vst3" -o -name "*.app" \) -print || true
         echo
@@ -298,7 +304,7 @@ jobs:
           find "${artefacts_dir}" -maxdepth 3 -type d -print || true
         fi
 
-    - name: Validate build artifacts
+    - name: Validate build artefacts
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
