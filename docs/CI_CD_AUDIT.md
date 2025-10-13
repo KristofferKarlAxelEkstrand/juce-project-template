@@ -40,8 +40,8 @@ evaluated but intentionally kept to maintain JUCE framework compatibility. See B
 
 **Issues Identified**:
 
-1. **Redundant JUCE submodule initialization**: Previously at lines 79-104, these steps verified and initialized JUCE
-   submodule but CMake FetchContent handles this automatically (removed in this PR)
+1. **Redundant JUCE submodule initialization**: Previously located at lines 79-104 in the original ci.yml, these steps
+   verified and initialized JUCE submodule but CMake FetchContent handles this automatically (removed in this PR)
 2. **Inconsistent caching**: Cache key uses broad glob patterns and may not invalidate when needed
 3. **Missing build cache**: Only JUCE is cached, not intermediate build artifacts
 4. **Verbose logging**: `--log-level=DEBUG` in CMake configuration creates large logs
@@ -51,7 +51,7 @@ evaluated but intentionally kept to maintain JUCE framework compatibility. See B
 
 **Recommendations**:
 
-- **HIGH PRIORITY**: Remove redundant JUCE submodule steps (lines 79-104) - CMake FetchContent handles this
+- **HIGH PRIORITY**: Remove redundant JUCE submodule steps (previously at lines 79-104) - CMake FetchContent handles this
 - **HIGH PRIORITY**: Improve cache keys to include CMake version and compiler version
 - **MEDIUM PRIORITY**: Add ccache/sccache for C++ compilation caching (30-50% faster rebuilds)
 - **MEDIUM PRIORITY**: Change CMake log level to WARNING in production, DEBUG only on failure
@@ -124,7 +124,9 @@ evaluated but intentionally kept to maintain JUCE framework compatibility. See B
 
 **Build Directories**: Use lowercase with hyphens (build/default, build/release) ✓ GOOD
 
-**Artifact Directories**: Use underscore separator (JucePlugin_artefacts) ✗ INCONSISTENT
+**Artifact Directories**: Use underscore separator (JucePlugin_artefacts) ✓ JUCE FRAMEWORK CONVENTION
+*(Note: This appears inconsistent with project's hyphen-based naming, but is intentionally preserved to maintain JUCE
+framework compatibility)*
 
 **Script Files**: Use lowercase with hyphens (validate-builds.sh, build-ninja.sh) ✓ GOOD
 
@@ -132,7 +134,7 @@ evaluated but intentionally kept to maintain JUCE framework compatibility. See B
 
 **Target Names**: No spaces (PLUGIN_TARGET = "JucePlugin") ✓ GOOD
 
-### 2.2 Inconsistency Issues
+### 2.2 Naming Convention Analysis
 
 The artifact directory name `JucePlugin_artefacts` uses:
 
@@ -140,27 +142,24 @@ The artifact directory name `JucePlugin_artefacts` uses:
 2. Underscore separator
 3. British spelling (artefacts)
 
-This is inconsistent with the hyphen-based naming used everywhere else.
+**Decision**: This naming convention was evaluated and intentionally preserved for the following reasons:
 
-### 2.3 Recommendations
+- JUCE framework uses underscore naming convention for artifact directories
+- Changing would break JUCE tooling and existing scripts
+- The "inconsistency" is limited to JUCE-generated paths, not project-controlled paths
+- Cost of standardization exceeds benefits
 
-#### Option A: Keep Current Convention (RECOMMENDED)
+This decision is documented in BUILD.md with full rationale.
 
-- **Argument FOR**: JUCE framework uses underscore naming convention for artifact directories
-- **Argument FOR**: Changing would break existing scripts, documentation, and user expectations
-- **Argument FOR**: The inconsistency is limited to JUCE-generated paths, not project paths
-- **Action**: Document this intentional inconsistency and rationale
+### 2.3 Alternative Considered (Not Implemented)
 
-#### Option B: Standardize to Hyphens
+#### Option: Standardize to Hyphens
 
 - **Argument FOR**: Would create full consistency across project
 - **Argument AGAINST**: Would require CMake changes to override JUCE defaults
 - **Argument AGAINST**: May break JUCE tooling expectations
-- **Action**: NOT RECOMMENDED - cost exceeds benefit
-
-#### Final Recommendation
-
-Keep current naming. Add documentation explaining JUCE framework convention vs project convention.
+- **Argument AGAINST**: Changing would break existing scripts, documentation, and user expectations
+- **Decision**: NOT IMPLEMENTED - cost exceeds benefit
 
 ## 3. Resource Usage Analysis
 
@@ -312,10 +311,10 @@ Research of similar C++/JUCE projects:
 
 **HIGH PRIORITY TO REMOVE**:
 
-1. **JUCE submodule verification** (ci.yml lines 79-104)
+1. **JUCE submodule verification** (previously at ci.yml lines 79-104 before removal)
    - CMake FetchContent automatically handles missing JUCE
    - Submodule checks are unnecessary overhead
-   - **Action**: Remove these steps
+   - **Action**: Remove these steps (✅ COMPLETED in this PR)
 
 **MEDIUM PRIORITY TO CONSOLIDATE**:
 
