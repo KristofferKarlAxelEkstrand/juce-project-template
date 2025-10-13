@@ -5,7 +5,7 @@ documented in [CI_CD_AUDIT.md](CI_CD_AUDIT.md).
 
 ## Quick Reference
 
-**Issue**: [Audit and Improve CI/CD: Best Practices, Naming, Resource Usage, and Robustness]
+**Issue**: [Audit and Improve CI/CD: Best Practices, Naming, Resource Usage, and Robustness (#88)](https://github.com/KristofferKarlAxelEkstrand/juce-project-template/issues/88)
 
 **Audit Document**: [docs/CI_CD_AUDIT.md](CI_CD_AUDIT.md)
 
