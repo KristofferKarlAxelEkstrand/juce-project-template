@@ -239,17 +239,11 @@ jobs:
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
-        # Enable ccache for compilation with platform-appropriate compiler
+        # Enable ccache for compilation
         if command -v ccache >/dev/null 2>&1; then
-          if [ "${{ runner.os }}" = "macOS" ]; then
-            export CC="ccache clang"
-            export CXX="ccache clang++"
-            echo "Using ccache with clang/clang++ (macOS)"
-          else
-            export CC="ccache ${CC:-cc}"
-            export CXX="ccache ${CXX:-c++}"
-            echo "Using ccache with default compiler"
-          fi
+          export CC="ccache ${CC:-cc}"
+          export CXX="ccache ${CXX:-c++}"
+          echo "Using ccache for compilation"
           ccache --zero-stats
         fi
         

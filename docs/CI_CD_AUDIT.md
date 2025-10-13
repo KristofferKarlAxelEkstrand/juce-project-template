@@ -18,6 +18,7 @@ This document provides a comprehensive audit of the CI/CD setup with actionable 
 1. Optimize caching strategy (cache keys too broad, missing build cache)
 2. Reduce redundant dependency installations
 3. Improve artifact upload efficiency
+4. Add build time monitoring (documented as Phase 4 future enhancement)
 
 **Note on Naming Conventions**: Artifact directory naming (e.g., `JucePlugin_artefacts` with underscores) was
 evaluated but intentionally kept to maintain JUCE framework compatibility. See BUILD.md for detailed rationale.
@@ -46,6 +47,7 @@ evaluated but intentionally kept to maintain JUCE framework compatibility. See B
 4. **Verbose logging**: `--log-level=DEBUG` in CMake configuration creates large logs
 5. **macOS uses Xcode generator inconsistently**: CI uses Xcode but presets define `release` preset for Unix Makefiles
 6. **Artifact upload only for Release builds**: Debug builds not saved for debugging
+7. **No timing metrics**: Cannot track build time trends (documented as Phase 4 future enhancement)
 
 **Recommendations**:
 

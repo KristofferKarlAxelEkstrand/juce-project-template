@@ -91,16 +91,16 @@ jobs:
       - name: Build with CMake
         shell: bash
         run: |
-          # Enable ccache for compilation with platform-appropriate compiler
+          # Enable ccache for compilation on Linux and macOS
           if command -v ccache >/dev/null 2>&1; then
             if [ "${{ matrix.os }}" == "macos-latest" ]; then
               export CC="ccache clang"
               export CXX="ccache clang++"
-              echo "Using ccache with clang/clang++ (macOS)"
+              echo "Using ccache for compilation (clang/clang++)"
             elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-              export CC="ccache gcc"
-              export CXX="ccache g++"
-              echo "Using ccache with gcc/g++ (Linux)"
+              export CC="ccache ${CC:-cc}"
+              export CXX="ccache ${CXX:-c++}"
+              echo "Using ccache for compilation (default compiler)"
             fi
             ccache --zero-stats
           fi
