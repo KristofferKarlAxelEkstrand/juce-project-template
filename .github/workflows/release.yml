@@ -96,7 +96,6 @@ jobs:
             export CC="ccache ${CC:-cc}"
             export CXX="ccache ${CXX:-c++}"
             echo "Using ccache for compilation"
-            ccache --zero-stats
           fi
           cmake --build ${{ matrix.build_path }} --config Release
 
