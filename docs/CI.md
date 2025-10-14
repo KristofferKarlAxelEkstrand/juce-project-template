@@ -39,7 +39,8 @@ Automated release process triggered by version tags:
 - Builds for Windows, Linux, macOS
 - Runs validation scripts
 - Creates ZIP files of build artifacts
-- Creates GitHub Release with downloadable artifacts
+- Generates SHA256 checksums for integrity verification
+- Creates GitHub Release with downloadable artifacts and checksums
 
 ## What Runs When
 
@@ -224,6 +225,73 @@ If builds pass on develop but fail on main:
 
 ## Configuration Reference
 
+### Caching Strategy
+
+The CI/CD workflows use multiple cache layers to optimize build times:
+
+#### JUCE Download Cache
+
+Caches the JUCE framework download to avoid repeated fetches from GitHub.
+
+**Cache Configuration**:
+
+```yaml
+path: ${{ github.workspace }}/.juce_cache
+key: ${{ runner.os }}-juce-8.0.10-${{ hashFiles('CMakeLists.txt') }}
+restore-keys: |
+  ${{ runner.os }}-juce-8.0.10-
+  ${{ runner.os }}-juce-
+```
+
+**Cache Invalidation**:
+
+- Automatically invalidates when JUCE version changes in CMakeLists.txt
+- Manual invalidation: Delete cache via GitHub UI (Actions > Caches)
+
+**Benefit**: Saves 2-3 minutes per build by avoiding JUCE re-download
+
+#### Compiler Cache (ccache)
+
+Caches compiled object files to speed up incremental builds.
+
+**Cache Configuration**:
+
+```yaml
+uses: hendrikmuhs/ccache-action@v1.2
+with:
+  key: ${{ runner.os }}-${{ matrix.build_type }}-${{ hashFiles('src/**/*.cpp', 'src/**/*.h', 'CMakeLists.txt') }}
+  max-size: 500M
+```
+
+**Cache Invalidation**:
+
+- Automatically invalidates when source files change
+- Separate caches for Debug and Release builds
+- Maximum size: 500MB per configuration
+
+**Benefit**: Saves 30-50% build time on incremental builds (5-10 minutes on cache hit)
+
+#### Why This Strategy
+
+The cache key includes:
+
+1. **Runner OS**: Different platforms need different binaries
+2. **Build Type**: Debug and Release produce different object files
+3. **Source Files**: Detects code changes requiring recompilation
+4. **CMakeLists.txt**: Detects build configuration changes
+
+**Note**: We cache the FetchContent base directory, not the JUCE submodule directory. This works
+whether JUCE is provided as a submodule or downloaded by FetchContent.
+
+#### Artifact Retention
+
+Different retention policies optimize storage costs:
+
+- **Release artifacts**: 30 days (compression level 6 for balance)
+- **Debug artifacts**: Not uploaded (build locally for debugging)
+- **CMake logs**: 7 days (compression level 9 for small size, failures only)
+- **Release builds**: Permanent (attached to GitHub Releases)
+
 ### Workflow Files
 
 - **`.github/workflows/ci.yml`** - Main build workflow
@@ -240,6 +308,7 @@ If builds pass on develop but fail on main:
   - Triggers on version tags (`v*.*.*`)
   - Creates cross-platform builds
   - Packages and uploads release artifacts
+  - Generates SHA256 checksums for security verification
 
 ### CI Strategy Implementation
 
