@@ -259,7 +259,7 @@ Caches compiled object files to speed up incremental builds.
 ```yaml
 uses: hendrikmuhs/ccache-action@v1.2
 with:
-  key: ${{ runner.os }}-${{ matrix.build_type }}-${{ hashFiles('src/**/*.cpp', 'src/**/*.h') }}
+  key: ${{ runner.os }}-${{ matrix.build_type }}-${{ hashFiles('src/**/*.cpp', 'src/**/*.h', 'CMakeLists.txt') }}
   max-size: 500M
 ```
 
