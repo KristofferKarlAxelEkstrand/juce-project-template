@@ -1,0 +1,65 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "(Windows) Debug Standalone",
+			"type": "cppvsdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/JUCE Project Template Plugin.exe",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"console": "integratedTerminal",
+			"preLaunchTask": "Build Standalone (Ninja Debug)"
+		},
+		{
+			"name": "(macOS) Debug Standalone",
+			"type": "lldb",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/JUCE Project Template Plugin.app/Contents/MacOS/JUCE Project Template Plugin",
+			"args": [],
+			"cwd": "${workspaceFolder}",
+			"preLaunchTask": "Build Standalone (Ninja Debug)"
+		},
+		{
+			"name": "(Linux) Debug Standalone",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/ninja/JucePlugin_artefacts/Debug/Standalone/JUCE Project Template Plugin",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceFolder}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+			"setupCommands": [
+				{
+					"description": "Enable pretty-printing for gdb",
+					"text": "-enable-pretty-printing",
+					"ignoreFailures": true
+				}
+			],
+			"preLaunchTask": "Build Standalone (Ninja Debug)"
+		},
+		{
+			"name": "(Windows) Attach to DAW",
+			"type": "cppvsdbg",
+			"request": "attach",
+			"processId": "${command:pickProcess}"
+		},
+		{
+			"name": "(macOS) Attach to DAW",
+			"type": "lldb",
+			"request": "attach",
+			"pid": "${command:pickMyProcess}"
+		},
+		{
+			"name": "(Linux) Attach to DAW",
+			"type": "cppdbg",
+			"request": "attach",
+			"processId": "${command:pickProcess}",
+			"MIMode": "gdb"
+		}
+	]
+}
