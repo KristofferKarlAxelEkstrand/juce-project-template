@@ -21,6 +21,7 @@ This directory contains all technical documentation for the JUCE Project Templat
 - **[CLAP_INTEGRATION_RESEARCH.md](CLAP_INTEGRATION_RESEARCH.md)**: Research findings on CLAP format support.
 - **[CLAP_IMPLEMENTATION_GUIDE.md](CLAP_IMPLEMENTATION_GUIDE.md)**: Step-by-step CLAP integration guide.
 - **[CLAP_QUICK_REFERENCE.md](CLAP_QUICK_REFERENCE.md)**: Quick reference for CLAP developers.
+- **[CLAP_FORMAT_COMPARISON.md](CLAP_FORMAT_COMPARISON.md)**: CLAP vs VST3/AU/AAX comparison.
 
 ## Frameworks and Libraries
 
