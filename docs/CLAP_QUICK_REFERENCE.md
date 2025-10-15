@@ -100,7 +100,7 @@ CLAP_FEATURES audio-effect dynamics compressor limiter
 CLAP_FEATURES utility analyzer
 ```
 
-Full feature list: https://github.com/free-audio/clap/blob/main/include/clap/plugin-features.h
+Full feature list: <https://github.com/free-audio/clap/blob/main/include/clap/plugin-features.h>
 
 ## Installation Paths
 
@@ -225,14 +225,14 @@ clap_juce_extensions_plugin(
 
 **External Links**:
 
-- clap-juce-extensions: https://github.com/free-audio/clap-juce-extensions
-- CLAP Specification: https://github.com/free-audio/clap
-- CLAP Developer Guide: https://cleveraudio.org/developers-getting-started/
+- clap-juce-extensions: <https://github.com/free-audio/clap-juce-extensions>
+- CLAP Specification: <https://github.com/free-audio/clap>
+- CLAP Developer Guide: <https://cleveraudio.org/developers-getting-started/>
 
 **Example Projects**:
 
-- Surge XT: https://github.com/surge-synthesizer/surge
-- ChowDSP: https://github.com/Chowdhury-DSP
+- Surge XT: <https://github.com/surge-synthesizer/surge>
+- ChowDSP: <https://github.com/Chowdhury-DSP>
 
 ## Summary
 

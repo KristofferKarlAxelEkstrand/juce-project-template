@@ -20,7 +20,8 @@ Research findings on adding CLAP plugin format support to the JUCE Project Templ
 
 ### What is CLAP?
 
-**CLAP (CLever Audio Plug-in)** is an open-source audio plugin standard developed by the community as an alternative to VST, AU, and AAX formats.
+**CLAP (CLever Audio Plug-in)** is an open-source audio plugin standard developed by the community as an
+alternative to VST, AU, and AAX formats.
 
 **Key Advantages**:
 
@@ -69,7 +70,7 @@ According to JUCE roadmap (Q1 2025), JUCE 9 will include native CLAP plugin auth
 
 ### Overview
 
-**Project**: https://github.com/free-audio/clap-juce-extensions
+**Project**: <https://github.com/free-audio/clap-juce-extensions>
 
 **License**: MIT (compatible with both open and closed source projects)
 
@@ -291,7 +292,7 @@ CLAP has simpler validation than AU (no `auval` equivalent yet). Test by:
 
 ### Recommended Approach
 
-**Option A: Conditional CLAP Support (RECOMMENDED)**
+#### Option A: Conditional CLAP Support (RECOMMENDED)
 
 Add CLAP as an optional feature that can be enabled/disabled:
 
@@ -327,7 +328,7 @@ endif()
 - Future-proof (can switch to JUCE 9 native CLAP easily)
 - Minimal changes to existing infrastructure
 
-**Option B: Submodule Approach**
+#### Option B: Submodule Approach
 
 Use git submodule instead of FetchContent:
 
@@ -450,7 +451,7 @@ juce_add_plugin(${PLUGIN_TARGET}
 
 ### Recommendation
 
-**YES, integrate CLAP support**
+Recommendation: Integrate CLAP support
 
 - Low implementation cost (few hours of work)
 - High value for users targeting modern DAWs
@@ -491,23 +492,27 @@ juce_add_plugin(${PLUGIN_TARGET}
 
 ### Primary Sources
 
-- CLAP Specification: https://github.com/free-audio/clap
-- clap-juce-extensions: https://github.com/free-audio/clap-juce-extensions
-- JUCE Roadmap Q1 2025: https://juce.com/blog/juce-roadmap-update-q1-2025/
-- JUCE CMake API: https://github.com/juce-framework/JUCE/blob/master/docs/CMake%20API.md
+- CLAP Specification: <https://github.com/free-audio/clap>
+- clap-juce-extensions: <https://github.com/free-audio/clap-juce-extensions>
+- JUCE Roadmap Q1 2025: <https://juce.com/blog/juce-roadmap-update-q1-2025/>
+- JUCE CMake API: <https://github.com/juce-framework/JUCE/blob/master/docs/CMake%20API.md>
 
 ### Example Implementations
 
-- Surge XT Synthesizer: https://github.com/surge-synthesizer/surge
-- ChowDSP Plugins: https://github.com/Chowdhury-DSP
-- Dexed: https://github.com/asb2m10/dexed
+- Surge XT Synthesizer: <https://github.com/surge-synthesizer/surge>
+- ChowDSP Plugins: <https://github.com/Chowdhury-DSP>
+- Dexed: <https://github.com/asb2m10/dexed>
 
 ### Community Resources
 
-- CLAP Forum: https://forum.juce.com/t/fr-support-clap-for-plugins-host-client/51860
-- CLAP Developer Guide: https://cleveraudio.org/developers-getting-started/
-- CLAP Database: https://clapdb.tech/
+- CLAP Forum: <https://forum.juce.com/t/fr-support-clap-for-plugins-host-client/51860>
+- CLAP Developer Guide: <https://cleveraudio.org/developers-getting-started/>
+- CLAP Database: <https://clapdb.tech/>
 
 ## Conclusion
 
-CLAP integration is feasible and recommended for this JUCE project template. The `clap-juce-extensions` library provides production-ready CLAP support that integrates seamlessly with the existing CMake infrastructure, metadata system, and build workflows. Implementation effort is low (8-12 hours total), and the benefits include supporting a modern, open-source plugin format with growing DAW adoption. The migration path to JUCE 9 native CLAP support is straightforward when available.
+CLAP integration is feasible and recommended for this JUCE project template. The `clap-juce-extensions`
+library provides production-ready CLAP support that integrates seamlessly with the existing CMake infrastructure,
+metadata system, and build workflows. Implementation effort is low (8-12 hours total), and the benefits include
+supporting a modern, open-source plugin format with growing DAW adoption. The migration path to JUCE 9 native
+CLAP support is straightforward when available.

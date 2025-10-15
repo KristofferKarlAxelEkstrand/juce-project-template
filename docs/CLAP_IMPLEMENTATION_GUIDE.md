@@ -98,7 +98,7 @@ endif()
   - Effects: `audio-effect stereo distortion`
   - Instruments: `instrument synthesizer`
   - Utilities: `utility analyzer`
-  - Full list: https://github.com/free-audio/clap/blob/main/include/clap/plugin-features.h
+  - Full list: <https://github.com/free-audio/clap/blob/main/include/clap/plugin-features.h>
 
 **Placement**: Insert this block after line 157 in CMakeLists.txt (after `juce_add_plugin()` block)
 
@@ -200,7 +200,8 @@ cmake -B build/ninja -G Ninja -DBUILD_CLAP=ON
 # Disable CLAP
 cmake -B build/ninja -G Ninja -DBUILD_CLAP=OFF
 ```
-```
+
+```markdown
 
 #### B. Update Format Comparison Table
 
@@ -248,7 +249,8 @@ cp -r "build/ninja/JucePlugin_artefacts/Debug/CLAP/Your Plugin.clap" \
 ```
 
 After copying, rescan plugins in your CLAP-compatible DAW.
-```
+
+```markdown
 
 ### Step 4: Update README.md
 
@@ -374,7 +376,7 @@ dir build\ninja\JucePlugin_artefacts\Debug\CLAP\
 
 **Reaper (Free)**: Best for testing CLAP on all platforms
 
-1. Download Reaper: https://www.reaper.fm/download.php
+1. Download Reaper: <https://www.reaper.fm/download.php>
 2. Install CLAP to system directory (see installation commands above)
 3. Launch Reaper
 4. Preferences → Plug-ins → CLAP → Rescan
@@ -383,7 +385,7 @@ dir build\ninja\JucePlugin_artefacts\Debug\CLAP\
 
 **Bitwig Studio (Trial)**: CLAP-native DAW
 
-1. Download Bitwig trial: https://www.bitwig.com/download/
+1. Download Bitwig trial: <https://www.bitwig.com/download/>
 2. Install CLAP to system directory
 3. Launch Bitwig
 4. Settings → Locations → CLAP → Rescan
@@ -422,7 +424,7 @@ dir build\ninja\JucePlugin_artefacts\Debug\CLAP\
 **"CLAP_FEATURES unknown"**:
 
 - Update feature list to valid CLAP features
-- See: https://github.com/free-audio/clap/blob/main/include/clap/plugin-features.h
+- See: <https://github.com/free-audio/clap/blob/main/include/clap/plugin-features.h>
 
 ### CLAP Plugin Crashes in DAW
 
@@ -548,7 +550,7 @@ class DSPJuceAudioProcessor : public juce::AudioProcessor,
 - Support polyphonic modulation
 - Access note expression data
 
-See: https://github.com/free-audio/clap-juce-extensions/blob/main/include/clap-juce-extensions/clap-juce-extensions.h
+See: <https://github.com/free-audio/clap-juce-extensions/blob/main/include/clap-juce-extensions/clap-juce-extensions.h>
 
 ## Summary
 
