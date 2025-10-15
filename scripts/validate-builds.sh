@@ -175,6 +175,18 @@ if [ "$OS" = "macos" ]; then
     fi
 fi
 
+# CLAP Plugin (optional - controlled by BUILD_CLAP CMake option)
+clap_bundle_path="$ARTEFACTS_DIR/CLAP/${PROJECT_NAME_PRODUCT}.clap"
+if [ -e "$clap_bundle_path" ]; then
+    if check_exists "$clap_bundle_path" "CLAP Plugin" -d; then
+        echo "  CLAP format: Built"
+    else
+        missing_optional_artifacts+=("CLAP Plugin")
+    fi
+else
+    echo "  CLAP format: Not built (BUILD_CLAP=OFF or build failed)"
+fi
+
 # --- Summary ---
 echo
 echo "Build Test Summary"

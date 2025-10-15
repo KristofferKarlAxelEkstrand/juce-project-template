@@ -156,6 +156,44 @@ juce_add_plugin(${PLUGIN_TARGET}
     MICROPHONE_PERMISSION_TEXT "This app needs microphone access for audio input"
 )
 
+# =============================================================================
+# CLAP PLUGIN FORMAT (Optional)
+# =============================================================================
+# Enable CLAP plugin format using clap-juce-extensions
+# This is a third-party library until JUCE 9 provides native CLAP support
+# See: https://github.com/free-audio/clap-juce-extensions
+
+option(BUILD_CLAP "Build CLAP plugin format" ON)
+
+if(BUILD_CLAP)
+    message(STATUS "CLAP format: Enabled")
+    
+    # Download clap-juce-extensions via FetchContent
+    include(FetchContent)
+    FetchContent_Declare(
+        clap-juce-extensions
+        GIT_REPOSITORY https://github.com/free-audio/clap-juce-extensions.git
+        GIT_TAG main
+        GIT_SHALLOW TRUE
+        GIT_PROGRESS TRUE
+    )
+    FetchContent_MakeAvailable(clap-juce-extensions)
+    
+    # Add CLAP plugin target
+    # This creates ${PLUGIN_TARGET}_CLAP alongside existing formats
+    clap_juce_extensions_plugin(
+        TARGET ${PLUGIN_TARGET}
+        CLAP_ID "${PLUGIN_BUNDLE_ID}"
+        CLAP_FEATURES audio-effect stereo
+        CLAP_MANUAL_URL "${PLUGIN_COMPANY_WEBSITE}"
+        CLAP_SUPPORT_URL "${PLUGIN_COMPANY_WEBSITE}"
+    )
+    
+    message(STATUS "CLAP target: ${PLUGIN_TARGET}_CLAP")
+else()
+    message(STATUS "CLAP format: Disabled (BUILD_CLAP=OFF)")
+endif()
+
 # Add source files
 target_sources(${PLUGIN_TARGET} PRIVATE
     src/Main.cpp

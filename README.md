@@ -1,6 +1,6 @@
 # JUCE Project Template
 
-A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone).
+A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, CLAP, Standalone).
 Designed for professional development with fast iteration, CI/CD integration, and deterministic builds.
 
 ## Quick Start (5 Minutes)
@@ -13,7 +13,7 @@ Already familiar? Continue below for full documentation.
 
 This template gives you a working JUCE 8.0.10 project with:
 
-- **Multiple plugin formats** from a single codebase (VST3, AU on macOS, Standalone)
+- **Multiple plugin formats** from a single codebase (VST3, AU on macOS, CLAP, Standalone)
 - **Modern CMake build system** with automatic JUCE dependency management
 - **Cross-platform presets** for Windows (Visual Studio), macOS (Xcode), and Linux
 - **Fast development workflow** using Ninja (1-3 second incremental builds)

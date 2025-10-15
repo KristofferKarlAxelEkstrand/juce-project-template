@@ -72,6 +72,49 @@ build/ninja/JucePlugin_artefacts/Debug/AU/Your Plugin.component/
 
 **Note**: This template automatically builds AU on macOS. No configuration needed.
 
+### CLAP (CLever Audio Plug-in)
+
+**Description**: Modern open-source plugin format
+
+**Platforms**:
+
+- Windows: Full support
+- macOS: Full support
+- Linux: Full support
+
+**Extension**: `.clap` (bundle)
+
+**Installation Path**:
+
+- Windows: `C:\Program Files\Common Files\CLAP\`
+- macOS: `/Library/Audio/Plug-Ins/CLAP/`
+- Linux: `~/.clap/` or `/usr/lib/clap/`
+
+**Build Output**:
+
+**Windows**:
+
+```text
+build/ninja/JucePlugin_artefacts/Debug/CLAP/Your Plugin.clap/
+```
+
+**macOS**:
+
+```text
+build/ninja/JucePlugin_artefacts/Debug/CLAP/Your Plugin.clap/
+```
+
+**Linux**:
+
+```text
+build/ninja/JucePlugin_artefacts/Debug/CLAP/Your Plugin.clap/
+```
+
+**Compatibility**: CLAP-enabled DAWs (Bitwig Studio 4.3+, Reaper 6.44+, MultitrackStudio, FL Studio 21.2+)
+
+**Note**: CLAP support uses clap-juce-extensions library until JUCE 9 provides native support.
+Enable/disable with `BUILD_CLAP=ON/OFF` CMake option (enabled by default).
+
 ### Standalone
 
 **Description**: Independent application (not a plugin)
@@ -123,15 +166,17 @@ build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin
 
 ## Format Comparison
 
-| Feature | VST3 | AU | Standalone |
-|---------|------|-----|-----------|
-| Cross-platform | Yes | macOS only | Yes |
-| Requires DAW | Yes | Yes | No |
-| Development testing | Slow | Slow | Fast |
-| Distribution | Wide support | macOS DAWs | Any user |
-| Audio I/O | Via DAW | Via DAW | Direct hardware |
-| MIDI support | Via DAW | Via DAW | Direct hardware |
-| Multiple instances | DAW manages | DAW manages | Manual launch |
+| Feature | VST3 | AU | CLAP | Standalone |
+|---------|------|-----|------|-----------|
+| Cross-platform | Yes | macOS only | Yes | Yes |
+| Requires DAW | Yes | Yes | Yes | No |
+| Development testing | Slow | Slow | Slow | Fast |
+| Distribution | Wide support | macOS DAWs | Growing support | Any user |
+| Licensing | Trademark restrictions | Apple only | Open-source | N/A |
+| Audio I/O | Via DAW | Via DAW | Via DAW | Direct hardware |
+| MIDI support | Via DAW | Via DAW | Via DAW | Direct hardware |
+| Modern features | Yes | Limited | Advanced | N/A |
+| Multiple instances | DAW manages | DAW manages | DAW manages | Manual launch |
 
 ## Build Configuration
 
@@ -150,8 +195,18 @@ endif()
 
 **Default behavior**:
 
-- Windows/Linux: VST3 + Standalone
-- macOS: VST3 + AU + Standalone
+- Windows/Linux: VST3 + Standalone + CLAP
+- macOS: VST3 + AU + Standalone + CLAP
+
+**CLAP format**: Enabled by default. Disable with `BUILD_CLAP=OFF`:
+
+```bash
+# Disable CLAP
+cmake -B build/ninja -G Ninja -DBUILD_CLAP=OFF
+
+# Enable CLAP (default)
+cmake -B build/ninja -G Ninja -DBUILD_CLAP=ON
+```
 
 ### Customizing Formats
 
@@ -215,6 +270,31 @@ cp -r "build/ninja/JucePlugin_artefacts/Debug/AU/Your Plugin.component" \
 ```
 
 **Note**: AU validation may take a few seconds. Check Console.app for validation messages.
+
+### Installing CLAP
+
+**Windows**:
+
+```cmd
+xcopy /E /I "build\ninja\JucePlugin_artefacts\Debug\CLAP\Your Plugin.clap" ^
+      "C:\Program Files\Common Files\CLAP\Your Plugin.clap"
+```
+
+**macOS**:
+
+```bash
+cp -r "build/ninja/JucePlugin_artefacts/Debug/CLAP/Your Plugin.clap" \
+      "/Library/Audio/Plug-Ins/CLAP/"
+```
+
+**Linux**:
+
+```bash
+cp -r "build/ninja/JucePlugin_artefacts/Debug/CLAP/Your Plugin.clap" \
+      "$HOME/.clap/"
+```
+
+After copying, rescan plugins in your CLAP-compatible DAW.
 
 ### Running Standalone
 
