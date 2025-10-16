@@ -555,14 +555,15 @@ public:
         {
             DSPJuceAudioProcessor processor;
             
-            // Test valid frequency
-            processor.setFrequency(440.0f);
-            expect(processor.getFrequency() == 440.0f, 
+            // Test valid frequency using APVTS
+            auto* freqParam = processor.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_FREQUENCY);
+            freqParam.setValue(440.0f);
+            expect(freqParam.getValue() == 440.0f, 
                    "Frequency should be set to 440 Hz");
             
             // Test clamping at lower bound
-            processor.setFrequency(10.0f);  // Below MIN_FREQUENCY (20 Hz)
-            expect(processor.getFrequency() >= 20.0f, 
+            freqParam.setValue(10.0f);  // Below MIN_FREQUENCY (20 Hz)
+            expect(freqParam.getValue() >= 20.0f, 
                    "Frequency should be clamped to minimum");
         }
         
@@ -570,18 +571,50 @@ public:
         {
             DSPJuceAudioProcessor processor;
             
-            processor.setGain(0.5f);
-            expect(processor.getGain() == 0.5f, 
+            // Test valid gain using APVTS
+            auto* gainParam = processor.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_GAIN);
+            gainParam.setValue(0.5f);
+            expect(gainParam.getValue() == 0.5f, 
                    "Gain should be set to 0.5");
             
-            processor.setGain(1.5f);  // Above MAX_GAIN (1.0)
-            expect(processor.getGain() <= 1.0f, 
+            gainParam.setValue(1.5f);  // Above MAX_GAIN (1.0)
+            expect(gainParam.getValue() <= 1.0f, 
                    "Gain should be clamped to maximum");
         }
     }
 };
 
 static DSPJuceAudioProcessorTests processorTests;
+```
+
+**Note**: With the migration to APVTS, add tests for state persistence:
+
+```cpp
+// Test state save/load with APVTS ValueTree
+beginTest("Parameter state persistence");
+{
+    DSPJuceAudioProcessor processor;
+    
+    // Set test values
+    auto* freqParam = processor.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_FREQUENCY);
+    auto* gainParam = processor.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_GAIN);
+    freqParam.setValue(880.0f);
+    gainParam.setValue(0.75f);
+    
+    // Save state
+    juce::MemoryBlock stateData;
+    processor.getStateInformation(stateData);
+    
+    // Create new processor and restore state
+    DSPJuceAudioProcessor processor2;
+    processor2.setStateInformation(stateData.getData(), static_cast<int>(stateData.getSize()));
+    
+    // Verify state was restored
+    auto* freqParam2 = processor2.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_FREQUENCY);
+    auto* gainParam2 = processor2.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_GAIN);
+    expect(freqParam2.getValue() == 880.0f, "Frequency should be restored");
+    expect(gainParam2.getValue() == 0.75f, "Gain should be restored");
+}
 ```
 
 2. Create test runner:

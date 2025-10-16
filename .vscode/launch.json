@@ -1,4 +1,6 @@
 {
+	// NOTE: After customizing PLUGIN_NAME in CMakeLists.txt, update the "program" paths below
+	// to match your plugin's actual name. The paths currently use the default "JUCE Project Template Plugin".
 	"version": "0.2.0",
 	"configurations": [
 		{
