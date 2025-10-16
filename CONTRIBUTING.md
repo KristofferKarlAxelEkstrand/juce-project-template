@@ -1,7 +1,7 @@
 # Contributing to JUCE Project Template
 
-Thank you for contributing to the JUCE Project Template. This guide outlines the development workflow,
-coding standards, and contribution process.
+Thank you for contributing to the JUCE Project Template. This guide outlines the development workflow, coding standards,
+and contribution process.
 
 ## Development Setup
 
@@ -34,7 +34,7 @@ This project uses a Git Flow-inspired workflow to optimize CI/CD resource usage:
 ### Branch Structure
 
 - **`main`**: Production-ready code, protected branch
-- **`develop`**: Integration branch for features, protected branch  
+- **`develop`**: Integration branch for features, protected branch
 - **`feature/*`**: Feature branches created from `develop`
 
 ### Development Process
@@ -53,7 +53,7 @@ This project uses a Git Flow-inspired workflow to optimize CI/CD resource usage:
    # Make changes, format code
    clang-format -i src/*.cpp src/*.h
    npm test
-   
+
    # Test builds locally
    cmake --preset=default && cmake --build --preset=default
    ```
@@ -134,7 +134,7 @@ clang-format -i src/*.cpp src/*.h
 # Create feature branch
 git checkout -b feature/your-feature-name
 
-# Or bug fix branch  
+# Or bug fix branch
 git checkout -b fix/issue-number-description
 ```
 
@@ -254,7 +254,7 @@ npm run lint:md:fix
 - **Dependency issues**: Check internet connection for JUCE download
 - **Compiler errors**: Verify C++20 support
 
-### Audio Issues  
+### Audio Issues
 
 - **Dropouts**: Check for allocations in audio thread
 - **Clicks/pops**: Verify smooth parameter changes
@@ -283,6 +283,7 @@ npm run lint:md:fix
 
 ## Questions?
 
-- Open a [GitHub issue](https://github.com/KristofferKarlAxelEkstrand/juce-project-template/issues) for bugs or feature requests
+- Open a [GitHub issue](https://github.com/KristofferKarlAxelEkstrand/juce-project-template/issues) for bugs or feature
+  requests
 - Check existing [documentation](docs/) for technical details
 - Review [JUCE examples](https://github.com/juce-framework/JUCE/tree/master/examples) for reference implementations

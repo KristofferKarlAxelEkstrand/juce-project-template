@@ -4,7 +4,8 @@ Understanding VST3, AU, and Standalone formats built by this template.
 
 ## Overview
 
-This template builds your plugin in multiple formats from a single codebase. Each format serves different use cases and platforms.
+This template builds your plugin in multiple formats from a single codebase. Each format serves different use cases and
+platforms.
 
 ## Plugin Formats
 
@@ -15,7 +16,7 @@ This template builds your plugin in multiple formats from a single codebase. Eac
 **Platforms**:
 
 - Windows: Full support
-- macOS: Full support  
+- macOS: Full support
 - Linux: Full support
 
 **Extension**:
@@ -123,15 +124,15 @@ build/ninja/JucePlugin_artefacts/Debug/Standalone/Your Plugin
 
 ## Format Comparison
 
-| Feature | VST3 | AU | Standalone |
-|---------|------|-----|-----------|
-| Cross-platform | Yes | macOS only | Yes |
-| Requires DAW | Yes | Yes | No |
-| Development testing | Slow | Slow | Fast |
-| Distribution | Wide support | macOS DAWs | Any user |
-| Audio I/O | Via DAW | Via DAW | Direct hardware |
-| MIDI support | Via DAW | Via DAW | Direct hardware |
-| Multiple instances | DAW manages | DAW manages | Manual launch |
+| Feature             | VST3         | AU          | Standalone      |
+| ------------------- | ------------ | ----------- | --------------- |
+| Cross-platform      | Yes          | macOS only  | Yes             |
+| Requires DAW        | Yes          | Yes         | No              |
+| Development testing | Slow         | Slow        | Fast            |
+| Distribution        | Wide support | macOS DAWs  | Any user        |
+| Audio I/O           | Via DAW      | Via DAW     | Direct hardware |
+| MIDI support        | Via DAW      | Via DAW     | Direct hardware |
+| Multiple instances  | DAW manages  | DAW manages | Manual launch   |
 
 ## Build Configuration
 
@@ -450,9 +451,7 @@ YourPlugin-v1.0.0-macos.zip
 
 ### Standalone Distribution
 
-**Windows**: Installer (NSIS, Inno Setup) or ZIP
-**macOS**: DMG or ZIP
-**Linux**: AppImage, DEB, or tar.gz
+**Windows**: Installer (NSIS, Inno Setup) or ZIP **macOS**: DMG or ZIP **Linux**: AppImage, DEB, or tar.gz
 
 ## See Also
 

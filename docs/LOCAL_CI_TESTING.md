@@ -4,8 +4,8 @@ Test your changes locally before pushing to avoid CI failures and iterate faster
 
 ## Overview
 
-This guide shows how to replicate CI checks on your local machine.
-Running these checks before pushing saves time and reduces failed CI runs.
+This guide shows how to replicate CI checks on your local machine. Running these checks before pushing saves time and
+reduces failed CI runs.
 
 ## Quick Validation
 
@@ -235,7 +235,7 @@ npm test
 ./scripts/build-ninja.sh
 ./scripts/validate-builds.sh Debug
 
-# Release build  
+# Release build
 ./scripts/build-ninja.sh --config Release
 ./scripts/validate-builds.sh Release
 
@@ -476,15 +476,15 @@ Comprehensive checks:
 
 Expected times for local testing:
 
-| Check | Time (First Run) | Time (Incremental) |
-|-------|------------------|-------------------|
-| validate-setup.sh | 5 seconds | 5 seconds |
-| npm test | 2 seconds | 2 seconds |
-| configure-ninja | 90 seconds | 1 second |
-| build-ninja (Debug) | 2-5 minutes | 1-3 seconds |
-| build-ninja (Release) | 3-7 minutes | 2-5 seconds |
-| validate-builds.sh | 1 second | 1 second |
-| **Full Validation** | **5-10 minutes** | **2-3 minutes** |
+| Check                 | Time (First Run) | Time (Incremental) |
+| --------------------- | ---------------- | ------------------ |
+| validate-setup.sh     | 5 seconds        | 5 seconds          |
+| npm test              | 2 seconds        | 2 seconds          |
+| configure-ninja       | 90 seconds       | 1 second           |
+| build-ninja (Debug)   | 2-5 minutes      | 1-3 seconds        |
+| build-ninja (Release) | 3-7 minutes      | 2-5 seconds        |
+| validate-builds.sh    | 1 second         | 1 second           |
+| **Full Validation**   | **5-10 minutes** | **2-3 minutes**    |
 
 ## See Also
 

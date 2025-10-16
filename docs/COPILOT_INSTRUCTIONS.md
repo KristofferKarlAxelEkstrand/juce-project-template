@@ -54,14 +54,14 @@ This file is automatically loaded for all Copilot requests in this repository.
 
 Contains specialized instructions that apply to specific file types:
 
-| File | Applies To | Purpose |
-|------|------------|---------|
-| `cpp-source.instructions.md` | `src/**/*.cpp`, `src/**/*.h` | C++20/JUCE patterns, memory safety, real-time audio constraints |
-| `cmake-config.instructions.md` | `**/CMakeLists.txt`, `*.cmake` | Modern CMake practices, JUCE integration, cross-platform builds |
-| `documentation.instructions.md` | `**/*.md` | Documentation style, formatting rules, KISS principles |
-| `github-config.instructions.md` | `.github/**/*` | Workflow configuration, CI/CD patterns, automation |
-| `scripts.instructions.md` | `**/*.sh`, `**/*.bat` | Shell script standards, error handling, cross-platform scripting |
-| `json-config.instructions.md` | `**/*.json` | JSON configuration, package.json, CMakePresets.json |
+| File                            | Applies To                     | Purpose                                                          |
+| ------------------------------- | ------------------------------ | ---------------------------------------------------------------- |
+| `cpp-source.instructions.md`    | `src/**/*.cpp`, `src/**/*.h`   | C++20/JUCE patterns, memory safety, real-time audio constraints  |
+| `cmake-config.instructions.md`  | `**/CMakeLists.txt`, `*.cmake` | Modern CMake practices, JUCE integration, cross-platform builds  |
+| `documentation.instructions.md` | `**/*.md`                      | Documentation style, formatting rules, KISS principles           |
+| `github-config.instructions.md` | `.github/**/*`                 | Workflow configuration, CI/CD patterns, automation               |
+| `scripts.instructions.md`       | `**/*.sh`, `**/*.bat`          | Shell script standards, error handling, cross-platform scripting |
+| `json-config.instructions.md`   | `**/*.json`                    | JSON configuration, package.json, CMakePresets.json              |
 
 Each path-specific instruction file uses YAML frontmatter with the `applyTo` field to specify which files it applies to.
 
@@ -123,7 +123,7 @@ Format for new instruction files:
 
 ```markdown
 ---
-applyTo: 'pattern/**/*.ext'
+applyTo: "pattern/**/*.ext"
 ---
 
 # Title

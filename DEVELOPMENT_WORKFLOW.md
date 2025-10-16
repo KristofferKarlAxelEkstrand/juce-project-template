@@ -71,9 +71,8 @@ scripts\\configure-ninja.bat  # Configure
 scripts\\build-ninja.bat      # Build
 ```
 
-The scripts automatically detect your installed version of Visual Studio 2022 (Community,
-Professional, or Enterprise), set up the required build environment by running `vcvarsall.bat x64`,
-and then proceed with the build process.
+The scripts automatically detect your installed version of Visual Studio 2022 (Community, Professional, or Enterprise),
+set up the required build environment by running `vcvarsall.bat x64`, and then proceed with the build process.
 
 ### macOS/Linux
 

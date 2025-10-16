@@ -45,17 +45,17 @@ Tasks in `.vscode/tasks.json` use platform-specific commands:
 
 ```json
 {
-    "label": "Build Standalone (Ninja Debug)",
-    "type": "shell",
-    "windows": {
-        "command": "${workspaceFolder}\\scripts\\build-ninja.bat"
-    },
-    "linux": {
-        "command": "${workspaceFolder}/scripts/build-ninja.sh"
-    },
-    "osx": {
-        "command": "${workspaceFolder}/scripts/build-ninja.sh"
-    }
+  "label": "Build Standalone (Ninja Debug)",
+  "type": "shell",
+  "windows": {
+    "command": "${workspaceFolder}\\scripts\\build-ninja.bat"
+  },
+  "linux": {
+    "command": "${workspaceFolder}/scripts/build-ninja.sh"
+  },
+  "osx": {
+    "command": "${workspaceFolder}/scripts/build-ninja.sh"
+  }
 }
 ```
 
@@ -88,23 +88,23 @@ CMake presets use different directories:
 
 `CMakePresets.json` defines platform-specific presets:
 
-| Preset | Generator | Platform | Build Dir |
-|--------|-----------|----------|-----------|
-| `default` | Unix Makefiles | Linux/macOS | `build/default/` |
-| `vs2022` | Visual Studio 17 | Windows | `build/vs2022/` |
-| `ninja` | Ninja | All | `build/ninja/` |
-| `xcode` | Xcode | macOS | `build/xcode/` |
+| Preset    | Generator        | Platform    | Build Dir        |
+| --------- | ---------------- | ----------- | ---------------- |
+| `default` | Unix Makefiles   | Linux/macOS | `build/default/` |
+| `vs2022`  | Visual Studio 17 | Windows     | `build/vs2022/`  |
+| `ninja`   | Ninja            | All         | `build/ninja/`   |
+| `xcode`   | Xcode            | macOS       | `build/xcode/`   |
 
 Presets use conditions to select correct generator:
 
 ```json
 {
-    "name": "vs2022",
-    "condition": {
-        "type": "equals",
-        "lhs": "${hostSystemName}",
-        "rhs": "Windows"
-    }
+  "name": "vs2022",
+  "condition": {
+    "type": "equals",
+    "lhs": "${hostSystemName}",
+    "rhs": "Windows"
+  }
 }
 ```
 

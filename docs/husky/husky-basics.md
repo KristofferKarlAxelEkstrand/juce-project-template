@@ -1,8 +1,7 @@
 # Husky in This Project
 
-Husky is a tool for managing Git hooks in JavaScript and TypeScript projects.
-It allows you to run scripts automatically at key points in your Git workflow,
-such as before commits or pushes.
+Husky is a tool for managing Git hooks in JavaScript and TypeScript projects. It allows you to run scripts automatically
+at key points in your Git workflow, such as before commits or pushes.
 
 ## Why Husky Is Used Here
 

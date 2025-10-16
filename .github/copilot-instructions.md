@@ -1,7 +1,7 @@
 # JUCE Project Template Development Environment
 
-This repository is a modern JUCE 8.0.10 audio plugin project template providing
-cross-platform build system, CI/CD integration, and fast development workflow patterns.
+This repository is a modern JUCE 8.0.10 audio plugin project template providing cross-platform build system, CI/CD
+integration, and fast development workflow patterns.
 
 ## General Coding Principles
 
@@ -118,10 +118,10 @@ npm test                     # Validate documentation
 **Essential Project Structure:**
 
 - `.github/instructions/`: File-specific coding instructions (read via relative imports)
-  - `cpp-source.instructions.md`: C++20/JUCE patterns for src/**/*.{cpp,h}
-  - `cmake-config.instructions.md`: CMake best practices for **/CMakeLists.txt
-  - `documentation.instructions.md`: Markdown conventions for **/*.md
-  - `github-config.instructions.md`: GitHub workflow patterns for .github/**/*
+  - `cpp-source.instructions.md`: C++20/JUCE patterns for src/\*_/_.{cpp,h}
+  - `cmake-config.instructions.md`: CMake best practices for \*\*/CMakeLists.txt
+  - `documentation.instructions.md`: Markdown conventions for \*_/_.md
+  - `github-config.instructions.md`: GitHub workflow patterns for .github/\*_/_
 - `build/<preset>/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
 
 **Code Patterns:**

@@ -4,8 +4,8 @@ Complete guide to using Visual Studio Code for JUCE plugin development with this
 
 ## Overview
 
-This template provides pre-configured VS Code tasks for fast build-test cycles.
-This guide covers task usage, debugging setup, and recommended extensions.
+This template provides pre-configured VS Code tasks for fast build-test cycles. This guide covers task usage, debugging
+setup, and recommended extensions.
 
 ## VS Code Tasks
 
@@ -105,50 +105,49 @@ Create `.vscode/launch.json` for debugging:
 
 ```json
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Debug Standalone (Windows)",
-            "type": "cppvsdbg",
-            "request": "launch",
-                        "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "console": "integratedTerminal",
-            "preLaunchTask": "Build Standalone (Ninja Debug)"
-        },
-        {
-            "name": "Debug Standalone (macOS)",
-            "type": "lldb",
-            "request": "launch",
-                        "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.app/Contents/MacOS/<PLUGIN_NAME>",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "preLaunchTask": "Build Standalone (Ninja Debug)"
-        },
-        {
-            "name": "Debug Standalone (Linux)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "preLaunchTask": "Build Standalone (Ninja Debug)"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Standalone (Windows)",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "integratedTerminal",
+      "preLaunchTask": "Build Standalone (Ninja Debug)"
+    },
+    {
+      "name": "Debug Standalone (macOS)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.app/Contents/MacOS/<PLUGIN_NAME>",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Build Standalone (Ninja Debug)"
+    },
+    {
+      "name": "Debug Standalone (Linux)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "preLaunchTask": "Build Standalone (Ninja Debug)"
+    }
+  ]
 }
 ```
 
-**Important**: The launch configuration uses placeholders like `<PLUGIN_NAME>` and
-`<PLUGIN_TARGET>`. These are not automatically replaced. You must manually update
-these paths to match the `PLUGIN_NAME` and `PLUGIN_TARGET` values in your
-`CMakeLists.txt`.
+**Important**: The launch configuration uses placeholders like `<PLUGIN_NAME>` and `<PLUGIN_TARGET>`. These are not
+automatically replaced. You must manually update these paths to match the `PLUGIN_NAME` and `PLUGIN_TARGET` values in
+your `CMakeLists.txt`.
 
 For example, if your `CMakeLists.txt` has:
 
@@ -182,10 +181,10 @@ To debug plugin loaded in a DAW:
 
 ```json
 {
-    "name": "Attach to DAW (Windows)",
-    "type": "cppvsdbg",
-    "request": "attach",
-    "processId": "${command:pickProcess}"
+  "name": "Attach to DAW (Windows)",
+  "type": "cppvsdbg",
+  "request": "attach",
+  "processId": "${command:pickProcess}"
 }
 ```
 
@@ -198,10 +197,10 @@ To debug plugin loaded in a DAW:
 
 ```json
 {
-    "name": "Attach to DAW (macOS/Linux)",
-    "type": "lldb",
-    "request": "attach",
-    "pid": "${command:pickMyProcess}"
+  "name": "Attach to DAW (macOS/Linux)",
+  "type": "lldb",
+  "request": "attach",
+  "pid": "${command:pickMyProcess}"
 }
 ```
 
@@ -265,16 +264,16 @@ VS Code should auto-detect CMake configuration. If IntelliSense is not working:
 
    ```json
    {
-       "configurations": [
-           {
-               "name": "Ninja",
-               "compileCommands": "${workspaceFolder}/build/ninja/compile_commands.json",
-               "cStandard": "c17",
-               "cppStandard": "c++20",
-               "intelliSenseMode": "windows-msvc-x64"
-           }
-       ],
-       "version": 4
+     "configurations": [
+       {
+         "name": "Ninja",
+         "compileCommands": "${workspaceFolder}/build/ninja/compile_commands.json",
+         "cStandard": "c17",
+         "cppStandard": "c++20",
+         "intelliSenseMode": "windows-msvc-x64"
+       }
+     ],
+     "version": 4
    }
    ```
 
@@ -391,16 +390,16 @@ Add to `.vscode/keybindings.json`:
 
 ```json
 [
-    {
-        "key": "ctrl+shift+r",
-        "command": "workbench.action.tasks.runTask",
-        "args": "Run Standalone"
-    },
-    {
-        "key": "ctrl+shift+alt+b",
-        "command": "workbench.action.tasks.runTask",
-        "args": "Build Standalone (Ninja Release)"
-    }
+  {
+    "key": "ctrl+shift+r",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Run Standalone"
+  },
+  {
+    "key": "ctrl+shift+alt+b",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Build Standalone (Ninja Release)"
+  }
 ]
 ```
 

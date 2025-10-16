@@ -1,36 +1,33 @@
 # Agent Creator Research Phase
 
-Execute comprehensive multi-source research before any agent implementation. This prompt ensures thorough investigation and
-evidence-based development.
+Execute comprehensive multi-source research before any agent implementation. This prompt ensures thorough investigation
+and evidence-based development.
 
 ## Research Tasks
 
 1. **Technology Stack Analysis**
-
-    - Search GitHub repositories for similar implementations
-    - Identify established patterns and frameworks
-    - Validate compatibility and dependencies
-    - Document version requirements and constraints
+   - Search GitHub repositories for similar implementations
+   - Identify established patterns and frameworks
+   - Validate compatibility and dependencies
+   - Document version requirements and constraints
 
 2. **Best Practices Investigation**
-
-    - Find industry standards and conventions
-    - Analyze successful project structures
-    - Identify common pitfalls and anti-patterns
-    - Document recommended approaches
+   - Find industry standards and conventions
+   - Analyze successful project structures
+   - Identify common pitfalls and anti-patterns
+   - Document recommended approaches
 
 3. **Implementation Patterns**
-
-    - Study existing agent architectures
-    - Compare different implementation strategies
-    - Evaluate pros/cons of each approach
-    - Select optimal patterns for requirements
+   - Study existing agent architectures
+   - Compare different implementation strategies
+   - Evaluate pros/cons of each approach
+   - Select optimal patterns for requirements
 
 4. **Tool and Library Assessment**
-    - Research available tools and libraries
-    - Verify maintenance status and community support
-    - Check license compatibility
-    - Test integration feasibility
+   - Research available tools and libraries
+   - Verify maintenance status and community support
+   - Check license compatibility
+   - Test integration feasibility
 
 ## Research Sources
 

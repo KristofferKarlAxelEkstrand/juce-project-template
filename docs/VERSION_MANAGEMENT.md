@@ -76,14 +76,14 @@ GitHub Actions automatically:
 
 Version from `CMakeLists.txt` flows to:
 
-| Target | Variable | Example |
-|--------|----------|---------|
-| CMake | `${PLUGIN_VERSION}` | "1.0.0" |
-| JUCE | `JucePlugin_VersionString` | "1.0.0" |
-| Metadata | `PROJECT_VERSION` | `export PROJECT_VERSION="1.0.0"` |
-| CI/CD | `$PROJECT_VERSION` | Workflow variable |
-| ZIP | Sanitized in workflow | `Your-Plugin-v1.0.0-windows.zip` |
-| DAW | Plugin info | Displayed in DAW |
+| Target   | Variable                   | Example                          |
+| -------- | -------------------------- | -------------------------------- |
+| CMake    | `${PLUGIN_VERSION}`        | "1.0.0"                          |
+| JUCE     | `JucePlugin_VersionString` | "1.0.0"                          |
+| Metadata | `PROJECT_VERSION`          | `export PROJECT_VERSION="1.0.0"` |
+| CI/CD    | `$PROJECT_VERSION`         | Workflow variable                |
+| ZIP      | Sanitized in workflow      | `Your-Plugin-v1.0.0-windows.zip` |
+| DAW      | Plugin info                | Displayed in DAW                 |
 
 ## Check Current Version
 
