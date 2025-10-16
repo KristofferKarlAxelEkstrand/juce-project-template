@@ -39,12 +39,6 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> frequencyAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
 
-    // Constants
-    static constexpr double MIN_FREQUENCY = 50.0;
-    static constexpr double MAX_FREQUENCY = 5000.0;
-    static constexpr double MIN_GAIN = 0.0;
-    static constexpr double MAX_GAIN = 1.0;
-
     //==============================================================================
     /**
      * @brief Initialize GUI controls with proper styling and ranges
