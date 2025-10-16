@@ -72,8 +72,8 @@ private:
     juce::dsp::Gain<float> gain;
 
     // Cached parameter pointers for real-time performance
-    std::atomic<float>* frequencyParam = nullptr;
-    std::atomic<float>* gainParam = nullptr;
+    const std::atomic<float>* frequencyParam = nullptr;
+    const std::atomic<float>* gainParam = nullptr;
 
     // Constants
     // Frequency range covers the full human hearing range (20 Hz to 20,000 Hz)
