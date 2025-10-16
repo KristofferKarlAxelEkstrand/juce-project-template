@@ -56,7 +56,12 @@ if [ -n "$OVERRIDE_BUILD_DIR" ]; then
         *) BUILD_DIR="$PROJECT_ROOT/build/$OVERRIDE_BUILD_DIR" ;;  # Relative path
     esac
 elif [ "$OS" = "windows" ]; then
-    BUILD_DIR="$PROJECT_ROOT/build/ninja"
+    # Prefer Ninja build on Windows, fallback to vs2022 if not available
+    if [ -d "$PROJECT_ROOT/build/ninja" ]; then
+        BUILD_DIR="$PROJECT_ROOT/build/ninja"
+    else
+        BUILD_DIR="$PROJECT_ROOT/build/vs2022"
+    fi
 else
     # On Linux/macOS, preset name matches the lowercase build config, but 'Debug' uses the 'default' preset.
     if [ "$BUILD_CONFIG" = "Debug" ]; then
