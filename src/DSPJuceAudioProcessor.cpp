@@ -45,12 +45,13 @@ void DSPJuceAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
     oscillator.prepare(spec);
     gain.prepare(spec);
 
-    // Set initial parameter values
-    auto* freqParam = parameters.getRawParameterValue(PARAM_ID_FREQUENCY);
-    auto* gainParam = parameters.getRawParameterValue(PARAM_ID_GAIN);
+    // Cache parameter pointers for real-time performance
+    frequencyParam = parameters.getRawParameterValue(PARAM_ID_FREQUENCY);
+    gainParam = parameters.getRawParameterValue(PARAM_ID_GAIN);
     
-    if (freqParam != nullptr)
-        oscillator.setFrequency(freqParam->load());
+    // Set initial parameter values
+    if (frequencyParam != nullptr)
+        oscillator.setFrequency(frequencyParam->load());
     
     if (gainParam != nullptr)
         gain.setGainLinear(gainParam->load());

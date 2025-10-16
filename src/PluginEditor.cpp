@@ -14,6 +14,7 @@ void DSPJuceAudioProcessorEditor::setupControls() {
     frequencySlider.setSliderStyle(juce::Slider::LinearHorizontal);
     frequencySlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
     frequencySlider.setTextValueSuffix(" Hz");
+    frequencySlider.setSkewFactorFromMidPoint(1000.0);
 
     addAndMakeVisible(frequencyLabel);
     frequencyLabel.setText("Frequency", juce::dontSendNotification);
