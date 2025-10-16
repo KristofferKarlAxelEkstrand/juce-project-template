@@ -121,11 +121,13 @@ npm test                     # Validate documentation
 
 **Essential Project Structure:**
 
-- `.github/instructions/`: File-specific coding instructions (read via relative imports)
+- `.github/instructions/`: File-specific coding instructions (automatically loaded based on file patterns)
   - `cpp-source.instructions.md`: C++20/JUCE patterns for `src/**/*.{cpp,h}`
   - `cmake-config.instructions.md`: CMake best practices for `**/CMakeLists.txt`
   - `documentation.instructions.md`: Markdown conventions for `**/*.md`
   - `github-config.instructions.md`: GitHub workflow patterns for `.github/**/*`
+  - `json-config.instructions.md`: JSON configuration patterns for `**/*.json`
+  - `scripts.instructions.md`: Shell script standards for `**/*.sh` and `**/*.bat`
 - `build/<preset>/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
 
 **Code Patterns:**
@@ -324,3 +326,20 @@ A successful JUCE audio project should:
 - Load properly in major DAWs (Reaper, Pro Tools, Logic, Cubase)
 - Pass real-time safety validation tools
 - Maintain consistent CPU usage under load
+
+## Path-Specific Instructions
+
+Additional instructions from user's `.github/instructions`: Here is a list of instruction files that contain rules for
+modifying or creating new code. These files are important for ensuring that the code is modified or created correctly.
+Please make sure to follow the rules specified in these files when working with the codebase. If you have not already
+read the file, use the `view` tool to acquire it. Make sure to acquire the instructions before making any changes to the
+code.
+
+| Pattern                                                  | File Path                                            | Description                                                                                      |
+| -------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| scripts/**/\*.sh, scripts/**/_.bat, \*\*/_.sh, \*_/_.bat | '.github/instructions/scripts.instructions.md'       | Shell script standards, cross-platform scripting, error handling, and user experience guidelines |
+| **/\*.json, !node_modules/**, !build/**, !third_party/** | '.github/instructions/json-config.instructions.md'   | JSON configuration standards for package.json, CMakePresets.json, and VSCode settings            |
+| .github/\*_/_                                            | '.github/instructions/github-config.instructions.md' | GitHub Actions workflows, repository configuration, and automation patterns                      |
+| \*_/_.md                                                 | '.github/instructions/documentation.instructions.md' | Documentation style, KISS principles, and markdown formatting standards                          |
+| src/**/\*.cpp, src/**/\*.h                               | '.github/instructions/cpp-source.instructions.md'    | C++20/JUCE patterns, memory safety, real-time audio constraints, and RAII                        |
+| \*_/CMakeLists.txt,_.cmake                              | '.github/instructions/cmake-config.instructions.md'  | Modern CMake practices, JUCE integration, FetchContent patterns, and cross-platform builds       |
