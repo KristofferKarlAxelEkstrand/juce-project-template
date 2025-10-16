@@ -610,8 +610,8 @@ beginTest("Parameter state persistence");
     processor2.setStateInformation(stateData.getData(), static_cast<int>(stateData.getSize()));
     
     // Verify state was restored
-    auto* freqParam2 = processor2.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_FREQUENCY);
-    auto* gainParam2 = processor2.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_GAIN);
+    auto freqParam2 = processor2.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_FREQUENCY);
+    auto gainParam2 = processor2.parameters.getParameterAsValue(DSPJuceAudioProcessor::PARAM_ID_GAIN);
     expect(freqParam2.getValue() == 880.0f, "Frequency should be restored");
     expect(gainParam2.getValue() == 0.75f, "Gain should be restored");
 }
