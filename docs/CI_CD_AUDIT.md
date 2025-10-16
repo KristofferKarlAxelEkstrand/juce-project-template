@@ -124,9 +124,9 @@ but intentionally kept to maintain JUCE framework compatibility. See BUILD.md fo
 
 **Build Directories**: Use lowercase with hyphens (build/default, build/release) ✓ GOOD
 
-**Artifact Directories**: Use underscore separator (JucePlugin*artefacts) ✓ JUCE FRAMEWORK CONVENTION*(Note: This
+**Artifact Directories**: Use underscore separator (JucePlugin_artefacts) ✓ JUCE FRAMEWORK CONVENTION\*(Note: This
 appears inconsistent with project's hyphen-based naming, but is intentionally preserved to maintain JUCE framework
-compatibility)\_
+compatibility)
 
 **Script Files**: Use lowercase with hyphens (validate-builds.sh, build-ninja.sh) ✓ GOOD
 
