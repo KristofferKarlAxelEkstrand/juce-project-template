@@ -335,11 +335,11 @@ Please make sure to follow the rules specified in these files when working with 
 read the file, use the `view` tool to acquire it. Make sure to acquire the instructions before making any changes to the
 code.
 
-| Pattern                                                  | File Path                                            | Description                                                                                      |
-| -------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| scripts/**/*.sh, scripts/**/*.bat, **/*.sh, *_/*.bat | '.github/instructions/scripts.instructions.md'       | Shell script standards, cross-platform scripting, error handling, and user experience guidelines |
-| **/*.json, !node_modules/**, !build/**, !third_party/** | '.github/instructions/json-config.instructions.md'   | JSON configuration standards for package.json, CMakePresets.json, and VSCode settings            |
-| .github/\*_/_                                            | '.github/instructions/github-config.instructions.md' | GitHub Actions workflows, repository configuration, and automation patterns                      |
-| \*_/_.md                                                 | '.github/instructions/documentation.instructions.md' | Documentation style, KISS principles, and markdown formatting standards                          |
-| src/**/\*.cpp, src/**/\*.h                               | '.github/instructions/cpp-source.instructions.md'    | C++20/JUCE patterns, memory safety, real-time audio constraints, and RAII                        |
-| **/CMakeLists.txt, **/*.cmake                           | '.github/instructions/cmake-config.instructions.md'  | Modern CMake practices, JUCE integration, FetchContent patterns, and cross-platform builds       |
+| Pattern                                                          | File Path                                            | Description                                                                                      |
+| ---------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| scripts/\*\*/\*.sh, scripts/\*\*/\*.bat, \*\*/\*.sh, \*\*/\*.bat | '.github/instructions/scripts.instructions.md'       | Shell script standards, cross-platform scripting, error handling, and user experience guidelines |
+| \*\*/\*.json, !node_modules/\*\*, !build/\*\*, !third_party/\*\* | '.github/instructions/json-config.instructions.md'   | JSON configuration standards for package.json, CMakePresets.json, and VSCode settings            |
+| .github/\*\*/\*                                                  | '.github/instructions/github-config.instructions.md' | GitHub Actions workflows, repository configuration, and automation patterns                      |
+| \*\*/\*.md                                                       | '.github/instructions/documentation.instructions.md' | Documentation style, KISS principles, and markdown formatting standards                          |
+| src/\*\*/\*.cpp, src/\*\*/\*.h                                   | '.github/instructions/cpp-source.instructions.md'    | C++20/JUCE patterns, memory safety, real-time audio constraints, and RAII                        |
+| \*\*/CMakeLists.txt, \*\*/\*.cmake                               | '.github/instructions/cmake-config.instructions.md'  | Modern CMake practices, JUCE integration, FetchContent patterns, and cross-platform builds       |

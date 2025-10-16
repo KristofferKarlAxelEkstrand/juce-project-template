@@ -116,6 +116,10 @@ jobs:
           build-essential \
           ccache
 
+    - name: Install macOS ccache
+      if: steps.should_run.outputs.skip != 'true' && runner.os == 'macOS'
+      run: brew install ccache
+
     - name: Cache JUCE
       if: steps.should_run.outputs.skip != 'true'
       uses: actions/cache@v4
