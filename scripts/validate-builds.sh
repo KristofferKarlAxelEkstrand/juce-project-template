@@ -50,7 +50,7 @@ esac
 # --- Path Definitions ---
 if [ -n "$OVERRIDE_BUILD_DIR" ]; then
     # Use build directory provided by CI workflow
-    BUILD_DIR="$OVERRIDE_BUILD_DIR"
+    BUILD_DIR="$PROJECT_ROOT/build/$OVERRIDE_BUILD_DIR"
 elif [ "$OS" = "windows" ]; then
     BUILD_DIR="$PROJECT_ROOT/build/vs2022"
 else

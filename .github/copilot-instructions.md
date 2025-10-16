@@ -14,6 +14,10 @@ Follow these principles for all code, documentation, and configuration:
 - **KISS**: Keep everything simple and straightforward
 - **Pedagogic**: Write code and documentation that is easy to understand
 
+<!-- Note: The glob patterns in the "Essential Project Structure" section below
+are correctly formatted for Markdown. They are not literal paths but describe
+file patterns. -->
+
 Avoid decorative language, emojis, emoticons, and promotional adjectives in all files.
 
 ## Architecture Overview
@@ -118,10 +122,10 @@ npm test                     # Validate documentation
 **Essential Project Structure:**
 
 - `.github/instructions/`: File-specific coding instructions (read via relative imports)
-  - `cpp-source.instructions.md`: C++20/JUCE patterns for src/\*_/_.{cpp,h}
-  - `cmake-config.instructions.md`: CMake best practices for \*\*/CMakeLists.txt
-  - `documentation.instructions.md`: Markdown conventions for \*_/_.md
-  - `github-config.instructions.md`: GitHub workflow patterns for .github/\*_/_
+  - `cpp-source.instructions.md`: C++20/JUCE patterns for `src/**/*.cpp, src/**/*.h`
+  - `cmake-config.instructions.md`: CMake best practices for `**/CMakeLists.txt`
+  - `documentation.instructions.md`: Markdown conventions for `**/*.md`
+  - `github-config.instructions.md`: GitHub workflow patterns for `.github/**/*`
 - `build/<preset>/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
 
 **Code Patterns:**

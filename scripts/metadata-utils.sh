@@ -15,7 +15,7 @@ extract_metadata_vars() {
 
     for var in "$@"; do
         local value
-        value=$(grep -E "^${var}=\"[^\"]*\"" "$metadata_file" | head -n1 | cut -d'=' -f2- | tr -d '"')
+        value=$(grep -E "^export ${var}=\"[^\"]*\"" "$metadata_file" | head -n1 | cut -d'=' -f2- | tr -d '"')
         if [ -z "$value" ]; then
             echo "[ERROR] Variable $var not found or empty in $metadata_file" >&2
             return 1
