@@ -178,7 +178,13 @@ jobs:
           if [ "${{ runner.os }}" = "macOS" ]; then
             # Use Xcode generator for macOS to ensure proper AU building
             echo "Using Xcode generator for macOS"
-            if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
+            # Set up ccache for Xcode if available
+            CCACHE_ARGS=""
+            if command -v ccache >/dev/null 2>&1; then
+              CCACHE_ARGS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+              echo "Configuring CMake to use ccache with Xcode"
+            fi
+            if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" ${CCACHE_ARGS} --log-level=${LOG_LEVEL}; then
               echo "CMake configuration successful on attempt $i."
               break
             fi
@@ -243,18 +249,18 @@ jobs:
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
-        # Enable ccache for compilation
-        if command -v ccache >/dev/null 2>&1; then
-          export CC="ccache ${CC:-cc}"
-          export CXX="ccache ${CXX:-c++}"
-          echo "Using ccache for compilation"
-        fi
-        
         if [ "${{ runner.os }}" = "macOS" ]; then
           # Xcode generator requires --config flag
           echo "Building with Xcode for macOS"
           cmake --build "${{ steps.set_vars.outputs.build_dir }}" --config ${{ matrix.build_type }}
         else
+          # Enable ccache for compilation on Linux/Windows
+          if command -v ccache >/dev/null 2>&1; then
+            export CC="ccache ${CC:-cc}"
+            export CXX="ccache ${CXX:-c++}"
+            echo "Using ccache for compilation"
+          fi
+          
           # Preset-based build for Windows/Linux
           echo "Building with preset: ${{ steps.set_vars.outputs.cmake_build_preset }}"
           cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
