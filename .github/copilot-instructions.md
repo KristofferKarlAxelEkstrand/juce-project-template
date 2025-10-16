@@ -122,7 +122,7 @@ npm test                     # Validate documentation
 **Essential Project Structure:**
 
 - `.github/instructions/`: File-specific coding instructions (read via relative imports)
-  - `cpp-source.instructions.md`: C++20/JUCE patterns for `src/**/*.cpp, src/**/*.h`
+  - `cpp-source.instructions.md`: C++20/JUCE patterns for `src/**/*.{cpp,h}`
   - `cmake-config.instructions.md`: CMake best practices for `**/CMakeLists.txt`
   - `documentation.instructions.md`: Markdown conventions for `**/*.md`
   - `github-config.instructions.md`: GitHub workflow patterns for `.github/**/*`
