@@ -8,9 +8,9 @@ The development workflow is optimized for a fast, iterative edit-build-test cycl
 
 1. **Edit Source**: Make changes to your plugin's code in the `src/` directory.
 2. **Build**: Press `Ctrl+Shift+B` to run the default build task (`Build Standalone (Ninja Debug)`). Thanks to Ninja,
-    incremental builds typically complete in 1-3 seconds.
+   incremental builds typically complete in 1-3 seconds.
 3. **Debug**: Press `F5` to launch the standalone application with the debugger attached. The included
-    `.vscode/launch.json` is pre-configured to automatically build before launching.
+   `.vscode/launch.json` is pre-configured to automatically build before launching.
 
 This entire cycle—from code change to running in the debugger—takes only a few seconds.
 

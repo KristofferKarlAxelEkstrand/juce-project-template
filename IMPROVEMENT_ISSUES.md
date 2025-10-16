@@ -438,11 +438,11 @@ Before building, verify you have all required tools:
 ```bash
 ./scripts/validate-setup.sh
 ```
-````
+````bash
+# This script will check if tools are available and suggest installation
+```
 
 If any tools are missing, install them using the suggested commands.
-
-```
 
 ### Implementation Tasks
 

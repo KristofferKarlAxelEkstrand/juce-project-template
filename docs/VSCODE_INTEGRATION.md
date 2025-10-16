@@ -119,7 +119,7 @@ To start debugging, simply open a source file, set a breakpoint, and press `F5`.
 1. **Set breakpoints**: Click in the gutter to the left of the line numbers in your C++ source files.
 2. **Start debugging**: Press `F5` or navigate to `Run > Start Debugging`.
 3. **Debug controls**: Use the debug toolbar to continue (`F5`), step over (`F10`), step into (`F11`), step out
-    (`Shift+F11`), or stop (`Shift+F5`).
+   (`Shift+F11`), or stop (`Shift+F5`).
 
 ### Debugging the Plugin in a DAW
 
