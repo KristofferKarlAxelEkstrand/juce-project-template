@@ -27,8 +27,8 @@ cmake --preset=default
 cmake --build --preset=default
 ```
 
-> **Note:** For faster builds, install [Ninja](https://ninja-build.org/) and use the `ninja` preset.
-> If you use `ninja`, the build output will be in the `build/ninja/` directory instead of `build/default/`.
+> **Note:** For faster builds, install [Ninja](https://ninja-build.org/) and use the `ninja` preset. If you use `ninja`,
+> the build output will be in the `build/ninja/` directory instead of `build/default/`.
 
 ### Step 3: Run Your Plugin (instant)
 
@@ -43,8 +43,8 @@ open "build/default/JucePlugin_artefacts/Debug/Standalone/<PLUGIN_NAME>.app"
 build\ninja\JucePlugin_artefacts\Debug\Standalone\"<PLUGIN_NAME>.exe"
 ```
 
-> **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt`
-> (default: "JUCE Project Template Plugin").
+> **Note:** Replace `<PLUGIN_NAME>` with the value from `PLUGIN_NAME` in `CMakeLists.txt` (default: "JUCE Project
+> Template Plugin").
 
 ## What You Just Built
 
@@ -85,9 +85,11 @@ Install CMake 3.22+:
 
 ### "JUCE download fails"
 
-If the automatic download of JUCE fails during the `cmake --preset` step (e.g., due to a firewall), you can download it manually:
+If the automatic download of JUCE fails during the `cmake --preset` step (e.g., due to a firewall), you can download it
+manually:
 
-1. **Download JUCE**: Get the `Source code (zip)` for version **8.0.10** from the [JUCE releases page](https://github.com/juce-framework/JUCE/releases/tag/8.0.10).
+1. **Download JUCE**: Get the `Source code (zip)` for version **8.0.10** from the
+   [JUCE releases page](https://github.com/juce-framework/JUCE/releases/tag/8.0.10).
 2. **Create directory**: `mkdir -p third_party`
 3. **Extract to**: `third_party/JUCE`
 

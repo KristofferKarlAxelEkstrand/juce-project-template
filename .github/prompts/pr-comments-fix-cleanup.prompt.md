@@ -38,11 +38,11 @@ Provide brief status:
 ```markdown
 ## Review Complete ✅
 
-**Comments:** X total (Y accepted, Z rejected)
-**Changes:** [commit abc1234] or [none needed]
-**Status:** Ready to merge / Needs attention
+**Comments:** X total (Y accepted, Z rejected) **Changes:** [commit abc1234] or [none needed] **Status:** Ready to merge
+/ Needs attention
 
 **Key decisions:**
+
 - Accepted: Brief list
 - Rejected: Brief list with reason
 ```

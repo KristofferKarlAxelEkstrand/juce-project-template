@@ -1,6 +1,7 @@
 # PR Review Comment Evaluation
 
-Evaluate all PR review comments and make decisions: Accept (implement), Reject (explain why), or Acknowledge (informational).
+Evaluate all PR review comments and make decisions: Accept (implement), Reject (explain why), or Acknowledge
+(informational).
 
 ## First
 
@@ -54,14 +55,11 @@ For each comment ask:
 
 **Be concise and clear:**
 
-✅ **Accepted:**
-"Added null check. Protects against future workflow changes. (commit abc1234)"
+✅ **Accepted:** "Added null check. Protects against future workflow changes. (commit abc1234)"
 
-❌ **Rejected:**
-"Can't use `default()` - doesn't exist in GitHub Actions. Current `|| 'develop'` is standard pattern."
+❌ **Rejected:** "Can't use `default()` - doesn't exist in GitHub Actions. Current `|| 'develop'` is standard pattern."
 
-🤝 **Acknowledged:**
-"Good point about performance - already optimized in commit xyz5678."
+🤝 **Acknowledged:** "Good point about performance - already optimized in commit xyz5678."
 
 ## Optional: Quick Summary Note
 
@@ -70,12 +68,10 @@ If helpful for tracking, create brief note in `.temp-pr-reviews-docs/`:
 ```markdown
 # PR #XX Review - Quick Notes
 
-✅ Accepted (3): #1 null check, #4 docs fix, #7 typo
-❌ Rejected (2): #3 wrong syntax, #5 over-engineered
-🤝 Noted (1): #2 already done
+✅ Accepted (3): #1 null check, #4 docs fix, #7 typo ❌ Rejected (2): #3 wrong syntax, #5 over-engineered 🤝 Noted (1):
+#2 already done
 
-Changes: commit abc1234
-Ready to merge: Yes/No
+Changes: commit abc1234 Ready to merge: Yes/No
 ```
 
 **Note:** `.temp-pr-reviews-docs/` is gitignored temp space. Delete after PR merge: `rm -rf .temp-pr-reviews-docs/`
@@ -84,4 +80,5 @@ Ready to merge: Yes/No
 
 **Priority:** Make good decisions and communicate them clearly.
 
-**Not priority:** Writing extensive documentation. Keep notes minimal - just enough to track decisions and explain to user.
+**Not priority:** Writing extensive documentation. Keep notes minimal - just enough to track decisions and explain to
+user.

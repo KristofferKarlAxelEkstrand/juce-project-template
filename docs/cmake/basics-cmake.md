@@ -1,7 +1,7 @@
 # CMake Build System
 
-CMake generates platform-specific build files from `CMakeLists.txt`.
-This project uses modern CMake 3.22+ features with JUCE integration.
+CMake generates platform-specific build files from `CMakeLists.txt`. This project uses modern CMake 3.22+ features with
+JUCE integration.
 
 ## CMake's Role
 
@@ -14,7 +14,7 @@ This project uses modern CMake 3.22+ features with JUCE integration.
 **Cross-Platform Support**:
 
 - **Windows**: Visual Studio projects (`.sln`, `.vcxproj`)
-- **macOS**: Xcode projects or Unix Makefiles  
+- **macOS**: Xcode projects or Unix Makefiles
 - **Linux**: Unix Makefiles or Ninja builds
 - **Build Presets**: `CMakePresets.json` simplifies configuration
 

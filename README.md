@@ -1,7 +1,7 @@
 # JUCE Project Template
 
-A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone).
-Designed for professional development with fast iteration, CI/CD integration, and deterministic builds.
+A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone). Designed for
+professional development with fast iteration, CI/CD integration, and deterministic builds.
 
 ## Quick Start (5 Minutes)
 
@@ -80,8 +80,8 @@ Different JUCE workflows have different trade-offs:
 - No automatic dependency management
 - Time-consuming to set up correctly
 
-This template uses CMake because it provides the best balance of power, automation,
-and maintainability for professional plugin development.
+This template uses CMake because it provides the best balance of power, automation, and maintainability for professional
+plugin development.
 
 ## Getting Started
 
@@ -280,8 +280,8 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ## License
 
-This project is open source. The JUCE framework is subject to its own licensing terms.
-See the [JUCE website](https://juce.com/get-juce) for details.
+This project is open source. The JUCE framework is subject to its own licensing terms. See the
+[JUCE website](https://juce.com/get-juce) for details.
 
 ## Related Resources
 

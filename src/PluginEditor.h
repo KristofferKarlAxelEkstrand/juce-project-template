@@ -9,7 +9,7 @@
  *
  * This editor provides an example GUI for controlling audio processor parameters.
  * It demonstrates modern JUCE patterns including:
- * - Thread-safe parameter control between GUI and audio threads
+ * - AudioProcessorValueTreeState attachments for automatic parameter binding
  * - Modern visual design with gradients and proper spacing
  * - Real-time responsiveness with immediate audio parameter updates
  */
@@ -35,11 +35,9 @@ private:
     juce::Slider gainSlider;
     juce::Label gainLabel;
 
-    // Constants
-    static constexpr double MIN_FREQUENCY = 50.0;
-    static constexpr double MAX_FREQUENCY = 5000.0;
-    static constexpr double MIN_GAIN = 0.0;
-    static constexpr double MAX_GAIN = 1.0;
+    // APVTS Attachments - automatically sync sliders with parameters
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> frequencyAttachment;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
 
     //==============================================================================
     /**

@@ -9,5 +9,27 @@
 	"bracketSpacing": true,
 	"bracketSameLine": false,
 	"arrowParens": "always",
-	"endOfLine": "crlf"
+	"endOfLine": "crlf",
+	"proseWrap": "always",
+	"overrides": [
+		{
+			"files": "*.md",
+			"options": {
+				"proseWrap": "always",
+				"printWidth": 120,
+				"tabWidth": 2,
+				"useTabs": false,
+				"singleQuote": false
+			}
+		},
+		{
+			"files": "**/*.chatmode.md",
+			"options": {
+				"proseWrap": "preserve",
+				"printWidth": 1000,
+				"tabWidth": 2,
+				"useTabs": false
+			}
+		}
+	]
 }

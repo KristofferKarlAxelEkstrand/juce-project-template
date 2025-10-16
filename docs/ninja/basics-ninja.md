@@ -6,8 +6,7 @@ Ninja is a fast, minimal build system used with CMake for rapid C++ development.
 
 ### Windows
 
-1. Download Ninja from the official releases:
-   <https://github.com/ninja-build/ninja/releases>
+1. Download Ninja from the official releases: <https://github.com/ninja-build/ninja/releases>
 2. Extract `ninja.exe` to a folder (e.g., `C:\Tools\Ninja`).
 3. Add the folder to your system PATH:
    - Open Start, search for "Environment Variables".

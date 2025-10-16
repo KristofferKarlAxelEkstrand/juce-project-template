@@ -6,8 +6,7 @@ This document explains key architectural decisions in the JUCE Project Template.
 
 ### Decision: Keep VS Path Detection Logic Duplicated
 
-**Context:**
-The Visual Studio detection code appears in both `configure-ninja.bat` and `build-ninja.bat`:
+**Context:** The Visual Studio detection code appears in both `configure-ninja.bat` and `build-ninja.bat`:
 
 ```batch
 if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" (
@@ -92,13 +91,12 @@ Consider extracting if:
 
 **Conclusion:**
 
-For ~7 lines of simple path checking, duplication is the right trade-off. The benefits of
-script independence, simplicity, and robustness outweigh the minor maintenance cost.
+For ~7 lines of simple path checking, duplication is the right trade-off. The benefits of script independence,
+simplicity, and robustness outweigh the minor maintenance cost.
 
-**Reference:** [DRY Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) -
-"Every piece of knowledge must have a single, unambiguous, authoritative representation
-within a system." However, this applies to **knowledge**, not necessarily **code**.
-The paths are configuration, not business logic.
+**Reference:** [DRY Principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) - "Every piece of knowledge must
+have a single, unambiguous, authoritative representation within a system." However, this applies to **knowledge**, not
+necessarily **code**. The paths are configuration, not business logic.
 
 ---
 
@@ -128,8 +126,7 @@ The paths are configuration, not business logic.
 
 ### Documentation Structure
 
-**Decision:** Separate workflow guide (DEVELOPMENT_WORKFLOW.md) from build system guide
-(CROSS_PLATFORM_BUILDS.md).
+**Decision:** Separate workflow guide (DEVELOPMENT_WORKFLOW.md) from build system guide (CROSS_PLATFORM_BUILDS.md).
 
 **Rationale:**
 

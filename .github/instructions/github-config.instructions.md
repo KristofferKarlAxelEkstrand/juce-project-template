@@ -1,12 +1,11 @@
 ---
-applyTo:
-  - '.github/**/*'
+applyTo: ".github/**/*"
 ---
 
 # GitHub Configuration Instructions
 
-Configure GitHub repository settings, workflows, and automation to support the agent-creator-doer framework with practical,
-research-driven development.
+Configure GitHub repository settings, workflows, and automation to support the agent-creator-doer framework with
+practical, research-driven development.
 
 ## Writing Principles
 
@@ -59,5 +58,5 @@ Avoid decorative language, emojis, emoticons, and promotional descriptions in wo
 - Document all configuration decisions and rationale
 - Keep documentation current with implementation changes
 
-Prioritize practical functionality over aesthetic presentation. Every configuration should serve the core mission of creating
-effective, research-driven agents.
+Prioritize practical functionality over aesthetic presentation. Every configuration should serve the core mission of
+creating effective, research-driven agents.
