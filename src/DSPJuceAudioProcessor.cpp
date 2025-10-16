@@ -85,7 +85,9 @@ void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce:
         oscillator.setFrequency(frequencyParam->load());
     
     if (gainParam != nullptr)
-        gain.setGainLinear(gainParam->load());    // Process audio using modern JUCE DSP chain
+        gain.setGainLinear(gainParam->load());
+
+    // Process audio using modern JUCE DSP chain
     juce::dsp::AudioBlock<float> block(buffer);
     juce::dsp::ProcessContextReplacing<float> context(block);
 
