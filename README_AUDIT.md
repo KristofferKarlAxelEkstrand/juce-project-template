@@ -78,7 +78,7 @@ High-value enhancements:
 ## File Locations
 
 ```
-/home/runner/work/juce-project-template/juce-project-template/
+./
 ├── AUDIT_EXECUTIVE_SUMMARY.md  ← Start here
 ├── AUDIT_FINDINGS.md            ← Detailed analysis
 ├── IMPROVEMENT_ISSUES.md        ← Issue specifications
