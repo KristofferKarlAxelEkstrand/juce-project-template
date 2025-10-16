@@ -71,6 +71,10 @@ private:
     juce::dsp::Oscillator<float> oscillator{[](float x) { return std::sin(x); }, 200};
     juce::dsp::Gain<float> gain;
 
+    // Cached parameter pointers for real-time performance
+    std::atomic<float>* frequencyParam = nullptr;
+    std::atomic<float>* gainParam = nullptr;
+
     // Constants
     // Frequency range covers the full human hearing range (20 Hz to 20,000 Hz)
     static constexpr float MIN_FREQUENCY = 20.0f;

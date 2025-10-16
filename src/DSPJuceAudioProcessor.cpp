@@ -28,7 +28,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout DSPJuceAudioProcessor::creat
 DSPJuceAudioProcessor::DSPJuceAudioProcessor()
     : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)),
       parameters(*this, nullptr, "Parameters", createParameterLayout()) {
-    // Parameters are automatically initialized by APVTS
+    // Cache parameter pointers for real-time performance
+    frequencyParam = parameters.getRawParameterValue(PARAM_ID_FREQUENCY);
+    gainParam = parameters.getRawParameterValue(PARAM_ID_GAIN);
 }
 
 //==============================================================================
@@ -78,18 +80,12 @@ void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce:
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
-    // Get current parameter values from APVTS
-    auto* freqParam = parameters.getRawParameterValue(PARAM_ID_FREQUENCY);
-    auto* gainParam = parameters.getRawParameterValue(PARAM_ID_GAIN);
-
-    // Update DSP parameters
-    if (freqParam != nullptr)
-        oscillator.setFrequency(freqParam->load());
+    // Update DSP parameters using cached pointers for real-time performance
+    if (frequencyParam != nullptr)
+        oscillator.setFrequency(frequencyParam->load());
     
     if (gainParam != nullptr)
-        gain.setGainLinear(gainParam->load());
-
-    // Process audio using modern JUCE DSP chain
+        gain.setGainLinear(gainParam->load());    // Process audio using modern JUCE DSP chain
     juce::dsp::AudioBlock<float> block(buffer);
     juce::dsp::ProcessContextReplacing<float> context(block);
 
