@@ -52,7 +52,9 @@ if [ -n "$OVERRIDE_BUILD_DIR" ]; then
     # Use build directory provided by CI workflow
     case "$OVERRIDE_BUILD_DIR" in
         /*) BUILD_DIR="$OVERRIDE_BUILD_DIR" ;;  # Absolute path (Unix)
-        [A-Za-z]:[\\/]*) BUILD_DIR="$OVERRIDE_BUILD_DIR" ;;  # Absolute path (Windows)
+        # Windows absolute path: drive letter, colon, then slash or backslash.
+        # Pattern matches both forward and backward slashes for cross-platform compatibility.
+        [A-Za-z]:[/\\]*) BUILD_DIR="$OVERRIDE_BUILD_DIR" ;;  # Absolute path (Windows)
         *) BUILD_DIR="$PROJECT_ROOT/build/$OVERRIDE_BUILD_DIR" ;;  # Relative path
     esac
 elif [ "$OS" = "windows" ]; then
