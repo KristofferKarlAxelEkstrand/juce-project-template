@@ -337,7 +337,7 @@ code.
 
 | Pattern                                                  | File Path                                            | Description                                                                                      |
 | -------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| scripts/**/\*.sh, scripts/**/_.bat, \*\*/_.sh, \*_/_.bat | '.github/instructions/scripts.instructions.md'       | Shell script standards, cross-platform scripting, error handling, and user experience guidelines |
+| scripts/**/*.sh, scripts/**/*.bat, **/*.sh, *_/*.bat | '.github/instructions/scripts.instructions.md'       | Shell script standards, cross-platform scripting, error handling, and user experience guidelines |
 | **/\*.json, !node_modules/**, !build/**, !third_party/** | '.github/instructions/json-config.instructions.md'   | JSON configuration standards for package.json, CMakePresets.json, and VSCode settings            |
 | .github/\*_/_                                            | '.github/instructions/github-config.instructions.md' | GitHub Actions workflows, repository configuration, and automation patterns                      |
 | \*_/_.md                                                 | '.github/instructions/documentation.instructions.md' | Documentation style, KISS principles, and markdown formatting standards                          |
