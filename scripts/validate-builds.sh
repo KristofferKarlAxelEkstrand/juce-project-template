@@ -52,7 +52,7 @@ if [ -n "$OVERRIDE_BUILD_DIR" ]; then
     # Use build directory provided by CI workflow
     BUILD_DIR="$PROJECT_ROOT/build/$OVERRIDE_BUILD_DIR"
 elif [ "$OS" = "windows" ]; then
-    BUILD_DIR="$PROJECT_ROOT/build/vs2022"
+    BUILD_DIR="$PROJECT_ROOT/build/ninja"
 else
     # On Linux/macOS, preset name matches the lowercase build config, but 'Debug' uses the 'default' preset.
     if [ "$BUILD_CONFIG" = "Debug" ]; then
