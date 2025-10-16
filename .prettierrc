@@ -26,7 +26,7 @@
 			"files": "**/*.chatmode.md",
 			"options": {
 				"proseWrap": "preserve",
-				"printWidth": 300,
+				"printWidth": 1000,
 				"tabWidth": 2,
 				"useTabs": false
 			}
