@@ -1,11 +1,16 @@
-# Prettier ignore file (if using Prettier for non-markdown files)
-# Exclude markdown files since we use markdownlint-cli2
-*.md
-
+# Prettier ignore file
 # Build outputs
 build/
 _deps/
 node_modules/
+third_party/
+.temp-pr-reviews-docs/
 
 # JUCE generated files
+JuceLibraryCode/
+
+# Audit documents have specific formatting requirements  
+AUDIT_*.md
+IMPROVEMENT_ISSUES.md
+README_AUDIT.md
 JUCE/
