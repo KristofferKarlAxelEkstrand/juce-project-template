@@ -1,9 +1,5 @@
 ---
-applyTo:
-  - '**/*.json'
-  - '!node_modules/**'
-  - '!build/**'
-  - '!third_party/**'
+applyTo: "**/*.json, !node_modules/**, !build/**, !third_party/**"
 ---
 
 # JSON Configuration Instructions
