@@ -342,4 +342,4 @@ code.
 | .github/\*_/_                                            | '.github/instructions/github-config.instructions.md' | GitHub Actions workflows, repository configuration, and automation patterns                      |
 | \*_/_.md                                                 | '.github/instructions/documentation.instructions.md' | Documentation style, KISS principles, and markdown formatting standards                          |
 | src/**/\*.cpp, src/**/\*.h                               | '.github/instructions/cpp-source.instructions.md'    | C++20/JUCE patterns, memory safety, real-time audio constraints, and RAII                        |
-| \*_/CMakeLists.txt,_.cmake                              | '.github/instructions/cmake-config.instructions.md'  | Modern CMake practices, JUCE integration, FetchContent patterns, and cross-platform builds       |
+| **/CMakeLists.txt, **/*.cmake                           | '.github/instructions/cmake-config.instructions.md'  | Modern CMake practices, JUCE integration, FetchContent patterns, and cross-platform builds       |
