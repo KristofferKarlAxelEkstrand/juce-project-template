@@ -9,7 +9,7 @@
  * This processor provides an example audio synthesizer with frequency and gain controls.
  * It demonstrates modern JUCE patterns including:
  * - Real-time audio processing with juce::dsp modules
- * - Thread-safe parameter handling between GUI and audio threads
+ * - AudioProcessorValueTreeState for parameter management
  * - Proper audio resource management
  * - Cross-platform plugin/standalone compatibility
  */
@@ -54,36 +54,22 @@ public:
     void setStateInformation(const void *data, int sizeInBytes) override;
 
     //==============================================================================
-    // Parameter access (thread-safe)
-    /**
-     * Sets the oscillator frequency.
-     *
-     * @param frequency The desired frequency in Hz. Valid range is [MIN_FREQUENCY, MAX_FREQUENCY].
-     *                  Values outside this range will be clamped.
-     * @threadsafe This method is thread-safe.
-     */
-    void setFrequency(float frequency);
+    // Parameter management using AudioProcessorValueTreeState
+    juce::AudioProcessorValueTreeState parameters;
 
-    /**
-     * Sets the output gain.
-     *
-     * @param gain The desired gain (linear scale). Valid range is [MIN_GAIN, MAX_GAIN].
-     *             Values outside this range will be clamped.
-     * @threadsafe This method is thread-safe.
-     */
-    void setGain(float gain);
-    float getFrequency() const { return currentFrequency.load(); }
-    float getGain() const { return currentGain.load(); }
+    // Parameter IDs
+    static constexpr const char* PARAM_ID_FREQUENCY = "frequency";
+    static constexpr const char* PARAM_ID_GAIN = "gain";
 
 private:
+    //==============================================================================
+    // Create parameter layout for APVTS
+    static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+
     //==============================================================================
     // DSP Components
     juce::dsp::Oscillator<float> oscillator{[](float x) { return std::sin(x); }, 200};
     juce::dsp::Gain<float> gain;
-
-    // Thread-safe parameter storage
-    std::atomic<float> currentFrequency{440.0f};
-    std::atomic<float> currentGain{0.5f};
 
     // Constants
     // Frequency range covers the full human hearing range (20 Hz to 20,000 Hz)
