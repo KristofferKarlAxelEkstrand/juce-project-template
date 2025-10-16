@@ -1,4 +1,4 @@
-# Modern C++20 in Audio Development  
+# Modern C++20 in Audio Development
 
 This project leverages C++20 for high-performance, real-time audio processing.
 
@@ -42,7 +42,7 @@ frequencySlider.onValueChange = [this] {
 // Structured bindings for clarity
 auto [leftChannel, rightChannel] = getChannelPointers(buffer);
 
-// constexpr for compile-time constants  
+// constexpr for compile-time constants
 constexpr float maxGain = 1.0f;
 ```
 

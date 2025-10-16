@@ -1,15 +1,11 @@
 ---
-applyTo:
-  - scripts/**/*.sh
-  - scripts/**/*.bat
-  - '**/*.sh'
-  - '**/*.bat'
+applyTo: "scripts/**/*.sh, scripts/**/*.bat, **/*.sh, **/*.bat"
 ---
 
 # Shell Script Instructions
 
-Write maintainable, cross-platform shell scripts for build automation and project management. Focus on clarity,
-error handling, and user experience.
+Write maintainable, cross-platform shell scripts for build automation and project management. Focus on clarity, error
+handling, and user experience.
 
 ## Writing Principles
 

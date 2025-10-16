@@ -1,7 +1,7 @@
 # JUCE Project Template Development Environment
 
-This repository is a modern JUCE 8.0.10 audio plugin project template providing
-cross-platform build system, CI/CD integration, and fast development workflow patterns.
+This repository is a modern JUCE 8.0.10 audio plugin project template providing cross-platform build system, CI/CD
+integration, and fast development workflow patterns.
 
 ## General Coding Principles
 
@@ -13,6 +13,10 @@ Follow these principles for all code, documentation, and configuration:
 - **Down-to-earth**: Use clear, practical solutions without over-engineering
 - **KISS**: Keep everything simple and straightforward
 - **Pedagogic**: Write code and documentation that is easy to understand
+
+<!-- Note: The glob patterns in the "Essential Project Structure" section below
+are correctly formatted for Markdown. They are not literal paths but describe
+file patterns. -->
 
 Avoid decorative language, emojis, emoticons, and promotional adjectives in all files.
 
@@ -118,10 +122,10 @@ npm test                     # Validate documentation
 **Essential Project Structure:**
 
 - `.github/instructions/`: File-specific coding instructions (read via relative imports)
-  - `cpp-source.instructions.md`: C++20/JUCE patterns for src/**/*.{cpp,h}
-  - `cmake-config.instructions.md`: CMake best practices for **/CMakeLists.txt
-  - `documentation.instructions.md`: Markdown conventions for **/*.md
-  - `github-config.instructions.md`: GitHub workflow patterns for .github/**/*
+  - `cpp-source.instructions.md`: C++20/JUCE patterns for `src/**/*.{cpp,h}`
+  - `cmake-config.instructions.md`: CMake best practices for `**/CMakeLists.txt`
+  - `documentation.instructions.md`: Markdown conventions for `**/*.md`
+  - `github-config.instructions.md`: GitHub workflow patterns for `.github/**/*`
 - `build/<preset>/plugin_metadata.sh`: Auto-generated during CMake configure (sources plugin metadata)
 
 **Code Patterns:**

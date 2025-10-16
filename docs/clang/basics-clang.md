@@ -4,8 +4,8 @@ This document explains how Clang is used for code formatting and quality enforce
 
 ## Purpose
 
-Clang provides automated code formatting and static analysis for C++ source files.
-It ensures consistent style and helps catch errors early.
+Clang provides automated code formatting and static analysis for C++ source files. It ensures consistent style and helps
+catch errors early.
 
 ## Formatting with clang-format
 
@@ -44,6 +44,8 @@ To check if Clang is installed and available in your PATH, run:
 
 ```bash
 clang --version
+```
+
 ## References
 
 - [Clang documentation](https://clang.llvm.org/docs/)

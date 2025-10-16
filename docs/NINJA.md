@@ -4,9 +4,8 @@ Complete guide to using Ninja for fast JUCE plugin development with this templat
 
 ## Overview
 
-Ninja is a fast, minimal build system that provides significantly faster incremental builds
-compared to Visual Studio/MSBuild or Make. This template includes pre-configured scripts
-and VS Code tasks for Ninja.
+Ninja is a fast, minimal build system that provides significantly faster incremental builds compared to Visual
+Studio/MSBuild or Make. This template includes pre-configured scripts and VS Code tasks for Ninja.
 
 ## Why Ninja?
 
@@ -46,8 +45,7 @@ Visual Studio 2022 includes Ninja:
 4. Check "C++ CMake tools for Windows"
 5. Install
 
-Ninja will be available when using Developer Command Prompt or when scripts
-initialize vcvarsall.bat.
+Ninja will be available when using Developer Command Prompt or when scripts initialize vcvarsall.bat.
 
 #### Option 2: Manual Installation
 
@@ -186,15 +184,15 @@ cmake --build build/ninja --config Release
 
 ### Comparison Table
 
-| Feature | Ninja | MSBuild | Unix Make | Xcode |
-|---------|-------|---------|-----------|-------|
-| Incremental build speed | Fastest | Slow | Fast | Medium |
-| Full build speed | Fast | Medium | Fast | Medium |
-| Cross-platform | Yes | No (Windows) | Yes | No (macOS) |
-| IDE integration | Via tasks | Native (VS) | Via tasks | Native |
-| Memory usage | Low | High | Low | Medium |
-| Build file readability | Low | Medium | Medium | N/A |
-| CMake support | Excellent | Excellent | Excellent | Excellent |
+| Feature                 | Ninja     | MSBuild      | Unix Make | Xcode      |
+| ----------------------- | --------- | ------------ | --------- | ---------- |
+| Incremental build speed | Fastest   | Slow         | Fast      | Medium     |
+| Full build speed        | Fast      | Medium       | Fast      | Medium     |
+| Cross-platform          | Yes       | No (Windows) | Yes       | No (macOS) |
+| IDE integration         | Via tasks | Native (VS)  | Via tasks | Native     |
+| Memory usage            | Low       | High         | Low       | Medium     |
+| Build file readability  | Low       | Medium       | Medium    | N/A        |
+| CMake support           | Excellent | Excellent    | Excellent | Excellent  |
 
 ### When to Use Each
 
@@ -472,9 +470,7 @@ This regenerates build files but keeps build artifacts.
 
 ### Build Directory Location
 
-**Best**: SSD with high IOPS
-**Good**: Local SSD or HDD
-**Avoid**: Network drives, cloud-synced folders
+**Best**: SSD with high IOPS **Good**: Local SSD or HDD **Avoid**: Network drives, cloud-synced folders
 
 ### Antivirus Exclusions
 

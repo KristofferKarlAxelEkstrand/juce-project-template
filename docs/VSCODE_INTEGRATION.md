@@ -4,8 +4,8 @@ Complete guide to using Visual Studio Code for JUCE plugin development with this
 
 ## Overview
 
-This template provides pre-configured VS Code tasks for fast build-test cycles.
-This guide covers task usage, debugging setup, and recommended extensions.
+This template provides pre-configured VS Code tasks for fast build-test cycles. This guide covers task usage, debugging
+setup, and recommended extensions.
 
 ## VS Code Tasks
 
@@ -101,111 +101,37 @@ Install platform-specific debugger:
 
 ### Launch Configuration
 
-Create `.vscode/launch.json` for debugging:
+This template includes a pre-configured `.vscode/launch.json` that works out-of-the-box for debugging the standalone
+application on all platforms.
 
-```json
-{
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Debug Standalone (Windows)",
-            "type": "cppvsdbg",
-            "request": "launch",
-                        "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "console": "integratedTerminal",
-            "preLaunchTask": "Build Standalone (Ninja Debug)"
-        },
-        {
-            "name": "Debug Standalone (macOS)",
-            "type": "lldb",
-            "request": "launch",
-                        "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>.app/Contents/MacOS/<PLUGIN_NAME>",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "preLaunchTask": "Build Standalone (Ninja Debug)"
-        },
-        {
-            "name": "Debug Standalone (Linux)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/ninja/<PLUGIN_TARGET>_artefacts/Debug/Standalone/<PLUGIN_NAME>",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "preLaunchTask": "Build Standalone (Ninja Debug)"
-        }
-    ]
-}
-```
+**Key Features**:
 
-**Important**: The launch configuration uses placeholders like `<PLUGIN_NAME>` and
-`<PLUGIN_TARGET>`. These are not automatically replaced. You must manually update
-these paths to match the `PLUGIN_NAME` and `PLUGIN_TARGET` values in your
-`CMakeLists.txt`.
+- **Cross-Platform**: Configurations for Windows, macOS, and Linux.
+- **Pre-Launch Task**: Automatically runs the `Build Standalone (Ninja Debug)` task before launching the debugger,
+  ensuring you are always debugging the latest code.
+- **DAW Attachment**: Includes configurations to attach the debugger to a running Digital Audio Workstation (DAW)
+  process for in-host plugin debugging.
 
-For example, if your `CMakeLists.txt` has:
-
-```cmake
-set(PLUGIN_NAME "MyAwesomePlugin")
-set(PLUGIN_TARGET "MyPlugin")
-```
-
-You would update the paths in `launch.json` to:
-
-```json
-"program": "${workspaceFolder}/build/ninja/MyPlugin_artefacts/Debug/Standalone/MyAwesomePlugin.exe",
-```
+To start debugging, simply open a source file, set a breakpoint, and press `F5`.
 
 ### Using the Debugger
 
-1. **Set breakpoints**: Click left of line numbers in source files
-2. **Start debugging**: Press `F5` or Run → Start Debugging
-3. **Debug controls**:
-   - `F5`: Continue
-   - `F10`: Step Over
-   - `F11`: Step Into
-   - `Shift+F11`: Step Out
-   - `Shift+F5`: Stop
+1. **Set breakpoints**: Click in the gutter to the left of the line numbers in your C++ source files.
+2. **Start debugging**: Press `F5` or navigate to `Run > Start Debugging`.
+3. **Debug controls**: Use the debug toolbar to continue (`F5`), step over (`F10`), step into (`F11`), step out
+   (`Shift+F11`), or stop (`Shift+F5`).
 
-### Debugging Plugin in DAW
+### Debugging the Plugin in a DAW
 
-To debug plugin loaded in a DAW:
+To debug your plugin while it's running inside a DAW:
 
-#### Windows
+1. Start your DAW and load the VST3 or AU version of your plugin.
+2. In VS Code, go to the "Run and Debug" view (`Ctrl+Shift+D`).
+3. Select the appropriate "Attach to DAW" configuration from the dropdown menu.
+4. Press `F5` to start the attach process.
+5. From the process list that appears, select your DAW's process (e.g., `Reaper.exe`, `Logic Pro X.app`).
 
-```json
-{
-    "name": "Attach to DAW (Windows)",
-    "type": "cppvsdbg",
-    "request": "attach",
-    "processId": "${command:pickProcess}"
-}
-```
-
-1. Start your DAW
-2. Load the plugin in DAW
-3. Press `F5` in VS Code
-4. Select DAW process from list
-
-#### macOS/Linux
-
-```json
-{
-    "name": "Attach to DAW (macOS/Linux)",
-    "type": "lldb",
-    "request": "attach",
-    "pid": "${command:pickMyProcess}"
-}
-```
-
-Same steps as Windows.
+The debugger will now be attached, and your breakpoints in the plugin's code will be active.
 
 ## Recommended Extensions
 
@@ -265,16 +191,16 @@ VS Code should auto-detect CMake configuration. If IntelliSense is not working:
 
    ```json
    {
-       "configurations": [
-           {
-               "name": "Ninja",
-               "compileCommands": "${workspaceFolder}/build/ninja/compile_commands.json",
-               "cStandard": "c17",
-               "cppStandard": "c++20",
-               "intelliSenseMode": "windows-msvc-x64"
-           }
-       ],
-       "version": 4
+     "configurations": [
+       {
+         "name": "Ninja",
+         "compileCommands": "${workspaceFolder}/build/ninja/compile_commands.json",
+         "cStandard": "c17",
+         "cppStandard": "c++20",
+         "intelliSenseMode": "windows-msvc-x64"
+       }
+     ],
+     "version": 4
    }
    ```
 
@@ -391,16 +317,16 @@ Add to `.vscode/keybindings.json`:
 
 ```json
 [
-    {
-        "key": "ctrl+shift+r",
-        "command": "workbench.action.tasks.runTask",
-        "args": "Run Standalone"
-    },
-    {
-        "key": "ctrl+shift+alt+b",
-        "command": "workbench.action.tasks.runTask",
-        "args": "Build Standalone (Ninja Release)"
-    }
+  {
+    "key": "ctrl+shift+r",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Run Standalone"
+  },
+  {
+    "key": "ctrl+shift+alt+b",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Build Standalone (Ninja Release)"
+  }
 ]
 ```
 

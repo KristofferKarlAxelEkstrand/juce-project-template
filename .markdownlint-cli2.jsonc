@@ -11,5 +11,15 @@
 		},
 		"MD041": false
 	},
-	"globs": ["**/*.md", "!node_modules", "!build", "!third_party"]
+	"globs": [
+		"**/*.md", 
+		"!node_modules", 
+		"!build", 
+		"!third_party",
+		"!.temp-pr-reviews-docs",
+		"!AUDIT_*.md",
+		"!IMPROVEMENT_ISSUES.md",
+		"!README_AUDIT.md",
+		"!**/*.chatmode.md"
+	]
 }

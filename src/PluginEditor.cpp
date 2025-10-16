@@ -11,29 +11,34 @@ DSPJuceAudioProcessorEditor::DSPJuceAudioProcessorEditor(DSPJuceAudioProcessor &
 void DSPJuceAudioProcessorEditor::setupControls() {
     // Frequency control setup
     addAndMakeVisible(frequencySlider);
-    frequencySlider.setRange(MIN_FREQUENCY, MAX_FREQUENCY, 1.0);
-    frequencySlider.setValue(static_cast<double>(audioProcessor.getFrequency()));
-    frequencySlider.setSkewFactorFromMidPoint(1000.0); // Logarithmic scale
+    frequencySlider.setSliderStyle(juce::Slider::LinearHorizontal);
     frequencySlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
     frequencySlider.setTextValueSuffix(" Hz");
-    frequencySlider.onValueChange = [this] {
-        audioProcessor.setFrequency(static_cast<float>(frequencySlider.getValue()));
-    };
 
     addAndMakeVisible(frequencyLabel);
     frequencyLabel.setText("Frequency", juce::dontSendNotification);
     frequencyLabel.attachToComponent(&frequencySlider, true);
 
+    // Create APVTS attachment for frequency
+    frequencyAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameters, 
+        DSPJuceAudioProcessor::PARAM_ID_FREQUENCY, 
+        frequencySlider);
+
     // Gain control setup
     addAndMakeVisible(gainSlider);
-    gainSlider.setRange(MIN_GAIN, MAX_GAIN, 0.01);
-    gainSlider.setValue(static_cast<double>(audioProcessor.getGain()));
+    gainSlider.setSliderStyle(juce::Slider::LinearHorizontal);
     gainSlider.setTextBoxStyle(juce::Slider::TextBoxRight, false, 100, 20);
-    gainSlider.onValueChange = [this] { audioProcessor.setGain(static_cast<float>(gainSlider.getValue())); };
 
     addAndMakeVisible(gainLabel);
     gainLabel.setText("Gain", juce::dontSendNotification);
     gainLabel.attachToComponent(&gainSlider, true);
+
+    // Create APVTS attachment for gain
+    gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
+        audioProcessor.parameters, 
+        DSPJuceAudioProcessor::PARAM_ID_GAIN, 
+        gainSlider);
 }
 
 //==============================================================================

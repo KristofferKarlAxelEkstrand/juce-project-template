@@ -4,11 +4,15 @@ Fast iterative development with Ninja and VS Code.
 
 ## Quick Start
 
-Edit-build-test cycle in VS Code:
+The development workflow is optimized for a fast, iterative edit-build-test cycle directly within VS Code.
 
-1. Edit source files in `src/`
-2. Press `Ctrl+Shift+B` to build (1-3 seconds)
-3. Run task "Run Standalone" to test (`Ctrl+Shift+P` → Tasks: Run Task → Run Standalone)
+1. **Edit Source**: Make changes to your plugin's code in the `src/` directory.
+2. **Build**: Press `Ctrl+Shift+B` to run the default build task (`Build Standalone (Ninja Debug)`). Thanks to Ninja,
+   incremental builds typically complete in 1-3 seconds.
+3. **Debug**: Press `F5` to launch the standalone application with the debugger attached. The included
+   `.vscode/launch.json` is pre-configured to automatically build before launching.
+
+This entire cycle—from code change to running in the debugger—takes only a few seconds.
 
 ## VS Code Tasks
 
@@ -71,9 +75,8 @@ scripts\\configure-ninja.bat  # Configure
 scripts\\build-ninja.bat      # Build
 ```
 
-The scripts automatically detect your installed version of Visual Studio 2022 (Community,
-Professional, or Enterprise), set up the required build environment by running `vcvarsall.bat x64`,
-and then proceed with the build process.
+The scripts automatically detect your installed version of Visual Studio 2022 (Community, Professional, or Enterprise),
+set up the required build environment by running `vcvarsall.bat x64`, and then proceed with the build process.
 
 ### macOS/Linux
 

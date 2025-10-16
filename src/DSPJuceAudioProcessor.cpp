@@ -2,11 +2,35 @@
 #include "PluginEditor.h"
 
 //==============================================================================
+juce::AudioProcessorValueTreeState::ParameterLayout DSPJuceAudioProcessor::createParameterLayout() {
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    // Add frequency parameter with logarithmic scaling
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        juce::ParameterID{PARAM_ID_FREQUENCY, 1},
+        "Frequency",
+        juce::NormalisableRange<float>(MIN_FREQUENCY, MAX_FREQUENCY, 0.01f, 0.25f),
+        DEFAULT_FREQUENCY,
+        juce::AudioParameterFloatAttributes().withLabel("Hz")));
+
+    // Add gain parameter
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+        juce::ParameterID{PARAM_ID_GAIN, 1},
+        "Gain",
+        juce::NormalisableRange<float>(MIN_GAIN, MAX_GAIN, 0.01f),
+        DEFAULT_GAIN,
+        juce::AudioParameterFloatAttributes().withLabel("Linear")));
+
+    return layout;
+}
+
+//==============================================================================
 DSPJuceAudioProcessor::DSPJuceAudioProcessor()
-    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)) {
-    // Initialize parameters with default values
-    currentFrequency.store(DEFAULT_FREQUENCY);
-    currentGain.store(DEFAULT_GAIN);
+    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)),
+      parameters(*this, nullptr, "Parameters", createParameterLayout()) {
+    // Cache parameter pointers for real-time performance
+    frequencyParam = parameters.getRawParameterValue(PARAM_ID_FREQUENCY);
+    gainParam = parameters.getRawParameterValue(PARAM_ID_GAIN);
 }
 
 //==============================================================================
@@ -19,10 +43,14 @@ void DSPJuceAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
 
     // Prepare DSP components
     oscillator.prepare(spec);
-    oscillator.setFrequency(currentFrequency.load());
-
     gain.prepare(spec);
-    gain.setGainLinear(currentGain.load());
+
+    // Set initial parameter values
+    if (frequencyParam != nullptr)
+        oscillator.setFrequency(frequencyParam->load());
+    
+    if (gainParam != nullptr)
+        gain.setGainLinear(gainParam->load());
 }
 
 void DSPJuceAudioProcessor::releaseResources() {
@@ -49,9 +77,12 @@ void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce:
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
-    // Update DSP parameters if they changed
-    oscillator.setFrequency(currentFrequency.load());
-    gain.setGainLinear(currentGain.load());
+    // Update DSP parameters using cached pointers for real-time performance
+    if (frequencyParam != nullptr)
+        oscillator.setFrequency(frequencyParam->load());
+    
+    if (gainParam != nullptr)
+        gain.setGainLinear(gainParam->load());
 
     // Process audio using modern JUCE DSP chain
     juce::dsp::AudioBlock<float> block(buffer);
@@ -66,33 +97,18 @@ void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce:
 juce::AudioProcessorEditor *DSPJuceAudioProcessor::createEditor() { return new DSPJuceAudioProcessorEditor(*this); }
 
 //==============================================================================
-/**
- * @copydoc DSPJuceAudioProcessor::setFrequency
- */
-void DSPJuceAudioProcessor::setFrequency(float frequency) {
-    currentFrequency.store(juce::jlimit(MIN_FREQUENCY, MAX_FREQUENCY, frequency));
-}
-
-/**
- * @copydoc DSPJuceAudioProcessor::setGain
- */
-void DSPJuceAudioProcessor::setGain(float gain) { currentGain.store(juce::jlimit(MIN_GAIN, MAX_GAIN, gain)); }
-
-//==============================================================================
 void DSPJuceAudioProcessor::getStateInformation(juce::MemoryBlock &destData) {
-    // Create XML with current parameter values
-    juce::XmlElement xml("PluginState");
-    xml.setAttribute("frequency", static_cast<double>(currentFrequency.load()));
-    xml.setAttribute("gain", static_cast<double>(currentGain.load()));
-    copyXmlToBinary(xml, destData);
+    // APVTS handles state save automatically via ValueTree
+    auto state = parameters.copyState();
+    std::unique_ptr<juce::XmlElement> xml(state.createXml());
+    copyXmlToBinary(*xml, destData);
 }
 
 void DSPJuceAudioProcessor::setStateInformation(const void *data, int sizeInBytes) {
-    // Restore parameter values from XML
-    std::unique_ptr<juce::XmlElement> xmlState = getXmlFromBinary(data, sizeInBytes);
+    // APVTS handles state restore automatically via ValueTree
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
-    if (xmlState.get() != nullptr && xmlState->hasTagName("PluginState")) {
-        currentFrequency.store(static_cast<float>(xmlState->getDoubleAttribute("frequency", DEFAULT_FREQUENCY)));
-        currentGain.store(static_cast<float>(xmlState->getDoubleAttribute("gain", DEFAULT_GAIN)));
-    }
+    if (xmlState.get() != nullptr)
+        if (xmlState->hasTagName(parameters.state.getType()))
+            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
 }

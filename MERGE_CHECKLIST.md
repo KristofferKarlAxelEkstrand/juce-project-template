@@ -73,11 +73,11 @@
 
 ## Performance Improvements
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| **Incremental Build** | 10-30s | 1-3s (5s pure) | **10-30x faster** |
-| **Configuration** | 49.6s | 1.2s | **41x faster** |
-| **Developer Actions** | 5 manual steps | 2 keystrokes | **60% reduction** |
+| Metric                | Before         | After          | Improvement       |
+| --------------------- | -------------- | -------------- | ----------------- |
+| **Incremental Build** | 10-30s         | 1-3s (5s pure) | **10-30x faster** |
+| **Configuration**     | 49.6s          | 1.2s           | **41x faster**    |
+| **Developer Actions** | 5 manual steps | 2 keystrokes   | **60% reduction** |
 
 ---
 

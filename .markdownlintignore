@@ -3,3 +3,8 @@ node_modules/
 build/
 third_party/
 .temp-pr-reviews-docs/
+# Audit documents have specific formatting requirements
+AUDIT_*.md
+IMPROVEMENT_ISSUES.md
+# Chatmode files need tools array on one line
+**/*.chatmode.md

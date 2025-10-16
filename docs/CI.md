@@ -10,8 +10,8 @@ CI uses tiered validation to balance speed and thoroughness:
 - **PRs to `main`**: Full validation (40 min) - all platforms, all configs, security scans
 - **Tags `v*.*.*`**: Automated releases with cross-platform builds
 
-This approach provides 90% issue coverage on develop with 2.7x faster iteration, while maintaining 100%
-validation before production releases.
+This approach provides 90% issue coverage on develop with 2.7x faster iteration, while maintaining 100% validation
+before production releases.
 
 ## CI Workflows
 
@@ -280,8 +280,8 @@ The cache key includes:
 3. **Source Files**: Detects code changes requiring recompilation
 4. **CMakeLists.txt**: Detects build configuration changes
 
-**Note**: We cache the FetchContent base directory, not the JUCE submodule directory. This works
-whether JUCE is provided as a submodule or downloaded by FetchContent.
+**Note**: We cache the FetchContent base directory, not the JUCE submodule directory. This works whether JUCE is
+provided as a submodule or downloaded by FetchContent.
 
 #### Artifact Retention
 
@@ -312,7 +312,8 @@ Different retention policies optimize storage costs:
 
 ### CI Strategy Implementation
 
-The current CI strategy was implemented in October 2025 to optimize resource usage while maintaining comprehensive validation.
+The current CI strategy was implemented in October 2025 to optimize resource usage while maintaining comprehensive
+validation.
 
 **Key Design Decisions:**
 
