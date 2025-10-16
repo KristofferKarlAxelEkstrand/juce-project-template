@@ -44,9 +44,10 @@ To check if Clang is installed and available in your PATH, run:
 
 ```bash
 clang --version
+```
+
 ## References
 
 - [Clang documentation](https://clang.llvm.org/docs/)
 - [LLVM project](https://llvm.org/)
 - See `.clang-format` in the project root for configuration details.
-```

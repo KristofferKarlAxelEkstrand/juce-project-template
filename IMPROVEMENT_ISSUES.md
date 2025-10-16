@@ -77,7 +77,7 @@ Create `.vscode/launch.json` with cross-platform debugging configurations:
             "name": "(macOS) Attach to DAW",
             "type": "lldb",
             "request": "attach",
-            "pid": "${command:pickMyProcess}"
+            "pid": "${command:pickProcess}"
         },
         {
             "name": "(Linux) Attach to DAW",
@@ -430,7 +430,7 @@ fi
 
 2. Update QUICKSTART.md:
 
-```markdown
+````markdown
 ### Step 0: Validate Setup (30 seconds)
 
 Before building, verify you have all required tools:
@@ -438,6 +438,7 @@ Before building, verify you have all required tools:
 ```bash
 ./scripts/validate-setup.sh
 ```
+````
 
 If any tools are missing, install them using the suggested commands.
 
