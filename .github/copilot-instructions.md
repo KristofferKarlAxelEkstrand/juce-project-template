@@ -329,7 +329,8 @@ A successful JUCE audio project should:
 
 ## Path-Specific Instructions
 
-The following instruction files provide coding standards for specific file types. These instructions are automatically loaded by GitHub Copilot based on file patterns.
+The following instruction files provide coding standards for specific file types. These instructions are automatically
+loaded by GitHub Copilot based on file patterns.
 
 | Pattern                                                          | File Path                                            | Description                                                                                      |
 | ---------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
