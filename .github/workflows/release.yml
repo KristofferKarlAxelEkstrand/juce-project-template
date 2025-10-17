@@ -80,23 +80,25 @@ jobs:
       - name: Configure CMake
         shell: bash
         run: |
+          # Set up ccache compiler launcher if available
+          CMAKE_CCACHE_ARGS=""
+          if command -v ccache >/dev/null 2>&1; then
+            CMAKE_CCACHE_ARGS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+          fi
+          
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             # macOS requires Xcode generator for AU plugin support
-            cmake -G Xcode -B ${{ matrix.build_path }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+            cmake -G Xcode -B ${{ matrix.build_path }} \
+              -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache ${CMAKE_CCACHE_ARGS}
           else
             # Linux/Windows use presets
-            cmake --preset=${{ matrix.preset }} -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache
+            cmake --preset=${{ matrix.preset }} \
+              -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache ${CMAKE_CCACHE_ARGS}
           fi
 
       - name: Build with CMake
         shell: bash
         run: |
-          # Enable ccache for compilation with platform-appropriate compiler
-          if command -v ccache >/dev/null 2>&1; then
-            export CC="ccache ${CC:-cc}"
-            export CXX="ccache ${CXX:-c++}"
-            echo "Using ccache for compilation"
-          fi
           cmake --build ${{ matrix.build_path }} --config Release
 
       - name: Validate build artefacts

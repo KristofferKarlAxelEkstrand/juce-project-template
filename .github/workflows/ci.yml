@@ -145,104 +145,33 @@ jobs:
       shell: bash
       run: |
         if [ "${{ steps.cache-juce.outputs.cache-hit }}" = "true" ]; then
-          echo "✅ JUCE cache hit - using cached dependencies"
+          echo "JUCE cache hit - using cached dependencies"
         else
-          echo "⚠️ JUCE cache miss - will download dependencies"
+          echo "JUCE cache miss - will download dependencies"
         fi
-        echo "📦 ccache configured for compilation caching"
+        echo "ccache configured for compilation caching"
 
-    - name: Configure CMake with Retries
+    - name: Configure CMake
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
-        echo "=== cmake version ==="
-        cmake --version || true
-        if [ "$(uname)" = "Darwin" ]; then
-          echo "=== xcodebuild version ==="
-          xcodebuild -version || true
-        fi
-        echo
         FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
         PRESET="${{ steps.set_vars.outputs.cmake_preset }}"
-        echo "Using FETCHCONTENT_BASE_DIR=${FETCHCACHE}"
-        echo "Build directory: ${BUILD_DIR}"
-        echo "Preset: ${PRESET}"
-        echo
         
-        for i in 1 2 3; do
-          echo "--- cmake attempt $i ---"
-          LOG_LEVEL="WARNING"
-          [ $i -gt 1 ] && LOG_LEVEL="DEBUG"
-          
-          if [ "${{ runner.os }}" = "macOS" ]; then
-            # Use Xcode generator for macOS to ensure proper AU building
-            echo "Using Xcode generator for macOS"
-            # Set up ccache for Xcode if available
-            if command -v ccache >/dev/null 2>&1; then
-              echo "Configuring CMake to use ccache with Xcode"
-              if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache --log-level=${LOG_LEVEL}; then
-                echo "CMake configuration successful on attempt $i."
-                break
-              fi
-            else
-              if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
-                echo "CMake configuration successful on attempt $i."
-                break
-              fi
-            fi
-          else
-            # Use preset for Windows/Linux with ccache configuration
-            echo "Using preset: ${PRESET}"
-            # Set up ccache for all platforms if available
-            if command -v ccache >/dev/null 2>&1; then
-              echo "Configuring CMake to use ccache"
-              if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache --log-level=${LOG_LEVEL}; then
-                echo "CMake configuration successful on attempt $i."
-                break
-              fi
-            else
-              if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
-                echo "CMake configuration successful on attempt $i."
-                break
-              fi
-            fi
-          fi
-          
-          echo "CMake configuration failed on attempt $i."
-          # show any generated debug logs immediately
-          if [ -d "${BUILD_DIR}/CMakeFiles" ]; then
-            echo "---- CMakeError.log ----"
-            sed -n '1,200p' "${BUILD_DIR}/CMakeFiles/CMakeError.log" 2>/dev/null || true
-            echo "---- CMakeOutput.log ----"
-            sed -n '1,200p' "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" 2>/dev/null || true
-          else
-            echo "Build dir ${BUILD_DIR} not present yet."
-          fi
-          if [ $i -lt 3 ]; then
-            echo "Retrying in 10s..."
-            sleep 10
-          else
-            echo "CMake configuration failed after 3 attempts."
-            echo "::error::CMake configuration failed. See logs above."
-            exit 1
-          fi
-        done
-
-    - name: Show CMake error logs
-      if: steps.should_run.outputs.skip != 'true' && always()
-      shell: bash
-      run: |
-        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
-        echo "Build dir resolved to: ${BUILD_DIR}"
-        if [ -d "${BUILD_DIR}/CMakeFiles" ]; then
-          echo "=== CMake Error Log ==="
-          sed -n '1,400p' "${BUILD_DIR}/CMakeFiles/CMakeError.log" 2>/dev/null || echo "No CMakeError.log found"
-          echo
-          echo "=== CMake Output Log ==="
-          sed -n '1,400p' "${BUILD_DIR}/CMakeFiles/CMakeOutput.log" 2>/dev/null || echo "No CMakeOutput.log found"
+        # Set up ccache compiler launcher if available
+        CMAKE_CCACHE_ARGS=""
+        if command -v ccache >/dev/null 2>&1; then
+          CMAKE_CCACHE_ARGS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+        fi
+        
+        if [ "${{ runner.os }}" = "macOS" ]; then
+          # Use Xcode generator for macOS to ensure proper AU building
+          cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release \
+            -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" ${CMAKE_CCACHE_ARGS}
         else
-          echo "No CMakeFiles directory at ${BUILD_DIR}/CMakeFiles (CMake likely failed before creating build dir)."
+          # Use preset for Windows/Linux
+          cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" ${CMAKE_CCACHE_ARGS}
         fi
 
     - name: Upload CMake logs on failure
@@ -263,53 +192,17 @@ jobs:
       run: |
         if [ "${{ runner.os }}" = "macOS" ]; then
           # Xcode generator requires --config flag
-          echo "Building with Xcode for macOS"
           cmake --build "${{ steps.set_vars.outputs.build_dir }}" --config ${{ matrix.build_type }}
         else
           # Preset-based build for Windows/Linux
-          echo "Building with preset: ${{ steps.set_vars.outputs.cmake_build_preset }}"
           cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
         fi
         
-        # Show ccache statistics
+        # Show ccache statistics if available
         if command -v ccache >/dev/null 2>&1; then
           echo ""
           echo "=== ccache statistics ==="
           ccache --show-stats
-        fi
-
-    - name: List Xcode targets (macOS debug)
-      if: steps.should_run.outputs.skip != 'true' && runner.os == 'macOS'
-      shell: bash
-      run: |
-        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
-        echo "=== Listing Xcode project targets ==="
-        # Find the .xcodeproj file
-        XCODEPROJ=$(find "${BUILD_DIR}" -maxdepth 1 -name "*.xcodeproj" | head -1)
-        if [ -n "${XCODEPROJ}" ]; then
-          echo "Found Xcode project: ${XCODEPROJ}"
-          xcodebuild -project "${XCODEPROJ}" -list || true
-        else
-          echo "No .xcodeproj found in ${BUILD_DIR}"
-        fi
-
-    - name: Show produced plugin artefacts (macOS debug)
-      if: steps.should_run.outputs.skip != 'true' && runner.os == 'macOS'
-      shell: bash
-      run: |
-        BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
-        echo "=== Searching for plugin artefacts ==="
-        echo "Looking for .component, .vst3, .app files:"
-        find "${BUILD_DIR}" -type d \( -name "*.component" -o -name "*.vst3" -o -name "*.app" \) -print || true
-        echo
-        echo "=== Build directory structure ==="
-        ls -la "${BUILD_DIR}" || true
-        echo
-        # Dynamically discover artefacts directory
-        artefacts_dir=$(find "${BUILD_DIR}" -maxdepth 1 -type d -name "*_artefacts" | head -1)
-        if [ -n "${artefacts_dir}" ] && [ -d "${artefacts_dir}" ]; then
-          echo "=== Artefacts directory contents (${artefacts_dir}) ==="
-          find "${artefacts_dir}" -maxdepth 3 -type d -print || true
         fi
 
     - name: Validate build artefacts
@@ -337,11 +230,9 @@ jobs:
         if [ -f "${METADATA_FILE}" ]; then
           source "${METADATA_FILE}"
           echo "target_name=$PROJECT_NAME_TARGET" >> $GITHUB_OUTPUT
-          echo "✅ Plugin metadata: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
+          echo "Plugin metadata: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
         else
-          echo "::error::plugin_metadata.sh not found in build dir (${{ steps.set_vars.outputs.build_dir }})"
-          echo "Build directory contents:"
-          ls -la "${{ steps.set_vars.outputs.build_dir }}" || true
+          echo "::error::plugin_metadata.sh not found at ${METADATA_FILE}"
           exit 1
         fi
 
