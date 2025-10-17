@@ -149,13 +149,15 @@ jobs:
         else
           echo "JUCE cache miss - will download dependencies"
         fi
-        echo "ccache configured for compilation caching"
+        if command -v ccache >/dev/null 2>&1; then
+          echo "ccache configured for compilation caching"
+        fi
 
     - name: Configure CMake
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
-        FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
+        FETCHCACHE="${{ github.workspace }}/.juce_cache"
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
         PRESET="${{ steps.set_vars.outputs.cmake_preset }}"
         
@@ -167,7 +169,7 @@ jobs:
         
         if [ "${{ runner.os }}" = "macOS" ]; then
           # Use Xcode generator for macOS to ensure proper AU building
-          cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release \
+          cmake -S . -B "${BUILD_DIR}" -G "Xcode" \
             -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" ${CMAKE_CCACHE_ARGS}
         else
           # Use preset for Windows/Linux
