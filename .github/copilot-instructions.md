@@ -329,11 +329,7 @@ A successful JUCE audio project should:
 
 ## Path-Specific Instructions
 
-Additional instructions from user's `.github/instructions`: Here is a list of instruction files that contain rules for
-modifying or creating new code. These files are important for ensuring that the code is modified or created correctly.
-Please make sure to follow the rules specified in these files when working with the codebase. If you have not already
-read the file, use the `view` tool to acquire it. Make sure to acquire the instructions before making any changes to the
-code.
+The following instruction files provide coding standards for specific file types. These instructions are automatically loaded by GitHub Copilot based on file patterns.
 
 | Pattern                                                          | File Path                                            | Description                                                                                      |
 | ---------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
