@@ -38,7 +38,7 @@ if [ $? -eq 0 ]; then
             echo "  Formatting: $file"
             "$CLANG_FORMAT" -i "$file" 2>/dev/null || echo "  Warning: Failed to format $file"
         done
-        echo "SUCCESS: C++ formatting complete"
+        echo "echo "SUCCESS: C++ formatting complete""
     else
         echo "WARNING: No src directory found"
     fi
