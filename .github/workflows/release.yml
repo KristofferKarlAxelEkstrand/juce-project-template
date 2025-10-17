@@ -89,7 +89,7 @@ jobs:
           if [ "${{ runner.os }}" == "macOS" ]; then
             # macOS requires Xcode generator for AU plugin support
             cmake -G Xcode -B ${{ matrix.build_path }} \
-              -DFETCHCONTENT_BASE_DIR=${{ github.workspace }}/.juce_cache ${CMAKE_CCACHE_ARGS}
+              -DFETCHCONTENT_BASE_DIR=${GITHUB_WORKSPACE}/.juce_cache ${CMAKE_CCACHE_ARGS}
           else
             # Linux/Windows use presets
             cmake --preset=${{ matrix.preset }} \

@@ -149,15 +149,12 @@ jobs:
         else
           echo "JUCE cache miss - will download dependencies"
         fi
-        if command -v ccache >/dev/null 2>&1; then
-          echo "ccache configured for compilation caching"
-        fi
 
     - name: Configure CMake
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
-        FETCHCACHE="${{ github.workspace }}/.juce_cache"
+        FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
         BUILD_DIR="${{ steps.set_vars.outputs.build_dir }}"
         PRESET="${{ steps.set_vars.outputs.cmake_preset }}"
         
@@ -165,6 +162,9 @@ jobs:
         CMAKE_CCACHE_ARGS=""
         if command -v ccache >/dev/null 2>&1; then
           CMAKE_CCACHE_ARGS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+          echo "ccache configured for compilation caching"
+        else
+          echo "ccache not available or not configured"
         fi
         
         if [ "${{ runner.os }}" = "macOS" ]; then
