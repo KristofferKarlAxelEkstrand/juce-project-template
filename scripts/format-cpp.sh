@@ -38,12 +38,12 @@ if [ $? -eq 0 ]; then
             echo "  Formatting: $file"
             "$CLANG_FORMAT" -i "$file" 2>/dev/null || echo "  Warning: Failed to format $file"
         done
-        echo "✅ C++ formatting complete"
+        echo "SUCCESS: C++ formatting complete"
     else
-        echo "⚠️  No src directory found"
+        echo "WARNING: No src directory found"
     fi
 else
-    echo "⚠️  clang-format not found - install LLVM tools for C++ formatting"
+    echo "WARNING: clang-format not found - install LLVM tools for C++ formatting"
     echo "   Windows: winget install LLVM.LLVM (then restart terminal)"
     echo "   Or add LLVM to PATH: C:\\Program Files\\LLVM\\bin"
     echo "   macOS: brew install clang-format"
