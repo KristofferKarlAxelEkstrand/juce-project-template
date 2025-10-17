@@ -9,7 +9,6 @@
 		"*.mm": "cpp"
 	},
 	"files.exclude": {
-		"build/**": true,
 		"_deps/**": true
 	},
 	"cSpell.words": [
