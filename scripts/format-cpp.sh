@@ -34,7 +34,7 @@ if [ $? -eq 0 ]; then
     
     # Find all .cpp and .h files in src directory
     if [ -d "src" ]; then
-        find src -name "*.cpp" -o -name "*.h" | while read -r file; do
+        find src \( -name "*.cpp" -o -name "*.h" \) | while read -r file; do
             echo "  Formatting: $file"
             "$CLANG_FORMAT" -i "$file" 2>/dev/null || echo "  Warning: Failed to format $file"
         done
