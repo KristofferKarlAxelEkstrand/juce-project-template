@@ -43,28 +43,28 @@ jobs:
             run_on_develop: true
             cmake_preset: default
             cmake_build_preset: default
-            build_dir: ${{ github.workspace }}/build/default
+            build_dir: build/default
           # Windows Release - runs on ALL PRs (develop and main)
           - os: windows-latest
             build_type: Release
             run_on_develop: true
             cmake_preset: vs2022
             cmake_build_preset: vs2022-release
-            build_dir: ${{ github.workspace }}/build/vs2022
+            build_dir: build/vs2022
           # Ubuntu Release - runs ONLY on PRs to main
           - os: ubuntu-latest
             build_type: Release
             run_on_develop: false
             cmake_preset: release
             cmake_build_preset: release
-            build_dir: ${{ github.workspace }}/build/release
+            build_dir: build/release
           # macOS Release - runs ONLY on PRs to main
           - os: macos-latest
             build_type: Release
             run_on_develop: false
             cmake_preset: release # This is not used for macOS configure, but good for consistency
             cmake_build_preset: release # This is not used for macOS build, but good for consistency
-            build_dir: ${{ github.workspace }}/build/release
+            build_dir: build/release
 
     steps:
     # Skip this job if it's a PR to develop and the job is marked as main-only
@@ -146,8 +146,9 @@ jobs:
     - name: Ensure build directory exists and is writable on macOS
       if: steps.should_run.outputs.skip != 'true' && runner.os == 'macOS'
       run: |
-        mkdir -p ${{ matrix.build_dir }}
-        chmod -R 777 ${{ matrix.build_dir }}
+        BUILD_DIR="${{ github.workspace }}/${{ matrix.build_dir }}"
+        mkdir -p "${BUILD_DIR}"
+        chmod -R 777 "${BUILD_DIR}"
       shell: bash
 
     - name: Configure CMake
@@ -155,7 +156,7 @@ jobs:
       shell: bash
       run: |
         FETCHCACHE="${{ github.workspace }}/.juce_cache"
-        BUILD_DIR="${{ matrix.build_dir }}"
+        BUILD_DIR="${{ github.workspace }}/${{ matrix.build_dir }}"
         PRESET="${{ matrix.cmake_preset }}"
         
         # Set up ccache compiler launcher if available
@@ -165,6 +166,12 @@ jobs:
           echo "ccache configured for compilation caching"
         fi
         
+        echo "Computed BUILD_DIR=${BUILD_DIR}"
+        if [[ "${BUILD_DIR}" == "/build"* ]]; then
+          echo "::error::Build dir resolves to root: ${BUILD_DIR}"
+          exit 1
+        fi
+
         if [ "${{ runner.os }}" = "macOS" ]; then
           # Use Xcode generator for macOS to ensure proper AU building
           cmake -S . -B "${BUILD_DIR}" -G "Xcode" \
@@ -180,8 +187,8 @@ jobs:
       with:
         name: cmake-logs-${{ matrix.os }}-${{ matrix.build_type }}
         path: |
-          ${{ matrix.build_dir }}/CMakeFiles/CMakeError.log
-          ${{ matrix.build_dir }}/CMakeFiles/CMakeOutput.log
+          ${{ github.workspace }}/${{ matrix.build_dir }}/CMakeFiles/CMakeError.log
+          ${{ github.workspace }}/${{ matrix.build_dir }}/CMakeFiles/CMakeOutput.log
         if-no-files-found: ignore
         retention-days: 7
         compression-level: 9
@@ -190,9 +197,10 @@ jobs:
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
+        BUILD_DIR="${{ github.workspace }}/${{ matrix.build_dir }}"
         if [ "${{ runner.os }}" = "macOS" ]; then
           # Xcode generator requires --config flag
-          cmake --build "${{ matrix.build_dir }}" --config ${{ matrix.build_type }}
+          cmake --build "${BUILD_DIR}" --config ${{ matrix.build_type }}
         else
           # Preset-based build for Windows/Linux
           cmake --build --preset=${{ matrix.cmake_build_preset }}
@@ -209,7 +217,7 @@ jobs:
       if: steps.should_run.outputs.skip != 'true'
       shell: bash
       run: |
-        BUILD_DIR="${{ matrix.build_dir }}"
+        BUILD_DIR="${{ github.workspace }}/${{ matrix.build_dir }}"
         echo "Validating build dir: ${BUILD_DIR}"
         # On Windows with bash, ensure path is accessible
         if [ "${{ runner.os }}" = "Windows" ]; then
@@ -226,14 +234,14 @@ jobs:
       id: plugin_meta
       shell: bash
       run: |
-        METADATA_FILE="${{ matrix.build_dir }}/plugin_metadata.sh"
+        METADATA_FILE="${{ github.workspace }}/${{ matrix.build_dir }}/plugin_metadata.sh"
         if [ -f "${METADATA_FILE}" ]; then
           source "${METADATA_FILE}"
           echo "target_name=$PROJECT_NAME_TARGET" >> $GITHUB_OUTPUT
           echo "Plugin metadata: $PROJECT_NAME_PRODUCT v$PROJECT_VERSION"
         else
           echo "::error::plugin_metadata.sh not found at ${METADATA_FILE}"
-          ls -la "${{ matrix.build_dir }}" || true
+          ls -la "${{ github.workspace }}/${{ matrix.build_dir }}" || true
           exit 1
         fi
 
@@ -242,6 +250,6 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.plugin_meta.outputs.target_name }}-${{ matrix.os }}
-        path: ${{ matrix.build_dir }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release/
+        path: ${{ github.workspace }}/${{ matrix.build_dir }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release/
         retention-days: 30
         compression-level: 6
