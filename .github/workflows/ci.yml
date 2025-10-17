@@ -189,9 +189,15 @@ jobs:
               break
             fi
           else
-            # Use preset for Windows/Linux
+            # Use preset for Windows/Linux with ccache configuration
             echo "Using preset: ${PRESET}"
-            if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
+            # Set up ccache for all platforms if available
+            CCACHE_ARGS=""
+            if command -v ccache >/dev/null 2>&1; then
+              CCACHE_ARGS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+              echo "Configuring CMake to use ccache"
+            fi
+            if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" ${CCACHE_ARGS} --log-level=${LOG_LEVEL}; then
               echo "CMake configuration successful on attempt $i."
               break
             fi
@@ -254,13 +260,6 @@ jobs:
           echo "Building with Xcode for macOS"
           cmake --build "${{ steps.set_vars.outputs.build_dir }}" --config ${{ matrix.build_type }}
         else
-          # Enable ccache for compilation on Linux/Windows
-          if command -v ccache >/dev/null 2>&1; then
-            export CC="ccache ${CC:-cc}"
-            export CXX="ccache ${CXX:-c++}"
-            echo "Using ccache for compilation"
-          fi
-          
           # Preset-based build for Windows/Linux
           echo "Building with preset: ${{ steps.set_vars.outputs.cmake_build_preset }}"
           cmake --build --preset=${{ steps.set_vars.outputs.cmake_build_preset }}
