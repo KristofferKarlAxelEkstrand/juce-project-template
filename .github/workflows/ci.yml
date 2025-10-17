@@ -179,27 +179,33 @@ jobs:
             # Use Xcode generator for macOS to ensure proper AU building
             echo "Using Xcode generator for macOS"
             # Set up ccache for Xcode if available
-            CCACHE_ARGS=""
             if command -v ccache >/dev/null 2>&1; then
-              CCACHE_ARGS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
               echo "Configuring CMake to use ccache with Xcode"
-            fi
-            if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" ${CCACHE_ARGS} --log-level=${LOG_LEVEL}; then
-              echo "CMake configuration successful on attempt $i."
-              break
+              if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache --log-level=${LOG_LEVEL}; then
+                echo "CMake configuration successful on attempt $i."
+                break
+              fi
+            else
+              if cmake -S . -B "${BUILD_DIR}" -G "Xcode" -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
+                echo "CMake configuration successful on attempt $i."
+                break
+              fi
             fi
           else
             # Use preset for Windows/Linux with ccache configuration
             echo "Using preset: ${PRESET}"
             # Set up ccache for all platforms if available
-            CCACHE_ARGS=""
             if command -v ccache >/dev/null 2>&1; then
-              CCACHE_ARGS="-DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
               echo "Configuring CMake to use ccache"
-            fi
-            if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" ${CCACHE_ARGS} --log-level=${LOG_LEVEL}; then
-              echo "CMake configuration successful on attempt $i."
-              break
+              if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache --log-level=${LOG_LEVEL}; then
+                echo "CMake configuration successful on attempt $i."
+                break
+              fi
+            else
+              if cmake --preset="${PRESET}" -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}" --log-level=${LOG_LEVEL}; then
+                echo "CMake configuration successful on attempt $i."
+                break
+              fi
             fi
           fi
           
