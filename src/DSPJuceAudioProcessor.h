@@ -58,8 +58,8 @@ public:
     juce::AudioProcessorValueTreeState parameters;
 
     // Parameter IDs
-    static constexpr const char* PARAM_ID_FREQUENCY = "frequency";
-    static constexpr const char* PARAM_ID_GAIN = "gain";
+    static constexpr const char *PARAM_ID_FREQUENCY = "frequency";
+    static constexpr const char *PARAM_ID_GAIN = "gain";
 
 private:
     //==============================================================================
@@ -72,8 +72,8 @@ private:
     juce::dsp::Gain<float> gain;
 
     // Cached parameter pointers for real-time performance
-    const std::atomic<float>* frequencyParam = nullptr;
-    const std::atomic<float>* gainParam = nullptr;
+    const std::atomic<float> *frequencyParam = nullptr;
+    const std::atomic<float> *gainParam = nullptr;
 
     // Constants
     // Frequency range covers the full human hearing range (20 Hz to 20,000 Hz)

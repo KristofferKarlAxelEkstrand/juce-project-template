@@ -21,9 +21,7 @@ void DSPJuceAudioProcessorEditor::setupControls() {
 
     // Create APVTS attachment for frequency
     frequencyAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-        audioProcessor.parameters, 
-        DSPJuceAudioProcessor::PARAM_ID_FREQUENCY, 
-        frequencySlider);
+        audioProcessor.parameters, DSPJuceAudioProcessor::PARAM_ID_FREQUENCY, frequencySlider);
 
     // Gain control setup
     addAndMakeVisible(gainSlider);
@@ -36,9 +34,7 @@ void DSPJuceAudioProcessorEditor::setupControls() {
 
     // Create APVTS attachment for gain
     gainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(
-        audioProcessor.parameters, 
-        DSPJuceAudioProcessor::PARAM_ID_GAIN, 
-        gainSlider);
+        audioProcessor.parameters, DSPJuceAudioProcessor::PARAM_ID_GAIN, gainSlider);
 }
 
 //==============================================================================

@@ -76,20 +76,32 @@ npm run fix
 ### Windows
 
 ```powershell
-# Via Visual Studio Installer (recommended)
+# Via winget (recommended)
+winget install LLVM.LLVM
+```
+
+**After installation on Windows**, you may need to add LLVM to your PATH:
+
+1. **Option 1: Restart your terminal** - Modern winget installations should update PATH automatically
+2. **Option 2: Manual PATH setup** (if clang-format still not found):
+   - Open System Properties → Environment Variables
+   - Add `C:\Program Files\LLVM\bin` to your system PATH
+   - Restart VS Code/terminal
+
+**Alternative Windows methods:**
+
+```powershell
+# Via Visual Studio Installer (if you have VS)
 # Install "C++ CMake tools for Visual Studio" component
 
-# Or via Chocolatey
+# Via Chocolatey
 choco install llvm
-
-# Or via winget
-winget install LLVM.LLVM
 ```
 
 ### macOS
 
 ```bash
-# Via Homebrew
+# Via Homebrew (recommended)
 brew install clang-format
 
 # Or via MacPorts
@@ -100,6 +112,15 @@ sudo port install clang-format
 
 ```bash
 sudo apt install clang-format
+```
+
+### Verification
+
+Test your installation:
+
+```bash
+clang-format --version
+# Should output: clang-format version X.X.X
 ```
 
 ## Configuration Files
