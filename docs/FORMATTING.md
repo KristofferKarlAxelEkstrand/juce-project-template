@@ -36,7 +36,7 @@ Pre-commit hooks automatically format staged files before each commit:
 {
   "lint-staged": {
     "*.md": ["prettier --write", "markdownlint-cli2 --fix"],
-    "src/**/*.{cpp,h}": ["clang-format -i"],
+    "src/**/*.{cpp,h}": ["bash scripts/format-cpp.sh"],
     "*.{json,jsonc}": ["prettier --write"]
   }
 }
