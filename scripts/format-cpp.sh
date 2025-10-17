@@ -30,7 +30,7 @@ find_clang_format() {
 CLANG_FORMAT=$(find_clang_format)
 
 if [ $? -eq 0 ]; then
-    echo "🔧 Formatting C++ files with clang-format ($CLANG_FORMAT)..."
+    echo "INFO: Formatting C++ files with clang-format ($CLANG_FORMAT)..."
     
     # Find all .cpp and .h files in src directory
     if [ -d "src" ]; then
