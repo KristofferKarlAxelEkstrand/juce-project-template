@@ -3,8 +3,9 @@
 	"version": "1.0.0",
 	"description": "Documentation and tooling for the JUCE Project Template project.",
 	"scripts": {
-		"format": "prettier --write \"**/*.md\"",
-		"format:check": "prettier --check \"**/*.md\"", 
+		"format": "prettier --write \"**/*.md\" && npm run format:cpp",
+		"format:cpp": "bash scripts/format-cpp.sh",
+		"format:check": "prettier --check \"**/*.md\"",
 		"test": "npm run lint:md",
 		"test:build": "bash scripts/validate-builds.sh",
 		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
@@ -22,6 +23,12 @@
 		"*.md": [
 			"prettier --write",
 			"markdownlint-cli2 --fix \"!.temp-pr-reviews-docs\""
+		],
+		"src/**/*.{cpp,h}": [
+			"bash scripts/format-cpp.sh"
+		],
+		"*.{json,jsonc}": [
+			"prettier --write"
 		]
 	}
 }

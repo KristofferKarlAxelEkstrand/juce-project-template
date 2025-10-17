@@ -12,14 +12,53 @@
 		"build/**": true,
 		"_deps/**": true
 	},
-	"cSpell.words": ["ALSA", "artefacts", "ASIO", "automatable", "biquad", "chatmode", "chatmodes", "constexpr", "elif", "frontmatter", "jassert", "libasound", "Makefiles", "Metaprogramming", "msbuild", "MSVC", "Nyquist", "oneline", "Projucer", "RAII", "Sheenbidi"],
+	"cSpell.words": [
+		"ALSA",
+		"artefacts",
+		"ASIO",
+		"automatable",
+		"biquad",
+		"chatmode",
+		"chatmodes",
+		"constexpr",
+		"elif",
+		"frontmatter",
+		"jassert",
+		"libasound",
+		"Makefiles",
+		"Metaprogramming",
+		"msbuild",
+		"MSVC",
+		"Nyquist",
+		"oneline",
+		"Projucer",
+		"RAII",
+		"Sheenbidi"
+	],
 	"[markdown]": {
-		"editor.formatOnSave": false,
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.codeActionsOnSave": {
 			"source.fixAll.markdownlint": "explicit"
 		},
 		"editor.wordWrap": "bounded",
 		"editor.wordWrapColumn": 120
+	},
+	"[cpp]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "ms-vscode.cpptools"
+	},
+	"[c]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "ms-vscode.cpptools"
+	},
+	"[json]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[jsonc]": {
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"chat.tools.terminal.autoApprove": {
 		"cd": true,

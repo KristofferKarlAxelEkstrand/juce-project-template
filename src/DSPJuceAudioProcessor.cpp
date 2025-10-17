@@ -7,19 +7,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout DSPJuceAudioProcessor::creat
 
     // Add frequency parameter with logarithmic scaling
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        juce::ParameterID{PARAM_ID_FREQUENCY, 1},
-        "Frequency",
-        juce::NormalisableRange<float>(MIN_FREQUENCY, MAX_FREQUENCY, 0.01f, 0.25f),
-        DEFAULT_FREQUENCY,
+        juce::ParameterID{PARAM_ID_FREQUENCY, 1}, "Frequency",
+        juce::NormalisableRange<float>(MIN_FREQUENCY, MAX_FREQUENCY, 0.01f, 0.25f), DEFAULT_FREQUENCY,
         juce::AudioParameterFloatAttributes().withLabel("Hz")));
 
     // Add gain parameter
     layout.add(std::make_unique<juce::AudioParameterFloat>(
-        juce::ParameterID{PARAM_ID_GAIN, 1},
-        "Gain",
-        juce::NormalisableRange<float>(MIN_GAIN, MAX_GAIN, 0.01f),
-        DEFAULT_GAIN,
-        juce::AudioParameterFloatAttributes().withLabel("Linear")));
+        juce::ParameterID{PARAM_ID_GAIN, 1}, "Gain", juce::NormalisableRange<float>(MIN_GAIN, MAX_GAIN, 0.01f),
+        DEFAULT_GAIN, juce::AudioParameterFloatAttributes().withLabel("Linear")));
 
     return layout;
 }
@@ -47,7 +42,7 @@ void DSPJuceAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
 
     // Set initial parameter values
     oscillator.setFrequency(frequencyParam->load());
-    
+
     gain.setGainLinear(gainParam->load());
 }
 
@@ -78,7 +73,7 @@ void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce:
     // Update DSP parameters using cached pointers for real-time performance
     if (frequencyParam != nullptr)
         oscillator.setFrequency(frequencyParam->load());
-    
+
     if (gainParam != nullptr)
         gain.setGainLinear(gainParam->load());
 
