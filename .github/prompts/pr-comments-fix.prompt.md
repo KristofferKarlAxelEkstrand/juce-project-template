@@ -17,12 +17,12 @@ git branch --show-current
 
 ## Core Evaluation Questions
 
-For each comment ask:
+For each comment, ask:
 
-1. **Technically correct?** Does it fix a bug, improve safety, or align with best practices?
-2. **Worth the change?** Real benefit vs added complexity (KISS principle)?
-3. **Project fit?** Matches architecture, conventions, and PR objectives?
-4. **Edge cases?** Are there gotchas or constraints the reviewer missed?
+1. **Is it technically correct?** Does it fix a bug, improve safety, or align with best practices?
+2. **Is it worth the change?** Is there a real benefit vs. the added complexity (KISS principle)?
+3. **Does it fit the project?** Does it match the architecture, conventions, and PR objectives?
+4. **Are there edge cases?** Are there any gotchas or constraints the reviewer might have missed?
 
 ## Decision Framework
 
