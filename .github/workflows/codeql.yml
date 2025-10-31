@@ -54,7 +54,7 @@ jobs:
 
     - name: Build C++ for CodeQL
       run: |
-        FETCHCACHE="${{ github.workspace }}/.juce_cache"
+        FETCHCACHE="$GITHUB_WORKSPACE/.juce_cache"
         cmake -B build -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}"
         cmake --build build --config Release
 
