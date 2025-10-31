@@ -10,25 +10,19 @@ on:
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
-    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
-    timeout-minutes: ${{ (matrix.language == 'swift' && 120) || 360 }}
+    name: Analyze C++
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
     permissions:
       actions: read
       contents: read
       security-events: write
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'c-cpp', 'javascript-typescript' ]
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
 
     - name: Install Linux dependencies
-      if: matrix.language == 'c-cpp'
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -44,7 +38,6 @@ jobs:
           libxext-dev
 
     - name: Cache JUCE
-      if: matrix.language == 'c-cpp'
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/.juce_cache
@@ -56,21 +49,16 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
       with:
-        languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.language == 'c-cpp' && 'manual' || 'none' }}
+        languages: c-cpp
+        build-mode: manual
 
-    - if: matrix.language == 'c-cpp'
-      name: Clean build directory
-      run: rm -rf build
-
-    - if: matrix.language == 'c-cpp'
-      name: Build C++
+    - name: Build C++ for CodeQL
       run: |
-        FETCHCACHE="${GITHUB_WORKSPACE}/.juce_cache"
+        FETCHCACHE="${{ github.workspace }}/.juce_cache"
         cmake -B build -DCMAKE_BUILD_TYPE=Release -DFETCHCONTENT_BASE_DIR="${FETCHCACHE}"
         cmake --build build --config Release
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
       with:
-        category: "/language:${{matrix.language}}"
+        category: "/language:c-cpp"
