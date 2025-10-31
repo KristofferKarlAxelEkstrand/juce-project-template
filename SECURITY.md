@@ -2,20 +2,33 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+This project is a JUCE 8.0.10 audio plugin project template. Security updates are provided for the following template
+versions:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| Version | Supported | Notes                           |
+| ------- | --------- | ------------------------------- |
+| < 1.0   | :x:       | Development versions (unstable) |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you discover a security vulnerability in this template, please report it by:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+1. **Do NOT** open a public GitHub issue
+2. Email the maintainer directly (see profile) with:
+   - Description of the vulnerability
+   - Steps to reproduce
+   - Potential impact
+   - Suggested fix (if available)
+
+**Response Timeline:**
+
+- Initial response: Within 96 hours
+- Status update: Within 7 days
+- Fix timeline: Depends on severity (critical: 7-14 days, moderate: 30 days)
+
+**After Reporting:**
+
+- **Accepted**: We will work on a fix and credit you in the release notes (unless you prefer to remain anonymous)
+- **Declined**: We will explain why the issue is not considered a security vulnerability
+
+Security updates will be released as patch versions (e.g., 1.0.1) with detailed changelogs.
