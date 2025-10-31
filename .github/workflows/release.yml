@@ -141,7 +141,7 @@ jobs:
           cat "${{ steps.plugin_meta.outputs.zip_name }}.sha256"
 
       - name: Upload artefact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.plugin_meta.outputs.zip_name }}
           path: |
