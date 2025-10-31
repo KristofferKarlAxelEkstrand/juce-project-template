@@ -183,7 +183,7 @@ jobs:
 
     - name: Upload CMake logs on failure
       if: steps.should_run.outputs.skip != 'true' && failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: cmake-logs-${{ matrix.os }}-${{ matrix.build_type }}
         path: |
@@ -247,7 +247,7 @@ jobs:
 
     - name: Upload build artefacts
       if: steps.should_run.outputs.skip != 'true' && matrix.build_type == 'Release'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: ${{ steps.plugin_meta.outputs.target_name }}-${{ matrix.os }}
         path: ${{ github.workspace }}/${{ matrix.build_dir }}/${{ steps.plugin_meta.outputs.target_name }}_artefacts/Release/
