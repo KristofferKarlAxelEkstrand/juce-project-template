@@ -5,10 +5,9 @@
 This project is a JUCE 8.0.10 audio plugin project template. Security updates are provided for the following template
 versions:
 
-| Version | Supported          | Notes                           |
-| ------- | ------------------ | ------------------------------- |
-| 1.x.x   | :white_check_mark: | Current stable release          |
-| < 1.0   | :x:                | Development versions (unstable) |
+| Version | Supported | Notes                           |
+| ------- | --------- | ------------------------------- |
+| < 1.0   | :x:       | Development versions (unstable) |
 
 ## Reporting a Vulnerability
 
@@ -23,7 +22,7 @@ If you discover a security vulnerability in this template, please report it by:
 
 **Response Timeline:**
 
-- Initial response: Within 48 hours
+- Initial response: Within 96 hours
 - Status update: Within 7 days
 - Fix timeline: Depends on severity (critical: 7-14 days, moderate: 30 days)
 
