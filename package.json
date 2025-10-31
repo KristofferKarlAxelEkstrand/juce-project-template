@@ -1,6 +1,6 @@
 {
 	"name": "juce-project-template-docs",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "Documentation and tooling for the JUCE Project Template project.",
 	"scripts": {
 		"format": "prettier --write \"**/*.md\" && npm run format:cpp",
