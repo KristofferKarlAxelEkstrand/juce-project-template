@@ -12,7 +12,7 @@ jobs:
     name: Lint Documentation
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0
         submodules: 'recursive'
@@ -81,7 +81,7 @@ jobs:
         fi
       shell: bash
 
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
       if: steps.should_run.outputs.skip != 'true'
       with:
         fetch-depth: 0
