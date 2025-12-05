@@ -5,7 +5,7 @@ repository.
 
 ## Repository Overview
 
-This is a JUCE 8.0.10 audio plugin project template providing a development environment with:
+This is a JUCE 8.0.11 audio plugin project template providing a development environment with:
 
 - Modern CMake build system with automatic JUCE dependency management
 - Cross-platform support (Windows, macOS, Linux)
@@ -128,7 +128,7 @@ Follow instructions in `.github/instructions/json-config.instructions.md`:
 ### Critical Build Commands
 
 ```bash
-# Configure (90+ seconds first time - downloads JUCE 8.0.10)
+# Configure (90+ seconds first time - downloads JUCE 8.0.11)
 cmake --preset=default          # Linux/macOS
 cmake --preset=vs2022           # Windows
 

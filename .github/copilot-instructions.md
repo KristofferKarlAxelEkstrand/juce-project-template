@@ -1,6 +1,6 @@
 # JUCE Project Template Development Environment
 
-This repository is a modern JUCE 8.0.10 audio plugin project template providing cross-platform build system, CI/CD
+This repository is a modern JUCE 8.0.11 audio plugin project template providing cross-platform build system, CI/CD
 integration, and fast development workflow patterns.
 
 ## General Coding Principles
@@ -24,10 +24,10 @@ Avoid decorative language, emojis, emoticons, and promotional adjectives in all 
 
 **Core Components:**
 
-- `src/MainComponent.h/cpp`: Example `DSPJuceAudioProcessor` demonstrating thread-safe parameter control
+- `src/DSPJuceAudioProcessor.h/cpp`: Example `DSPJuceAudioProcessor` demonstrating thread-safe parameter control
 - `src/PluginEditor.h/cpp`: Example GUI editor showing immediate parameter updates pattern
 - `src/Main.cpp`: Plugin entry point supporting both VST3 plugin and standalone builds
-- `CMakeLists.txt`: Modern CMake with FetchContent auto-downloading JUCE 8.0.10
+- `CMakeLists.txt`: Modern CMake with FetchContent auto-downloading JUCE 8.0.11
 
 **Metadata Centralization:**
 
@@ -44,7 +44,7 @@ All plugin metadata is defined in `CMakeLists.txt` (see the section where `PLUGI
 
 ```cpp
 // Thread-safe parameter communication between GUI and audio threads
-std::atomic<float> currentFrequency{440.0f};  // In MainComponent.h
+std::atomic<float> currentFrequency{440.0f};  // In DSPJuceAudioProcessor.h
 oscillator.setFrequency(currentFrequency.load());  // In processBlock()
 audioProcessor.setFrequency(newValue);  // From GUI thread (stores atomically)
 ```
@@ -64,7 +64,7 @@ gain.process(context);        // Apply gain
 **Critical Build Commands:**
 
 ```bash
-# Configure (90+ seconds - downloads JUCE 8.0.10 automatically)
+# Configure (90+ seconds - downloads JUCE 8.0.11 automatically)
 cmake --preset=default          # Linux/macOS (builds to build/default/)
 cmake --preset=vs2022           # Windows (builds in build/vs2022/, artifacts in build/vs2022/JucePlugin_artefacts/...)
 
@@ -141,7 +141,7 @@ frequencySlider.onValueChange = [this] {
     audioProcessor.setFrequency(static_cast<float>(frequencySlider.getValue()));
 };
 
-// State persistence pattern (MainComponent.cpp)
+// State persistence pattern (DSPJuceAudioProcessor.cpp)
 void getStateInformation(juce::MemoryBlock &destData) override {
     juce::XmlElement xml("PluginState");  // Use simple tag name for state persistence
     xml.setAttribute("frequency", currentFrequency.load());
@@ -183,12 +183,12 @@ style: Apply clang-format to source files
 juce-project-template/
 ├── src/                     # Example plugin source code
 │   ├── Main.cpp            # Plugin entry point for both standalone and plugin formats
-│   ├── MainComponent.h     # AudioProcessor interface for audio processing
-│   ├── MainComponent.cpp   # Example real-time audio processing with DSP
+│   ├── DSPJuceAudioProcessor.h     # Sine wave synthesizer (AudioProcessor)
+│   ├── DSPJuceAudioProcessor.cpp   # Audio generation with DSP oscillator and gain
 │   ├── PluginEditor.h      # AudioProcessorEditor interface for GUI
 │   └── PluginEditor.cpp    # Example GUI implementation with parameter controls
 ├── .github/                # GitHub configuration and instructions
-├── CMakeLists.txt          # Modern CMake with JUCE 8.0.10 FetchContent
+├── CMakeLists.txt          # Modern CMake with JUCE 8.0.11 FetchContent
 ├── CMakePresets.json       # Cross-platform build presets
 ├── package.json           # NPM tooling for documentation linting
 ├── scripts/               # Setup validation scripts

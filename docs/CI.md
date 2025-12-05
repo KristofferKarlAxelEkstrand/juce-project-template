@@ -237,9 +237,9 @@ Caches the JUCE framework download to avoid repeated fetches from GitHub.
 
 ```yaml
 path: ${{ github.workspace }}/.juce_cache
-key: ${{ runner.os }}-juce-8.0.10-${{ hashFiles('CMakeLists.txt') }}
+key: ${{ runner.os }}-juce-8.0.11-${{ hashFiles('CMakeLists.txt') }}
 restore-keys: |
-  ${{ runner.os }}-juce-8.0.10-
+  ${{ runner.os }}-juce-8.0.11-
   ${{ runner.os }}-juce-
 ```
 

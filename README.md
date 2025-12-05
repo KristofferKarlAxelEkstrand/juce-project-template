@@ -11,7 +11,7 @@ Already familiar? Continue below for full documentation.
 
 ## What This Template Provides
 
-This template gives you a working JUCE 8.0.10 project with:
+This template gives you a working JUCE 8.0.11 project with:
 
 - **Multiple plugin formats** from a single codebase (VST3, AU on macOS, Standalone)
 - **Modern CMake build system** with automatic JUCE dependency management
@@ -149,13 +149,13 @@ Once you have a successful build:
 
 1. **Fast development setup**: See [DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md) for 1-3 second builds
 2. **Platform-specific builds**: See [BUILD.md](BUILD.md) for Windows, macOS, and Linux details
-3. **Start coding**: Modify `src/MainComponent.cpp` for audio processing, `src/PluginEditor.cpp` for GUI
+3. **Start coding**: Modify `src/DSPJuceAudioProcessor.cpp` for audio processing, `src/PluginEditor.cpp` for GUI
 
 ## Template Features
 
 ### Build System
 
-- **Automatic JUCE download**: CMake FetchContent downloads JUCE 8.0.10 (no manual setup)
+- **Automatic JUCE download**: CMake FetchContent downloads JUCE 8.0.11 (no manual setup)
 - **Cross-platform presets**: Pre-configured for Visual Studio, Xcode, Unix Makefiles, and Ninja
 - **Single-source metadata**: Edit plugin name/version once in CMakeLists.txt, updates everywhere
 - **Fast incremental builds**: Ninja preset enables 1-3 second rebuild cycles
@@ -236,7 +236,7 @@ npm test
 juce-project-template/
 ├── src/                     # Plugin source code
 │   ├── Main.cpp             # Plugin entry point
-│   ├── MainComponent.{h,cpp}# Audio processor (DSP logic)
+│   ├── DSPJuceAudioProcessor.{h,cpp}  # Sine wave synthesizer
 │   └── PluginEditor.{h,cpp} # GUI editor (controls)
 ├── .github/
 │   └── workflows/           # CI/CD automation

@@ -1,13 +1,13 @@
 # JUCE Framework in this Project
 
 JUCE (Jules' Utility Class Extensions) is a C++ framework for cross-platform audio
-applications and plugins. This project uses JUCE 8.0.10 with modern CMake integration.
+applications and plugins. This project uses JUCE 8.0.11 with modern CMake integration.
 
 ## Key JUCE Classes Used
 
 **Core Audio Components**:
 
-- **`juce::AudioProcessor`** (`MainComponent`): Handles audio processing, parameters, and plugin state
+- **`juce::AudioProcessor`** (`DSPJuceAudioProcessor`): Handles audio processing, parameters, and plugin state
 - **`juce::AudioProcessorEditor`** (`PluginEditor`): Provides GUI interface and parameter controls
 - **`juce::dsp::Oscillator`**: High-performance sine wave generator
 - **`juce::dsp::Gain`**: Real-time safe gain control
@@ -22,7 +22,7 @@ applications and plugins. This project uses JUCE 8.0.10 with modern CMake integr
 
 ## Real-Time Safety Critical Concepts
 
-**The Audio Thread** (`MainComponent::getNextAudioBlock`) must complete within ~10ms to prevent dropouts.
+**The Audio Thread** (`DSPJuceAudioProcessor::processBlock`) must complete within ~10ms to prevent dropouts.
 
 **FORBIDDEN in Audio Thread**:
 

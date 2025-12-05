@@ -98,7 +98,7 @@ Requires:
 ### Edit-Build-Test Cycle
 
 ```bash
-# 1. Edit MainComponent.cpp, PluginEditor.cpp, etc.
+# 1. Edit DSPJuceAudioProcessor.cpp, PluginEditor.cpp, etc.
 # 2. Press Ctrl+Shift+B
 # 3. Run "Run Standalone" task
 # Total time: 1-3 seconds for small changes

@@ -23,7 +23,7 @@
 			}
 		},
 		{
-			"files": "**/*.chatmode.md",
+			"files": "**/*.agent.md",
 			"options": {
 				"proseWrap": "preserve",
 				"printWidth": 1000,

@@ -88,8 +88,8 @@ Install CMake 3.22+:
 If the automatic download of JUCE fails during the `cmake --preset` step (e.g., due to a firewall), you can download it
 manually:
 
-1. **Download JUCE**: Get the `Source code (zip)` for version **8.0.10** from the
-   [JUCE releases page](https://github.com/juce-framework/JUCE/releases/tag/8.0.10).
+1. **Download JUCE**: Get the `Source code (zip)` for version **8.0.11** from the
+   [JUCE releases page](https://github.com/juce-framework/JUCE/releases/tag/8.0.11).
 2. **Create directory**: `mkdir -p third_party`
 3. **Extract to**: `third_party/JUCE`
 

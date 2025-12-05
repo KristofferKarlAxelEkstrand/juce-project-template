@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-This project is a JUCE 8.0.10 audio plugin project template. Security updates are provided for the following template
+This project is a JUCE 8.0.11 audio plugin project template. Security updates are provided for the following template
 versions:
 
 | Version | Supported | Notes                           |

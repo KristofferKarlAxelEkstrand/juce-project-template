@@ -4,22 +4,22 @@
 		"MD013": {
 			"line_length": 120,
 			"tables": false,
-			"code_blocks": false
+			"code_blocks": false,
 		},
 		"MD033": {
-			"allowed_elements": ["br"]
+			"allowed_elements": ["br"],
 		},
-		"MD041": false
+		"MD041": false,
 	},
 	"globs": [
-		"**/*.md", 
-		"!node_modules", 
-		"!build", 
+		"**/*.md",
+		"!node_modules",
+		"!build",
 		"!third_party",
 		"!.temp-pr-reviews-docs",
 		"!AUDIT_*.md",
 		"!IMPROVEMENT_ISSUES.md",
 		"!README_AUDIT.md",
-		"!**/*.chatmode.md"
-	]
+		"!**/*.agent.md",
+	],
 }

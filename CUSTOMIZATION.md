@@ -169,7 +169,7 @@ Now customize the audio processing and GUI:
 
 ### Audio Processing (DSP)
 
-Edit `src/MainComponent.cpp` and `src/MainComponent.h`:
+Edit `src/DSPJuceAudioProcessor.cpp` and `src/DSPJuceAudioProcessor.h`:
 
 1. Modify `prepareToPlay()` to initialize your DSP
 2. Update `processBlock()` with your audio algorithm
@@ -205,8 +205,8 @@ Update project documentation to reflect your plugin:
    ```cmake
    target_sources(${PLUGIN_TARGET} PRIVATE
        src/Main.cpp
-       src/MainComponent.cpp
-       src/MainComponent.h
+       src/DSPJuceAudioProcessor.cpp
+       src/DSPJuceAudioProcessor.h
        src/PluginEditor.cpp
        src/PluginEditor.h
        src/MyNewFile.cpp        # Add your files here
