@@ -38,7 +38,7 @@ jobs:
           libxext-dev
 
     - name: Cache JUCE
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ github.workspace }}/.juce_cache
         key: ${{ runner.os }}-juce-8.0.10-${{ hashFiles('CMakeLists.txt') }}
