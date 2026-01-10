@@ -1,5 +1,6 @@
 {
 	"name": "JUCE Development",
+	"runArgs": ["--name", "juce-dev"],
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
