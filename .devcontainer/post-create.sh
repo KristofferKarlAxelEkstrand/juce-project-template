@@ -5,6 +5,13 @@ set -euo pipefail
 
 echo "Setting up JUCE development environment..."
 
+# Configure git safe directories to prevent "unsafe repository" errors
+# This is needed because the workspace and fetched dependencies may be
+# owned by different users in container environments
+echo "Configuring git safe directories..."
+git config --global --add safe.directory /workspaces/juce-project-template
+git config --global --add safe.directory '*'
+
 # Fix ccache directory ownership if mounted as volume
 if [ -d "$HOME/.ccache" ]; then
     sudo chown -R "$(id -u):$(id -g)" "$HOME/.ccache"

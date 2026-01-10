@@ -1,6 +1,21 @@
 {
 	"name": "JUCE Development",
-	"runArgs": ["--name", "juce-dev"],
+	"runArgs": [
+		"--name",
+		"juce-dev",
+		// Display support (set DISPLAY env var on host if using X server)
+		"-e",
+		"DISPLAY=${localEnv:DISPLAY:-:0}",
+		"-e",
+		"WAYLAND_DISPLAY=${localEnv:WAYLAND_DISPLAY}",
+		"-e",
+		"XDG_RUNTIME_DIR=${localEnv:XDG_RUNTIME_DIR}",
+		"-e",
+		"PULSE_SERVER=${localEnv:PULSE_SERVER}"
+		// Note: Audio device (/dev/snd) only available on Linux hosts
+		// Note: WSLg mounts only available on Windows 11 with WSL2
+	],
+	"mounts": ["source=juce-ccache,target=/home/vscode/.ccache,type=volume"],
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
@@ -19,7 +34,6 @@
 		},
 		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
-	"mounts": ["source=juce-ccache,target=/home/vscode/.ccache,type=volume"],
 	"containerEnv": {
 		"CCACHE_DIR": "/home/vscode/.ccache"
 	},
@@ -30,7 +44,6 @@
 				"ms-vscode.cpptools-extension-pack",
 				"ms-vscode.cmake-tools",
 				"llvm-vs-code-extensions.vscode-clangd",
-				"twxs.cmake",
 				"vadimcn.vscode-lldb",
 				"xaver.clang-format"
 			],
