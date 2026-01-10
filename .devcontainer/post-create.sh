@@ -21,6 +21,10 @@ if [ -f "$ZSHRC" ] && ! grep -q "TERM_PROGRAM.*vscode" "$ZSHRC"; then
     echo "Added VS Code shell integration to .zshrc"
 fi
 
+# Update npm to latest version
+echo "Updating npm to latest version..."
+npm install -g npm@latest
+
 # Install npm dependencies for linting tools
 # Skip husky install in devcontainer (hooks are already committed to .husky/)
 if [ -f "package.json" ]; then
