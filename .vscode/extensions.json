@@ -4,6 +4,5 @@
 		"ms-vscode.cmake-tools",
 		"vadimcn.vscode-lldb",
 		"ms-vscode.cpptools-extension-pack"
-	],
-	"unwantedRecommendations": ["twxs.cmake"]
+	]
 }
