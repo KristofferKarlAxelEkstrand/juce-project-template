@@ -92,13 +92,18 @@ echo
 info "Testing CMake Configuration"
 echo "--------------------------------"
 
-# Determine preset based on OS
+# Determine preset based on OS and available tools
 case "$(uname -s)" in
     CYGWIN*|MINGW*|MSYS*)
         preset="vs2022"
         ;;
     *)
-        preset="default"
+        # Prefer ninja if available (faster builds, used in dev container)
+        if command -v ninja >/dev/null 2>&1; then
+            preset="ninja"
+        else
+            preset="default"
+        fi
         ;;
 esac
 
@@ -142,8 +147,13 @@ echo "===================="
 success "If all items above show [SUCCESS], your development environment is ready!"
 echo
 info "Next steps:"
-echo "1. Run: cmake --preset=default"
-echo "2. Run: cmake --build --preset=default"
-echo "3. Run the built application from the build/default/JucePlugin_artefacts/Debug/Standalone directory"
+if [ "$preset" = "ninja" ]; then
+    echo "1. Build: cmake --build --preset=ninja"
+    echo "2. Run: ./build/ninja/JucePlugin_artefacts/Debug/Standalone/JUCE\\ Project\\ Template\\ Plugin"
+else
+    echo "1. Run: cmake --preset=$preset"
+    echo "2. Run: cmake --build --preset=$preset"
+    echo "3. Run the built application from the build/$preset/JucePlugin_artefacts/Debug/Standalone directory"
+fi
 echo
 info "For help, see QUICKSTART.md or open an issue on GitHub."

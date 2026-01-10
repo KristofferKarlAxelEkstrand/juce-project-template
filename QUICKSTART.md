@@ -1,6 +1,24 @@
-# Quick Start: Build Your First Plugin in 5 Minutes
+# Quick Start: Build Your First Plugin
 
-## Prerequisites Check
+## Fastest Path: Dev Container (No Setup Required)
+
+1. **Open in VS Code** with the Dev Containers extension
+2. Click "Reopen in Container" when prompted
+3. **Build**:
+
+   ```bash
+   cmake --build --preset=ninja
+   ```
+
+4. Your plugin is in `build/ninja/JucePlugin_artefacts/Debug/`
+
+See [docs/DEV_CONTAINER.md](docs/DEV_CONTAINER.md) for details.
+
+## Local Development Setup
+
+If you prefer developing locally without Docker, follow these steps.
+
+### Prerequisites Check
 
 Run these commands. If they work, you are ready:
 

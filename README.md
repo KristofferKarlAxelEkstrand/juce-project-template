@@ -1,15 +1,33 @@
 # JUCE Project Template
 
 [![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/KristofferKarlAxelEkstrand/juce-project-template)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/KristofferKarlAxelEkstrand/juce-project-template)
 
 A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone). Designed for
 professional development with fast iteration, CI/CD integration, and deterministic builds.
 
-## Quick Start (5 Minutes)
+## Quick Start with Dev Container (Recommended)
 
-New to this template? Start here: **[QUICKSTART.md](QUICKSTART.md)**
+The fastest way to start developing is using the pre-configured dev container:
 
-Already familiar? Continue below for full documentation.
+1. **Open in VS Code**: Click the "Open in Dev Containers" badge above, or:
+   - Clone this repository
+   - Open in VS Code
+   - When prompted, click "Reopen in Container"
+
+2. **Build** (already configured, just run):
+
+   ```bash
+   cmake --build --preset=ninja
+   ```
+
+3. **Your plugin is ready** in `build/ninja/JucePlugin_artefacts/Debug/`
+
+The dev container includes all dependencies, Ninja build system, ccache for fast rebuilds, and VS Code extensions.
+
+## Alternative: Local Development
+
+If you prefer local development, see **[QUICKSTART.md](QUICKSTART.md)** for platform-specific setup.
 
 ## What This Template Provides
 
@@ -271,9 +289,9 @@ juce-project-template/
 
 This template includes comprehensive guides:
 
+- **[docs/DEV_CONTAINER.md](docs/DEV_CONTAINER.md)**: Dev container setup and usage (recommended)
 - **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting
 - **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)**: Fast Ninja-based workflow setup
-- **[.devcontainer/](.devcontainer/)**: Dev container configuration for containerized development
 - **[CUSTOMIZATION.md](CUSTOMIZATION.md)**: Step-by-step plugin customization guide
 - **[CONTRIBUTING.md](CONTRIBUTING.md)**: Git workflow, coding standards, and PR process
 - **[docs/VSCODE_INTEGRATION.md](docs/VSCODE_INTEGRATION.md)**: VS Code debugging and task usage

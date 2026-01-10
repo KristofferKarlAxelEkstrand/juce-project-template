@@ -2,9 +2,19 @@
 
 Build the project on Windows, macOS, and Linux.
 
-## Prerequisites
+## Recommended: Use Dev Container
 
-Required software:
+The easiest way to build is using the pre-configured dev container. It includes all dependencies and build tools:
+
+1. Open project in VS Code with Dev Containers extension
+2. Click "Reopen in Container" when prompted
+3. Build: `cmake --build --preset=ninja`
+
+See [docs/DEV_CONTAINER.md](docs/DEV_CONTAINER.md) for details.
+
+## Local Development Prerequisites
+
+For building outside the dev container, install the following:
 
 - CMake 3.22 or higher
 - C++20 compiler (MSVC 2019+, GCC 10+, or Clang 11+)

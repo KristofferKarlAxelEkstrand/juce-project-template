@@ -65,13 +65,15 @@ elif [ "$OS" = "windows" ]; then
         BUILD_DIR="$PROJECT_ROOT/build/vs2022"
     fi
 else
-    # On Linux/macOS, preset name matches the lowercase build config, but 'Debug' uses the 'default' preset.
-    if [ "$BUILD_CONFIG" = "Debug" ]; then
-        preset_name="default"
+    # On Linux/macOS, prefer Ninja build (used in dev container), fallback to default
+    if [ -d "$PROJECT_ROOT/build/ninja" ]; then
+        BUILD_DIR="$PROJECT_ROOT/build/ninja"
+    elif [ "$BUILD_CONFIG" = "Debug" ]; then
+        BUILD_DIR="$PROJECT_ROOT/build/default"
     else
         preset_name=$(echo "$BUILD_CONFIG" | tr '[:upper:]' '[:lower:]')
+        BUILD_DIR="$PROJECT_ROOT/build/$preset_name"
     fi
-    BUILD_DIR="$PROJECT_ROOT/build/$preset_name"
 fi
 
 # --- Constants for Fallback Metadata ---

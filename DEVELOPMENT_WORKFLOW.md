@@ -2,6 +2,17 @@
 
 Fast iterative development with Ninja and VS Code.
 
+## Dev Container Workflow (Recommended)
+
+This project is designed for dev container development. Everything is pre-configured.
+
+1. **Open in Container**: VS Code prompts "Reopen in Container" on first open
+2. **Edit Source**: Modify files in the `src/` directory
+3. **Build**: Press `Ctrl+Shift+B` (1-3 seconds with ccache)
+4. **Debug**: Press `F5` to launch with debugger
+
+The container includes all dependencies, Ninja, and ccache for fast rebuilds.
+
 ## Quick Start
 
 The development workflow is optimized for a fast, iterative edit-build-test cycle directly within VS Code.
