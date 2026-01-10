@@ -12,7 +12,8 @@
 		"lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
 		"fix": "npm run format && npm run lint:md:fix",
 		"prepare": "husky",
-		"update": "npm update && npm outdated || true"
+		"update": "npm install -g npm@latest && rm -rf node_modules package-lock.json && npm install && npm audit fix || true && npm outdated || true",
+		"update:check": "npm outdated || true"
 	},
 	"devDependencies": {
 		"husky": "^9.1.7",
