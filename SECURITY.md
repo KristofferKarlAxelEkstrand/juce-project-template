@@ -26,6 +26,10 @@ If you discover a security vulnerability in this template, please report it by:
 - Status update: Within 7 days
 - Fix timeline: Depends on severity (critical: 14-28 days, moderate: 48 days)
 
+These timelines are maximum targets, not guarantees of delay. Critical issues may be fast-tracked and released sooner
+when impact or active exploitation requires it. This project is maintained as a template with limited maintainer
+capacity, so the windows above account for investigation, validation, testing across platforms, and coordinated
+release. We will always attempt to provide fixes faster when feasible.
 **After Reporting:**
 
 - **Accepted**: We will work on a fix and credit you in the release notes (unless you prefer to remain anonymous)
