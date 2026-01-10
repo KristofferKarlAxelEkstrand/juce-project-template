@@ -1,0 +1,51 @@
+{
+	"name": "JUCE Development",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"hostRequirements": {
+		"cpus": 4,
+		"memory": "8gb",
+		"storage": "32gb"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"version": "lts"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"mounts": ["source=juce-ccache,target=/home/vscode/.ccache,type=volume"],
+	"containerEnv": {
+		"CCACHE_DIR": "/home/vscode/.ccache"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.cmake-tools",
+				"llvm-vs-code-extensions.vscode-clangd",
+				"twxs.cmake",
+				"vadimcn.vscode-lldb",
+				"xaver.clang-format"
+			],
+			"settings": {
+				"cmake.generator": "Ninja",
+				"cmake.configureOnOpen": true,
+				"cmake.useCMakePresets": "always",
+				"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+				"files.associations": {
+					"*.h": "cpp",
+					"*.hpp": "cpp",
+					"*.cpp": "cpp"
+				}
+			}
+		}
+	},
+	"postCreateCommand": ".devcontainer/post-create.sh",
+	"remoteUser": "vscode"
+}

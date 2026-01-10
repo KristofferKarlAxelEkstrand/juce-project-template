@@ -1,5 +1,7 @@
 # JUCE Project Template
 
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/KristofferKarlAxelEkstrand/juce-project-template)
+
 A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone). Designed for
 professional development with fast iteration, CI/CD integration, and deterministic builds.
 
@@ -176,6 +178,20 @@ Once you have a successful build:
 - **Modern C++20**: Uses lambdas, `constexpr`, structured bindings, and RAII patterns
 - **Comprehensive documentation**: Guides for building, development workflow, and JUCE concepts
 
+### Dev Container Support
+
+- **One-click setup**: Open in VS Code with Dev Containers extension, select "Reopen in Container"
+- **Pre-configured environment**: All JUCE dependencies, Ninja, ccache, clang-format included
+- **Windows cross-compilation**: MinGW-w64 toolchain for building Windows VST3 from Linux
+- **GitHub Codespaces compatible**: Develop in the browser with full build capabilities
+- **Fast rebuilds**: ccache volume persists between container sessions
+
+```bash
+# Inside dev container:
+cmake --build --preset=ninja          # Linux build (1-3 sec incremental)
+cmake --preset=mingw64 && cmake --build --preset=mingw64  # Windows cross-compile
+```
+
 ### Example Plugin
 
 The template includes a working sine-wave synthesizer that demonstrates:
@@ -257,6 +273,7 @@ This template includes comprehensive guides:
 
 - **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting
 - **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)**: Fast Ninja-based workflow setup
+- **[.devcontainer/](.devcontainer/)**: Dev container configuration for containerized development
 - **[CUSTOMIZATION.md](CUSTOMIZATION.md)**: Step-by-step plugin customization guide
 - **[CONTRIBUTING.md](CONTRIBUTING.md)**: Git workflow, coding standards, and PR process
 - **[docs/VSCODE_INTEGRATION.md](docs/VSCODE_INTEGRATION.md)**: VS Code debugging and task usage
