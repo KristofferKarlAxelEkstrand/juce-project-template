@@ -26,6 +26,9 @@ CMakeLists.txt text eol=lf
 .gitignore text eol=lf
 .gitmodules text eol=lf
 
+# Husky hooks must use LF (they run in shell)
+.husky/* text eol=lf
+
 # Binary files - no conversion
 *.png binary
 *.jpg binary
