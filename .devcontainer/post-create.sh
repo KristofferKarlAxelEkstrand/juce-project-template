@@ -5,10 +5,27 @@ set -euo pipefail
 
 echo "Setting up JUCE development environment..."
 
+# Fix ccache directory ownership if mounted as volume
+if [ -d "$HOME/.ccache" ]; then
+    sudo chown -R "$(id -u):$(id -g)" "$HOME/.ccache"
+fi
+
+# Enable VS Code shell integration for improved command detection
+# This enables features like command decorations, navigation, and sticky scroll
+# See: https://code.visualstudio.com/docs/terminal/shell-integration
+ZSHRC="$HOME/.zshrc"
+if [ -f "$ZSHRC" ] && ! grep -q "TERM_PROGRAM.*vscode" "$ZSHRC"; then
+    echo "" >> "$ZSHRC"
+    echo "# VS Code shell integration" >> "$ZSHRC"
+    echo '[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"' >> "$ZSHRC"
+    echo "Added VS Code shell integration to .zshrc"
+fi
+
 # Install npm dependencies for linting tools
+# Skip husky install in devcontainer (hooks are already committed to .husky/)
 if [ -f "package.json" ]; then
     echo "Installing npm dependencies..."
-    npm install
+    HUSKY=0 npm install
 fi
 
 # Initialize git submodules if not already done

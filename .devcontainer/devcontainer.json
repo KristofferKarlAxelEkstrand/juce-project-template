@@ -42,7 +42,10 @@
 					"*.h": "cpp",
 					"*.hpp": "cpp",
 					"*.cpp": "cpp"
-				}
+				},
+				"terminal.integrated.shellIntegration.enabled": true,
+				"terminal.integrated.shellIntegration.decorationsEnabled": "both",
+				"terminal.integrated.stickyScroll.enabled": true
 			}
 		}
 	},
