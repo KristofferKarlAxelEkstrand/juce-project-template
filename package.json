@@ -11,7 +11,8 @@
 		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
 		"lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
 		"fix": "npm run format && npm run lint:md:fix",
-		"prepare": "husky"
+		"prepare": "husky",
+		"update": "npm update && npm outdated || true"
 	},
 	"devDependencies": {
 		"husky": "^9.1.7",
