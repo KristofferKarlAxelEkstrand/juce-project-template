@@ -7,7 +7,7 @@ Build the project on Windows, macOS, and Linux.
 | Workflow           | Best For                               | Requirements            |
 | ------------------ | -------------------------------------- | ----------------------- |
 | **Dev Container**  | Consistent Linux builds                | Docker Desktop, VS Code |
-| **Windows Native** | Windows plugin development             | Visual Studio 2022      |
+| **Windows Native** | Windows plugin development             | Visual Studio 2019+     |
 | **WSL2 + WSLg**    | Linux builds with GUI/audio on Windows | Windows 10/11, WSL2     |
 | **macOS Native**   | macOS/AU plugin development            | Xcode                   |
 | **GitHub CI**      | Cross-platform releases                | Just push code          |
@@ -36,7 +36,11 @@ For building outside the dev container, install the following:
 
 ### Windows
 
-Install Visual Studio 2022 with "Desktop development with C++" workload.
+1. **Visual Studio 2019, 2022, or 2026** with "Desktop development with C++" workload (Community edition is free)
+2. **CMake 3.22+** (standalone installation recommended from [cmake.org](https://cmake.org/download/))
+
+Installing CMake separately is easier than using the Visual Studio bundled version. Select "Add CMake to the system
+PATH" during installation.
 
 Verify installation:
 
@@ -44,6 +48,14 @@ Verify installation:
 cmake --version
 cl
 ```
+
+Use the preset matching your Visual Studio version:
+
+| Visual Studio | Configure Preset | Build Preset |
+| ------------- | ---------------- | ------------ |
+| 2019          | `vs2019`         | `vs2019`     |
+| 2022          | `vs2022`         | `vs2022`     |
+| 2026          | `vs2026`         | `vs2026`     |
 
 ### macOS
 
@@ -159,7 +171,9 @@ Available presets in `CMakePresets.json`:
 | --------- | ---------------- | ----------- | ---------------- |
 | `default` | Unix Makefiles   | Linux/macOS | `build/default/` |
 | `release` | Unix Makefiles   | Linux/macOS | `build/release/` |
+| `vs2019`  | Visual Studio 16 | Windows     | `build/vs2019/`  |
 | `vs2022`  | Visual Studio 17 | Windows     | `build/vs2022/`  |
+| `vs2026`  | Visual Studio 18 | Windows     | `build/vs2026/`  |
 | `ninja`   | Ninja            | All         | `build/ninja/`   |
 | `xcode`   | Xcode            | macOS       | `build/xcode/`   |
 

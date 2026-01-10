@@ -8,7 +8,7 @@ Choose the workflow that fits your needs:
 
 | Workflow           | Best For                   | What You Build          | Requirements            |
 | ------------------ | -------------------------- | ----------------------- | ----------------------- |
-| **Windows Native** | Windows plugin development | Windows VST3/Standalone | Visual Studio 2022      |
+| **Windows Native** | Windows plugin development | Windows VST3/Standalone | Visual Studio 2019+     |
 | **Dev Container**  | Consistent Linux builds    | Linux VST3/Standalone   | Docker Desktop, VS Code |
 | **WSL2 + WSLg**    | Linux builds with GUI      | Linux VST3/Standalone   | Windows 10/11, WSL2     |
 | **GitHub CI**      | Cross-platform releases    | All platforms           | Just push code          |
@@ -22,17 +22,42 @@ Build Windows plugins directly on your Windows machine.
 
 ### Prerequisites
 
-1. **Visual Studio 2022** with "Desktop development with C++" workload
-   - Download: [Visual Studio 2022 Community](https://visualstudio.microsoft.com/downloads/)
-   - During installation, select "Desktop development with C++"
-   - This includes CMake, Ninja, and the MSVC compiler
+1. **Visual Studio 2019 or later** with "Desktop development with C++" workload
+   - Download: [Visual Studio Community](https://visualstudio.microsoft.com/downloads/) (free)
+   - During installation, select **"Desktop development with C++"**
+   - This includes the MSVC compiler and build tools
 
-2. **Git** (usually included with VS, or install separately)
+   **Visual Studio Editions:**
+
+   | Edition       | Cost | Notes                                 |
+   | ------------- | ---- | ------------------------------------- |
+   | **Community** | Free | Recommended for individual developers |
+   | Professional  | Paid | Small teams                           |
+   | Enterprise    | Paid | Large organizations                   |
+
+   All editions include the same C++ build tools. Community is sufficient for this project.
+
+2. **CMake 3.22 or higher** (standalone installation recommended)
+   - Download: [CMake](https://cmake.org/download/)
+   - Select **"Add CMake to the system PATH"** during installation
+   - Standalone CMake is easier to configure than the Visual Studio bundled version
+
+3. **Git** (usually included with VS, or install separately)
    - Download: [Git for Windows](https://git-scm.com/download/win)
+
+### Supported Visual Studio Versions
+
+This project requires C++20. Use Visual Studio 2019 or later.
+
+| Visual Studio | Preset   | Generator             | C++20 Support |
+| ------------- | -------- | --------------------- | ------------- |
+| 2019          | `vs2019` | Visual Studio 16 2019 | Good (16.10+) |
+| 2022          | `vs2022` | Visual Studio 17 2022 | Full          |
+| 2026          | `vs2026` | Visual Studio 18 2026 | Full          |
 
 ### Verify Installation
 
-Open "Developer Command Prompt for VS 2022" and run:
+Open **Developer Command Prompt for VS** (from Start Menu) and run:
 
 ```cmd
 cmake --version
@@ -43,24 +68,32 @@ git --version
 
 ### Build Steps
 
+From **Developer Command Prompt for VS** or any terminal with CMake in PATH:
+
 ```cmd
 # Clone the repository
 git clone https://github.com/YourUser/juce-project-template.git
 cd juce-project-template
 
 # Configure (downloads JUCE, ~90 seconds first time)
-cmake --preset=vs2022
+cmake --preset=vs2019    # For Visual Studio 2019
+cmake --preset=vs2022    # For Visual Studio 2022
+cmake --preset=vs2026    # For Visual Studio 2026
 
 # Build Debug
+cmake --build --preset=vs2019
 cmake --build --preset=vs2022
+cmake --build --preset=vs2026
 
 # Build Release
+cmake --build --preset=vs2019-release
 cmake --build --preset=vs2022-release
+cmake --build --preset=vs2026-release
 ```
 
 ### Build Outputs
 
-Artifacts are in `build/vs2022/JucePlugin_artefacts/`:
+Artifacts are in `build/<preset>/JucePlugin_artefacts/`:
 
 ```text
 build/vs2022/JucePlugin_artefacts/
@@ -343,7 +376,7 @@ git push origin v1.0.0
 
 For most Windows developers:
 
-1. **Primary development**: Windows Native with Visual Studio 2022
+1. **Primary development**: Windows Native with Visual Studio 2019+
    - Fast builds, full debugging, native audio/GUI testing
 
 2. **Linux validation**: GitHub CI (develop-linux branch)

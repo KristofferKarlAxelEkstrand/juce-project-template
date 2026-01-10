@@ -378,7 +378,7 @@ Fastest iteration cycle:
 
 **Platform-specific**:
 
-- Windows: Install Visual Studio 2022 with C++ workload
+- Windows: Install Visual Studio 2019+ with C++ workload
 - macOS: Install Xcode Command Line Tools
 - Linux: Install build-essential, CMake, JUCE dependencies
 

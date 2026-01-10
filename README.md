@@ -247,7 +247,7 @@ cmake --build --preset=release
 
 **Platform-specific presets**:
 
-- Windows: `--preset=vs2022`
+- Windows: `--preset=vs2022` (or `vs2019`, `vs2026`)
 - macOS: `--preset=xcode`
 - All platforms: `--preset=ninja` (fastest)
 
