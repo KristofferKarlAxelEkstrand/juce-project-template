@@ -2,6 +2,28 @@
 
 Fast iterative development with Ninja and VS Code.
 
+## Choosing a Workflow
+
+| Workflow           | Platform         | Builds           | GUI/Audio Testing |
+| ------------------ | ---------------- | ---------------- | ----------------- |
+| **Dev Container**  | Any (via Docker) | Linux plugins    | Virtual only      |
+| **Windows Native** | Windows          | Windows plugins  | Full support      |
+| **WSL2 + WSLg**    | Windows          | Linux plugins    | Full support      |
+| **macOS Native**   | macOS            | macOS/AU plugins | Full support      |
+
+For Windows developers, see [docs/WINDOWS_DEVELOPMENT.md](docs/WINDOWS_DEVELOPMENT.md) for detailed setup options.
+
+## Dev Container Workflow (Recommended)
+
+This project is designed for dev container development. Everything is pre-configured.
+
+1. **Open in Container**: VS Code prompts "Reopen in Container" on first open
+2. **Edit Source**: Modify files in the `src/` directory
+3. **Build**: Press `Ctrl+Shift+B` (1-3 seconds with ccache)
+4. **Debug**: Press `F5` to launch with debugger
+
+The container includes all dependencies, Ninja, and ccache for fast rebuilds.
+
 ## Quick Start
 
 The development workflow is optimized for a fast, iterative edit-build-test cycle directly within VS Code.
@@ -75,8 +97,8 @@ scripts\\configure-ninja.bat  # Configure
 scripts\\build-ninja.bat      # Build
 ```
 
-The scripts automatically detect your installed version of Visual Studio 2022 (Community, Professional, or Enterprise),
-set up the required build environment by running `vcvarsall.bat x64`, and then proceed with the build process.
+The scripts automatically detect your installed version of Visual Studio (2019, 2022, or 2026), set up the required
+build environment by running `vcvarsall.bat x64`, and then proceed with the build process.
 
 ### macOS/Linux
 
@@ -232,7 +254,7 @@ Check `.vscode/tasks.json` exists. Reopen VS Code if recently added.
 
 ### Ninja Not Found (Windows)
 
-Ninja is included with Visual Studio 2022. Verify:
+Ninja is included with Visual Studio 2019 and later. Verify:
 
 ```cmd
 where ninja

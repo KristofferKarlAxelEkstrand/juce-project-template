@@ -2,7 +2,7 @@ name: CI Build
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop, develop-windows, develop-macos, develop-linux ]
 
 env:
   BUILD_TYPE: Release
@@ -37,43 +37,64 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Ubuntu Debug - runs on ALL PRs (develop and main)
+          # Ubuntu Debug - runs on develop, develop-linux, and main
           - os: ubuntu-latest
             build_type: Debug
             run_on_develop: true
+            run_on_develop_windows: false
+            run_on_develop_macos: false
+            run_on_develop_linux: true
             cmake_preset: default
             cmake_build_preset: default
             build_dir: build/default
-          # Windows Release - runs on ALL PRs (develop and main)
+          # Windows Release - runs on develop, develop-windows, and main
           - os: windows-latest
             build_type: Release
             run_on_develop: true
+            run_on_develop_windows: true
+            run_on_develop_macos: false
+            run_on_develop_linux: false
             cmake_preset: vs2022
             cmake_build_preset: vs2022-release
             build_dir: build/vs2022
-          # Ubuntu Release - runs ONLY on PRs to main
+          # Ubuntu Release - runs on main and develop-linux
           - os: ubuntu-latest
             build_type: Release
             run_on_develop: false
+            run_on_develop_windows: false
+            run_on_develop_macos: false
+            run_on_develop_linux: true
             cmake_preset: release
             cmake_build_preset: release
             build_dir: build/release
-          # macOS Release - runs ONLY on PRs to main
+          # macOS Release - runs on main and develop-macos
           - os: macos-latest
             build_type: Release
             run_on_develop: false
+            run_on_develop_windows: false
+            run_on_develop_macos: true
+            run_on_develop_linux: false
             cmake_preset: release # This is not used for macOS configure, but good for consistency
             cmake_build_preset: release # This is not used for macOS build, but good for consistency
             build_dir: build/release
 
     steps:
-    # Skip this job if it's a PR to develop and the job is marked as main-only
+    # Skip this job based on target branch and job configuration
     - name: Check if job should run
       id: should_run
       run: |
         BASE_REF="${{ github.base_ref }}"
         if [ -n "$BASE_REF" ] && [ "$BASE_REF" = "develop" ] && [ "${{ matrix.run_on_develop }}" = "false" ]; then
           echo "Skipping job: PR to develop, job marked for main only"
+          echo "skip=true" >> $GITHUB_OUTPUT
+        elif [ -n "$BASE_REF" ] && [ "$BASE_REF" = "develop-windows" ] && [ "${{ matrix.run_on_develop_windows }}" = "false" ]; then
+          echo "Skipping job: PR to develop-windows, job not marked for Windows-only builds"
+          echo "skip=true" >> $GITHUB_OUTPUT
+        elif [ -n "$BASE_REF" ] && [ "$BASE_REF" = "develop-macos" ] && [ "${{ matrix.run_on_develop_macos }}" = "false" ]; then
+          echo "Skipping job: PR to develop-macos, job not marked for macOS-only builds"
+          echo "skip=true" >> $GITHUB_OUTPUT
+        elif [ -n "$BASE_REF" ] && [ "$BASE_REF" = "develop-linux" ] && [ "${{ matrix.run_on_develop_linux }}" = "false" ]; then
+          echo "Skipping job: PR to develop-linux, job not marked for Linux-only builds"
           echo "skip=true" >> $GITHUB_OUTPUT
         else
           echo "Running job"

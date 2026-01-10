@@ -2,6 +2,10 @@
 
 This directory contains all technical documentation for the JUCE Project Template project.
 
+## Getting Started
+
+- **[DEV_CONTAINER.md](DEV_CONTAINER.md)**: Dev container setup and usage (recommended approach).
+
 ## Core Concepts
 
 - **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting.

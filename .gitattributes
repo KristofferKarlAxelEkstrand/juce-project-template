@@ -1,0 +1,44 @@
+# Auto-detect text files and normalize line endings
+* text=auto
+
+# Shell scripts must use LF (Unix-style)
+*.sh text eol=lf
+
+# Batch scripts must use CRLF (Windows-style)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Source code files use LF
+*.cpp text eol=lf
+*.h text eol=lf
+*.hpp text eol=lf
+*.c text eol=lf
+
+# Configuration files use LF
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.md text eol=lf
+*.cmake text eol=lf
+CMakeLists.txt text eol=lf
+
+# Git configuration
+.gitignore text eol=lf
+.gitmodules text eol=lf
+
+# Husky hooks must use LF (they run in shell)
+.husky/* text eol=lf
+
+# Binary files - no conversion
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.vst3 binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.a binary
+*.lib binary
+*.exe binary

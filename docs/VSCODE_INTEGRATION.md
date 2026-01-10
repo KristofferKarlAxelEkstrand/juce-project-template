@@ -86,7 +86,7 @@ Install platform-specific debugger:
 
 **Windows**:
 
-- Visual Studio 2022 includes MSVC debugger
+- Visual Studio 2019+ includes MSVC debugger
 - C/C++ extension for VS Code (Microsoft)
 
 **macOS**:

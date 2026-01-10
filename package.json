@@ -1,6 +1,6 @@
 {
 	"name": "juce-project-template-docs",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Documentation and tooling for the JUCE Project Template project.",
 	"scripts": {
 		"format": "prettier --write \"**/*.md\" && npm run format:cpp",
@@ -11,12 +11,14 @@
 		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
 		"lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
 		"fix": "npm run format && npm run lint:md:fix",
-		"prepare": "husky"
+		"prepare": "husky",
+		"update-npm-packages": "npm install -g npm@latest && rm -rf node_modules package-lock.json && npm install && npm audit fix || true && npm outdated || true",
+		"update-npm-packages:check": "npm outdated || true"
 	},
 	"devDependencies": {
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.6",
-		"markdownlint-cli2": "^0.18.1",
+		"markdownlint-cli2": "^0.20.0",
 		"prettier": "^3.6.2"
 	},
 	"lint-staged": {

@@ -36,7 +36,7 @@ Avoid decorative descriptions, emojis, emoticons, and promotional language in co
 ## CMakePresets.json
 
 - Provide presets for all target platforms (Windows, macOS, Linux)
-- Use descriptive preset names (vs2022, xcode, ninja)
+- Use descriptive preset names (vs2019, vs2022, vs2026, xcode, ninja)
 - Configure appropriate build directories
 - Set platform-specific CMake variables
 - Document preset usage in comments

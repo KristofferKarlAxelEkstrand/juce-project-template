@@ -66,14 +66,15 @@ gain.process(context);        // Apply gain
 ```bash
 # Configure (90+ seconds - downloads JUCE 8.0.10 automatically)
 cmake --preset=default          # Linux/macOS (builds to build/default/)
-cmake --preset=vs2022           # Windows (builds in build/vs2022/, artifacts in build/vs2022/JucePlugin_artefacts/...)
+cmake --preset=vs2022           # Windows (or vs2019, vs2026)
 
 # Build (2m4s Debug, 4m30s Release)
 cmake --build --preset=default  # Creates VST3 + standalone in build/default/JucePlugin_artefacts/ (Linux/macOS; see below for Windows paths)
-cmake --build build/vs2022 --config Release  # Windows Release build
+cmake --build --preset=vs2022   # Windows Debug build
+cmake --build --preset=vs2022-release  # Windows Release build
 ```
 
-**Output Locations (Windows vs2022 preset):**
+**Output Locations (Windows):**
 
 - VST3: `build/vs2022/JucePlugin_artefacts/Release/VST3/Your Plugin.vst3/`
 - Standalone: `build/vs2022/JucePlugin_artefacts/Release/Standalone/Your Plugin.exe`
@@ -84,7 +85,9 @@ Note: Actual paths depend on PLUGIN_NAME set in CMakeLists.txt
 **Cross-Platform Presets:**
 
 - `--preset=default`: Unix Makefiles for Linux/macOS → `build/default/`
+- `--preset=vs2019`: Visual Studio 2019 for Windows → `build/vs2019/`
 - `--preset=vs2022`: Visual Studio 2022 for Windows → `build/vs2022/`
+- `--preset=vs2026`: Visual Studio 2026 for Windows → `build/vs2026/`
 - `--preset=release`: Release builds for Linux/macOS → `build/release/`
 - `--preset=ninja`: Ninja builds for fast compilation → `build/ninja/`
 
@@ -291,8 +294,9 @@ sudo apt-get install -y libasound2-dev libx11-dev libxcomposite-dev libxcursor-d
 
 ### Windows Build Issues
 
-- Use `cmake --preset=vs2022` instead of `--preset=default` on Windows
-- Ensure Visual Studio 2022 with "Desktop development with C++" workload is installed
+- Use `cmake --preset=vs2022` (or `vs2019`, `vs2026`) instead of `--preset=default` on Windows
+- Ensure Visual Studio 2019+ with "Desktop development with C++" workload is installed
+- Install CMake separately from [cmake.org](https://cmake.org/download/) (easier than using VS bundled version)
 - If CMake can't find Visual Studio, reinstall with proper C++ tools
 
 ### Documentation Linting Failures

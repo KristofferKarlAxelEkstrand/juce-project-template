@@ -30,6 +30,21 @@
 			}
 		},
 		{
+			"name": "vs2019",
+			"displayName": "Visual Studio 2019 (Windows)",
+			"generator": "Visual Studio 16 2019",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			},
+			"architecture": {
+				"value": "x64",
+				"strategy": "external"
+			},
+			"binaryDir": "${sourceDir}/build/vs2019"
+		},
+		{
 			"name": "vs2022",
 			"displayName": "Visual Studio 2022 (Windows)",
 			"generator": "Visual Studio 17 2022",
@@ -43,6 +58,21 @@
 				"strategy": "external"
 			},
 			"binaryDir": "${sourceDir}/build/vs2022"
+		},
+		{
+			"name": "vs2026",
+			"displayName": "Visual Studio 2026 (Windows)",
+			"generator": "Visual Studio 18 2026",
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			},
+			"architecture": {
+				"value": "x64",
+				"strategy": "external"
+			},
+			"binaryDir": "${sourceDir}/build/vs2026"
 		},
 		{
 			"name": "ninja",
@@ -84,13 +114,33 @@
 			"configurePreset": "release"
 		},
 		{
-			"name": "vs2022-debug",
+			"name": "vs2019",
+			"configurePreset": "vs2019",
+			"configuration": "Debug"
+		},
+		{
+			"name": "vs2019-release",
+			"configurePreset": "vs2019",
+			"configuration": "Release"
+		},
+		{
+			"name": "vs2022",
 			"configurePreset": "vs2022",
 			"configuration": "Debug"
 		},
 		{
 			"name": "vs2022-release",
 			"configurePreset": "vs2022",
+			"configuration": "Release"
+		},
+		{
+			"name": "vs2026",
+			"configurePreset": "vs2026",
+			"configuration": "Debug"
+		},
+		{
+			"name": "vs2026-release",
+			"configurePreset": "vs2026",
 			"configuration": "Release"
 		},
 		{

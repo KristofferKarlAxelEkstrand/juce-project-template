@@ -1,13 +1,33 @@
 # JUCE Project Template
 
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/KristofferKarlAxelEkstrand/juce-project-template)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/KristofferKarlAxelEkstrand/juce-project-template)
+
 A modern CMake-based template for building cross-platform JUCE audio plugins (VST3, AU, Standalone). Designed for
 professional development with fast iteration, CI/CD integration, and deterministic builds.
 
-## Quick Start (5 Minutes)
+## Quick Start with Dev Container (Recommended)
 
-New to this template? Start here: **[QUICKSTART.md](QUICKSTART.md)**
+The fastest way to start developing is using the pre-configured dev container:
 
-Already familiar? Continue below for full documentation.
+1. **Open in VS Code**: Click the "Open in Dev Containers" badge above, or:
+   - Clone this repository
+   - Open in VS Code
+   - When prompted, click "Reopen in Container"
+
+2. **Build** (already configured, just run):
+
+   ```bash
+   cmake --build --preset=ninja
+   ```
+
+3. **Your plugin is ready** in `build/ninja/JucePlugin_artefacts/Debug/`
+
+The dev container includes all dependencies, Ninja build system, ccache for fast rebuilds, and VS Code extensions.
+
+## Alternative: Local Development
+
+If you prefer local development, see **[QUICKSTART.md](QUICKSTART.md)** for platform-specific setup.
 
 ## What This Template Provides
 
@@ -176,6 +196,20 @@ Once you have a successful build:
 - **Modern C++20**: Uses lambdas, `constexpr`, structured bindings, and RAII patterns
 - **Comprehensive documentation**: Guides for building, development workflow, and JUCE concepts
 
+### Dev Container Support
+
+- **One-click setup**: Open in VS Code with Dev Containers extension, select "Reopen in Container"
+- **Pre-configured environment**: All JUCE dependencies, Ninja, ccache, clang-format included
+- **Windows cross-compilation**: MinGW-w64 toolchain for building Windows VST3 from Linux
+- **GitHub Codespaces compatible**: Develop in the browser with full build capabilities
+- **Fast rebuilds**: ccache volume persists between container sessions
+
+```bash
+# Inside dev container:
+cmake --build --preset=ninja          # Linux build (1-3 sec incremental)
+cmake --preset=mingw64 && cmake --build --preset=mingw64  # Windows cross-compile
+```
+
 ### Example Plugin
 
 The template includes a working sine-wave synthesizer that demonstrates:
@@ -213,7 +247,7 @@ cmake --build --preset=release
 
 **Platform-specific presets**:
 
-- Windows: `--preset=vs2022`
+- Windows: `--preset=vs2022` (or `vs2019`, `vs2026`)
 - macOS: `--preset=xcode`
 - All platforms: `--preset=ninja` (fastest)
 
@@ -255,6 +289,7 @@ juce-project-template/
 
 This template includes comprehensive guides:
 
+- **[docs/DEV_CONTAINER.md](docs/DEV_CONTAINER.md)**: Dev container setup and usage (recommended)
 - **[BUILD.md](BUILD.md)**: Platform-specific build instructions and troubleshooting
 - **[DEVELOPMENT_WORKFLOW.md](DEVELOPMENT_WORKFLOW.md)**: Fast Ninja-based workflow setup
 - **[CUSTOMIZATION.md](CUSTOMIZATION.md)**: Step-by-step plugin customization guide

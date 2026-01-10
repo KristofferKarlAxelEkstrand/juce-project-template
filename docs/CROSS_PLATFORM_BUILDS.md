@@ -22,7 +22,7 @@ Scripts in `scripts/`:
 
 Features:
 
-- Auto-detect Visual Studio 2022 (Community, Professional, Enterprise)
+- Auto-detect Visual Studio 2019, 2022, or 2026 (Community, Professional, Enterprise)
 - Initialize x64 developer environment
 - Make MSVC, Ninja, and CMake available in build environment
 
@@ -81,7 +81,9 @@ VS Code handles this automatically.
 CMake presets use different directories:
 
 - `default`: `build/default/` (Linux/macOS)
+- `vs2019`: `build/vs2019/` (Windows)
 - `vs2022`: `build/vs2022/` (Windows)
+- `vs2026`: `build/vs2026/` (Windows)
 - `ninja`: `build/ninja/` (all platforms)
 
 ## CMake Presets
@@ -91,7 +93,9 @@ CMake presets use different directories:
 | Preset    | Generator        | Platform    | Build Dir        |
 | --------- | ---------------- | ----------- | ---------------- |
 | `default` | Unix Makefiles   | Linux/macOS | `build/default/` |
+| `vs2019`  | Visual Studio 16 | Windows     | `build/vs2019/`  |
 | `vs2022`  | Visual Studio 17 | Windows     | `build/vs2022/`  |
+| `vs2026`  | Visual Studio 18 | Windows     | `build/vs2026/`  |
 | `ninja`   | Ninja            | All         | `build/ninja/`   |
 | `xcode`   | Xcode            | macOS       | `build/xcode/`   |
 
@@ -132,7 +136,7 @@ Or use VS Code: Press `Cmd+Shift+B` (macOS) or `Ctrl+Shift+B` (Linux)
 
 ### Windows: vcvarsall.bat not found
 
-Install Visual Studio 2022 with "Desktop development with C++" workload.
+Install Visual Studio 2019, 2022, or 2026 with "Desktop development with C++" workload.
 
 ### macOS: ninja not found
 

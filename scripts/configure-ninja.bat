@@ -9,34 +9,73 @@ if "%~1"=="/help" goto :help
 if "%~1"=="--help" goto :help
 if "%~1"=="-h" goto :help
 
-echo Initializing Visual Studio 2022 x64 environment...
+echo Initializing Visual Studio x64 environment...
 
-REM Try common Visual Studio 2022 installation paths
+REM Try Visual Studio installation paths (2026, 2022, 2019 - newest first)
 REM Supports Community, Professional, and Enterprise editions
 set "VCVARSALL="
+set "VS_VERSION="
 
-if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" (
-    set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
-) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvarsall.bat" (
-    set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvarsall.bat"
-) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" (
-    set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+REM Try VS 2026 first
+if exist "C:\Program Files\Microsoft Visual Studio\2026\Community\VC\Auxiliary\Build\vcvarsall.bat" (
+    set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2026\Community\VC\Auxiliary\Build\vcvarsall.bat"
+    set "VS_VERSION=2026"
+) else if exist "C:\Program Files\Microsoft Visual Studio\2026\Professional\VC\Auxiliary\Build\vcvarsall.bat" (
+    set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2026\Professional\VC\Auxiliary\Build\vcvarsall.bat"
+    set "VS_VERSION=2026"
+) else if exist "C:\Program Files\Microsoft Visual Studio\2026\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" (
+    set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2026\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+    set "VS_VERSION=2026"
+)
+
+REM Try VS 2022 if 2026 not found
+if not defined VCVARSALL (
+    if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2022"
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2022"
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2022"
+    )
+)
+
+REM Try VS 2019 if 2022 not found (check both Program Files locations)
+if not defined VCVARSALL (
+    if exist "C:\Program Files\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2019"
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2019"
+    ) else if exist "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2019"
+    ) else if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2019"
+    ) else if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2019"
+    ) else if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" (
+        set "VCVARSALL=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat"
+        set "VS_VERSION=2019"
+    )
 )
 
 if not defined VCVARSALL (
-    echo [ERROR] Visual Studio 2022 not found.
+    echo [ERROR] Visual Studio 2019, 2022, or 2026 not found.
     echo.
-    echo Please install Visual Studio 2022 (Community, Professional, or Enterprise^)
+    echo Please install Visual Studio (Community, Professional, or Enterprise^)
     echo with C++ Desktop Development workload.
-    echo.
-    echo Checked paths:
-    echo   - C:\Program Files\Microsoft Visual Studio\2022\Community\
-    echo   - C:\Program Files\Microsoft Visual Studio\2022\Professional\
-    echo   - C:\Program Files\Microsoft Visual Studio\2022\Enterprise\
     echo.
     echo Download from: https://visualstudio.microsoft.com/downloads/
     exit /b 1
 )
+
+echo Using Visual Studio %VS_VERSION%
 
 REM Initialize Visual Studio environment
 call "%VCVARSALL%" x64 >nul
@@ -79,7 +118,7 @@ echo Examples:
 echo     %~nx0                    # Configure project
 echo.
 echo Prerequisites:
-echo     - Visual Studio 2022 with C++ Desktop Development workload
+echo     - Visual Studio 2019, 2022, or 2026 with C++ Desktop Development workload
 echo     - CMake 3.22 or higher
 echo     - Ninja build system
 echo.

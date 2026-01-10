@@ -37,10 +37,10 @@ Studio/MSBuild or Make. This template includes pre-configured scripts and VS Cod
 
 **Option 1: Visual Studio Installer** (Recommended)
 
-Visual Studio 2022 includes Ninja:
+Visual Studio 2019 and later includes Ninja:
 
 1. Open Visual Studio Installer
-2. Modify Visual Studio 2022
+2. Modify your Visual Studio installation
 3. Under "Individual components", search for "Ninja"
 4. Check "C++ CMake tools for Windows"
 5. Install

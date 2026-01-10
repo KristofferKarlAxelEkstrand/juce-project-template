@@ -51,7 +51,7 @@ npm test
 ```bash
 # Configure build
 cmake --preset=default          # Linux/macOS
-cmake --preset=vs2022           # Windows
+cmake --preset=vs2022           # Windows (or vs2019, vs2026)
 
 # Build
 cmake --build --preset=default
@@ -92,7 +92,7 @@ Follow instructions in `.github/instructions/cmake-config.instructions.md`:
 - Use modern CMake 3.22+ practices
 - Use target-based approach (target_link_libraries, target_include_directories)
 - Use FetchContent for dependencies (never commit JUCE source)
-- Support all platform presets (default, vs2022, xcode, ninja)
+- Support all platform presets (default, vs2019, vs2022, vs2026, xcode, ninja)
 
 ### Documentation Files (`**/*.md`)
 
@@ -130,7 +130,7 @@ Follow instructions in `.github/instructions/json-config.instructions.md`:
 ```bash
 # Configure (90+ seconds first time - downloads JUCE 8.0.10)
 cmake --preset=default          # Linux/macOS
-cmake --preset=vs2022           # Windows
+cmake --preset=vs2022           # Windows (or vs2019, vs2026)
 
 # Build (2m45s Debug, 4m30s Release)
 cmake --build --preset=default
@@ -237,7 +237,7 @@ Metadata automatically propagates to all outputs.
 
 1. Edit `CMakeLists.txt` for build system changes
 2. Edit `CMakePresets.json` for preset configurations
-3. Test all presets (default, vs2022, xcode, ninja)
+3. Test all presets (default, vs2019, vs2022, vs2026, xcode, ninja)
 4. Update documentation if user-facing changes
 
 ### Adding Documentation

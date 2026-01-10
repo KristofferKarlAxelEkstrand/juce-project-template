@@ -5,7 +5,19 @@ and contribution process.
 
 ## Development Setup
 
-### Prerequisites
+### Recommended: Dev Container
+
+The easiest way to contribute is using the dev container:
+
+1. Fork and clone the repository
+2. Open in VS Code and click "Reopen in Container"
+3. Everything is pre-configured (build tools, linting, formatting)
+
+See [docs/DEV_CONTAINER.md](docs/DEV_CONTAINER.md) for details.
+
+### Alternative: Local Setup
+
+If you prefer local development:
 
 - Follow the complete setup in [BUILD.md](BUILD.md)
 - Install `clang-format` for code formatting
@@ -17,6 +29,11 @@ and contribution process.
 # Clone and configure
 git clone <your-fork-url>
 cd juce-project-template
+
+# Dev container: already configured, just build
+cmake --build --preset=ninja
+
+# Local: configure first
 cmake --preset=default
 
 # Install documentation tools

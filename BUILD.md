@@ -2,9 +2,33 @@
 
 Build the project on Windows, macOS, and Linux.
 
-## Prerequisites
+## Development Workflow Options
 
-Required software:
+| Workflow           | Best For                               | Requirements            |
+| ------------------ | -------------------------------------- | ----------------------- |
+| **Dev Container**  | Consistent Linux builds                | Docker Desktop, VS Code |
+| **Windows Native** | Windows plugin development             | Visual Studio 2019+     |
+| **WSL2 + WSLg**    | Linux builds with GUI/audio on Windows | Windows 10/11, WSL2     |
+| **macOS Native**   | macOS/AU plugin development            | Xcode                   |
+| **GitHub CI**      | Cross-platform releases                | Just push code          |
+
+**Note:** Plugins are native binaries. Each platform requires its own build. A Linux plugin cannot run in a Windows DAW.
+
+See [docs/WINDOWS_DEVELOPMENT.md](docs/WINDOWS_DEVELOPMENT.md) for detailed Windows workflow options.
+
+## Recommended: Use Dev Container
+
+The easiest way to build is using the pre-configured dev container. It includes all dependencies and build tools:
+
+1. Open project in VS Code with Dev Containers extension
+2. Click "Reopen in Container" when prompted
+3. Build: `cmake --build --preset=ninja`
+
+See [docs/DEV_CONTAINER.md](docs/DEV_CONTAINER.md) for details.
+
+## Local Development Prerequisites
+
+For building outside the dev container, install the following:
 
 - CMake 3.22 or higher
 - C++20 compiler (MSVC 2019+, GCC 10+, or Clang 11+)
@@ -12,7 +36,11 @@ Required software:
 
 ### Windows
 
-Install Visual Studio 2019 or later with "Desktop development with C++" workload.
+1. **Visual Studio 2019, 2022, or 2026** with "Desktop development with C++" workload (Community edition is free)
+2. **CMake 3.22+** (standalone installation recommended from [cmake.org](https://cmake.org/download/))
+
+Installing CMake separately is easier than using the Visual Studio bundled version. Select "Add CMake to the system
+PATH" during installation.
 
 Verify installation:
 
@@ -20,6 +48,14 @@ Verify installation:
 cmake --version
 cl
 ```
+
+Use the preset matching your Visual Studio version:
+
+| Visual Studio | Configure Preset | Build Preset |
+| ------------- | ---------------- | ------------ |
+| 2019          | `vs2019`         | `vs2019`     |
+| 2022          | `vs2022`         | `vs2022`     |
+| 2026          | `vs2026`         | `vs2026`     |
 
 ### macOS
 
@@ -135,7 +171,9 @@ Available presets in `CMakePresets.json`:
 | --------- | ---------------- | ----------- | ---------------- |
 | `default` | Unix Makefiles   | Linux/macOS | `build/default/` |
 | `release` | Unix Makefiles   | Linux/macOS | `build/release/` |
+| `vs2019`  | Visual Studio 16 | Windows     | `build/vs2019/`  |
 | `vs2022`  | Visual Studio 17 | Windows     | `build/vs2022/`  |
+| `vs2026`  | Visual Studio 18 | Windows     | `build/vs2026/`  |
 | `ninja`   | Ninja            | All         | `build/ninja/`   |
 | `xcode`   | Xcode            | macOS       | `build/xcode/`   |
 
