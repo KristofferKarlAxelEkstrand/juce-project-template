@@ -3,6 +3,18 @@
 This project is designed for dev container-first development. The dev container provides a complete, pre-configured JUCE
 development environment that works identically across all platforms.
 
+## What This Container Builds
+
+The dev container builds **Linux plugins**. It cannot build Windows or macOS plugins directly.
+
+| Target        | Dev Container | Windows Native | macOS Native | GitHub CI |
+| ------------- | ------------- | -------------- | ------------ | --------- |
+| Linux VST3    | Yes           | No             | No           | Yes       |
+| Windows VST3  | No            | Yes            | No           | Yes       |
+| macOS VST3/AU | No            | No             | Yes          | Yes       |
+
+For Windows development options, see [WINDOWS_DEVELOPMENT.md](WINDOWS_DEVELOPMENT.md).
+
 ## Getting Started
 
 ### Option 1: VS Code Dev Containers (Recommended)
@@ -158,6 +170,13 @@ This starts JACK with a dummy driver (no real hardware needed):
 - Buffer size: 512 samples
 
 Use `aconnect -l` to list MIDI connections.
+
+### Alternative: WSL2 + WSLg for Real Audio
+
+If you need real audio input/output for testing on Windows, consider using WSL2 with WSLg instead of the dev container.
+WSLg provides native PulseAudio integration with your Windows audio devices.
+
+See [WINDOWS_DEVELOPMENT.md](WINDOWS_DEVELOPMENT.md) for WSLg setup instructions.
 
 ## Headless GUI Testing
 

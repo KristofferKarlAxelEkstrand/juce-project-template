@@ -2,6 +2,20 @@
 
 Build the project on Windows, macOS, and Linux.
 
+## Development Workflow Options
+
+| Workflow           | Best For                               | Requirements            |
+| ------------------ | -------------------------------------- | ----------------------- |
+| **Dev Container**  | Consistent Linux builds                | Docker Desktop, VS Code |
+| **Windows Native** | Windows plugin development             | Visual Studio 2022      |
+| **WSL2 + WSLg**    | Linux builds with GUI/audio on Windows | Windows 10/11, WSL2     |
+| **macOS Native**   | macOS/AU plugin development            | Xcode                   |
+| **GitHub CI**      | Cross-platform releases                | Just push code          |
+
+**Note:** Plugins are native binaries. Each platform requires its own build. A Linux plugin cannot run in a Windows DAW.
+
+See [docs/WINDOWS_DEVELOPMENT.md](docs/WINDOWS_DEVELOPMENT.md) for detailed Windows workflow options.
+
 ## Recommended: Use Dev Container
 
 The easiest way to build is using the pre-configured dev container. It includes all dependencies and build tools:
@@ -22,7 +36,7 @@ For building outside the dev container, install the following:
 
 ### Windows
 
-Install Visual Studio 2019 or later with "Desktop development with C++" workload.
+Install Visual Studio 2022 with "Desktop development with C++" workload.
 
 Verify installation:
 

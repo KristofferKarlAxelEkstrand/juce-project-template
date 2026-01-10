@@ -2,6 +2,17 @@
 
 Fast iterative development with Ninja and VS Code.
 
+## Choosing a Workflow
+
+| Workflow           | Platform         | Builds           | GUI/Audio Testing |
+| ------------------ | ---------------- | ---------------- | ----------------- |
+| **Dev Container**  | Any (via Docker) | Linux plugins    | Virtual only      |
+| **Windows Native** | Windows          | Windows plugins  | Full support      |
+| **WSL2 + WSLg**    | Windows          | Linux plugins    | Full support      |
+| **macOS Native**   | macOS            | macOS/AU plugins | Full support      |
+
+For Windows developers, see [docs/WINDOWS_DEVELOPMENT.md](docs/WINDOWS_DEVELOPMENT.md) for detailed setup options.
+
 ## Dev Container Workflow (Recommended)
 
 This project is designed for dev container development. Everything is pre-configured.
