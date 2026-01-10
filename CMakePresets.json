@@ -72,22 +72,6 @@
 				"rhs": "Darwin"
 			},
 			"binaryDir": "${sourceDir}/build/xcode"
-		},
-		{
-			"name": "mingw64",
-			"displayName": "MinGW-w64 Windows Cross-Compile",
-			"description": "Cross-compile for Windows from Linux",
-			"generator": "Ninja",
-			"binaryDir": "${sourceDir}/build/mingw64",
-			"toolchainFile": "${sourceDir}/.devcontainer/toolchains/mingw64.cmake",
-			"cacheVariables": {
-				"CMAKE_BUILD_TYPE": "Release"
-			},
-			"condition": {
-				"type": "equals",
-				"lhs": "${hostSystemName}",
-				"rhs": "Linux"
-			}
 		}
 	],
 	"buildPresets": [
@@ -126,10 +110,6 @@
 			"name": "xcode-release",
 			"configurePreset": "xcode",
 			"configuration": "Release"
-		},
-		{
-			"name": "mingw64",
-			"configurePreset": "mingw64"
 		}
 	]
 }

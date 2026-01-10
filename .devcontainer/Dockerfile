@@ -1,5 +1,5 @@
 # .devcontainer/Dockerfile
-# JUCE 8.0.10 Development Container with Windows Cross-Compilation Support
+# JUCE 8.0.10 Development Container for Linux builds
 FROM mcr.microsoft.com/devcontainers/cpp:1-debian-12
 
 # Install JUCE dependencies
@@ -39,9 +39,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     gdb \
     # Headless GUI testing
     xvfb \
-    # MinGW for Windows cross-compilation
-    mingw-w64 \
-    g++-mingw-w64-x86-64-posix \
     && apt-get autoremove -y && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
