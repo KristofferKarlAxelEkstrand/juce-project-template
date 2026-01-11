@@ -3,8 +3,10 @@
 	"chat.agent.maxRequests": 100,
 	"github.copilot.chat.agent.runTasks": true,
 	"chat.tools.autoApprove": false,
-	"chat.editing.autoAcceptDelay": 2000,
-
+	"chat.editing.autoAcceptDelay": 100,
+	// Terminal shell integration for improved command detection
+	"terminal.integrated.shellIntegration.enabled": true,
+	"terminal.integrated.shellIntegration.decorationsEnabled": "both",
 	"cmake.configureOnOpen": true,
 	"cmake.useCMakePresets": "always",
 	"C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
@@ -61,7 +63,7 @@
 	],
 	"[markdown]": {
 		"editor.formatOnSave": true,
-		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.defaultFormatter": "vscode.markdown-language-features",
 		"editor.codeActionsOnSave": {
 			"source.fixAll.markdownlint": "explicit"
 		},
@@ -78,11 +80,11 @@
 	},
 	"[json]": {
 		"editor.formatOnSave": true,
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "vscode.json-language-features"
 	},
 	"[jsonc]": {
 		"editor.formatOnSave": true,
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "vscode.json-language-features"
 	},
 	"chat.tools.terminal.autoApprove": {
 		"cd": true,
