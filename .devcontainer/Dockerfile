@@ -34,16 +34,16 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     ninja-build \
     pkg-config \
     clang-format \
+    clangd \
     ccache \
     lldb \
     gdb \
     # Headless GUI testing
     xvfb \
     && apt-get autoremove -y && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
-
-# Set Clang as default compiler (matches JuceDevMachine pattern)
-RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
+    && rm -rf /var/lib/apt/lists/* \
+    # Set Clang as default compiler (matches JuceDevMachine pattern)
+    && update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
 
 # Enable ccache for faster rebuilds

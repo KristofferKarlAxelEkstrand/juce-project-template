@@ -5,6 +5,9 @@ _deps/
 **/_deps/
 !docs/JUCE/
 
+# Dev container local environment (contains user-specific settings)
+.devcontainer/.env
+
 # Build directories
 build/
 */build/

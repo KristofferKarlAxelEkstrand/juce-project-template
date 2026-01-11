@@ -3,7 +3,25 @@
 # Post-creation setup script for JUCE development container
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 echo "Setting up JUCE development environment..."
+
+# Load local environment variables if .env exists
+if [ -f "$SCRIPT_DIR/.env" ]; then
+    echo "Loading environment from .devcontainer/.env..."
+    # shellcheck source=/dev/null
+    source "$SCRIPT_DIR/.env"
+fi
+
+# Configure git identity if provided via .env
+if [ -n "${GIT_USER_NAME:-}" ] && [ -n "${GIT_USER_EMAIL:-}" ]; then
+    echo "Configuring git identity..."
+    git config --global user.name "$GIT_USER_NAME"
+    git config --global user.email "$GIT_USER_EMAIL"
+else
+    echo "Note: Git identity not configured. Copy .devcontainer/.env.example to .devcontainer/.env"
+fi
 
 # Configure git safe directories to prevent "unsafe repository" errors
 # This is needed because the workspace and fetched dependencies may be
@@ -43,6 +61,15 @@ fi
 if [ -f ".gitmodules" ] && [ ! -f "third_party/JUCE/CMakeLists.txt" ]; then
     echo "Initializing git submodules..."
     git submodule update --init --recursive
+fi
+
+# Clean stale CMake caches (from different source paths, e.g., Windows vs container)
+if [ -f "build/ninja/CMakeCache.txt" ]; then
+    CACHED_SOURCE=$(grep "CMAKE_HOME_DIRECTORY:INTERNAL=" build/ninja/CMakeCache.txt 2>/dev/null | cut -d= -f2)
+    if [ -n "$CACHED_SOURCE" ] && [ "$CACHED_SOURCE" != "/workspaces/juce-project-template" ]; then
+        echo "Cleaning stale CMake cache (was: $CACHED_SOURCE)..."
+        rm -rf build/ninja
+    fi
 fi
 
 # Configure with Ninja preset for fast builds
