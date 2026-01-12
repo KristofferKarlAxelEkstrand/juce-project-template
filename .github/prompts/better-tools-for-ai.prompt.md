@@ -150,6 +150,66 @@ Catches:
 - Mutex locks
 - System calls that may block
 
+## Additional DSP Development Resources
+
+### Plugin Validation
+
+[pluginval](https://github.com/Tracktion/pluginval) validates VST/AU/VST3 plugins:
+
+```bash
+# Download from releases or build locally
+pluginval --strictness-level 5 path/to/plugin.vst3
+```
+
+Useful for CI integration to catch plugin compatibility issues.
+
+### DSP Libraries
+
+[chowdsp_utils](https://github.com/Chowdhury-DSP/chowdsp_utils) provides JUCE modules for:
+
+- Filters (Butterworth, Chebyshev, State Variable, FIR)
+- Waveshapers with anti-aliasing (ADAA)
+- Delay lines with interpolation
+- Modal DSP and reverb
+- Lock-free queues for real-time audio
+- SIMD wrappers (xsimd)
+- Plugin state management
+
+[CHOC](https://github.com/Tracktion/choc) provides header-only utilities:
+
+- Audio buffer classes
+- MIDI file handling
+- Lock-free FIFOs
+- Unit test framework
+- WebView for plugin UIs
+
+### Unit Testing for DSP
+
+Consider adding unit tests for DSP code:
+
+```cpp
+// Test filter frequency response
+void testLowpassFilter() {
+    LowpassFilter filter;
+    filter.prepare({44100.0, 512, 1});
+    filter.setCutoff(1000.0f);
+
+    // Generate test signal at different frequencies
+    // Verify attenuation above cutoff
+}
+```
+
+### Compile Commands for IDE Integration
+
+The `compile_commands.json` file (generated during CMake configure) enables:
+
+- clang-tidy analysis
+- IDE code completion
+- Jump to definition
+- AI code understanding
+
+Location: `build/ninja/compile_commands.json`
+
 ## References
 
 - [clang-tidy Documentation](https://clang.llvm.org/extra/clang-tidy/)
@@ -159,3 +219,6 @@ Catches:
 - [Function Effect Analysis](https://clang.llvm.org/docs/FunctionEffectAnalysis.html)
 - [RealtimeSanitizer](https://clang.llvm.org/docs/RealtimeSanitizer.html)
 - [cppcheck Manual](https://cppcheck.sourceforge.io/manual.html)
+- [pluginval](https://github.com/Tracktion/pluginval)
+- [chowdsp_utils](https://github.com/Chowdhury-DSP/chowdsp_utils)
+- [CHOC](https://github.com/Tracktion/choc)
