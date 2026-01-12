@@ -167,7 +167,15 @@
 		{
 			"label": "Build with AddressSanitizer",
 			"type": "shell",
-			"command": "cmake --preset=asan && cmake --build --preset=asan --target JucePlugin_Standalone",
+			"windows": {
+				"command": "echo Sanitizer builds require Clang on Linux/macOS"
+			},
+			"linux": {
+				"command": "cmake --preset=asan && cmake --build --preset=asan --target JucePlugin_Standalone"
+			},
+			"osx": {
+				"command": "cmake --preset=asan && cmake --build --preset=asan --target JucePlugin_Standalone"
+			},
 			"group": "build",
 			"problemMatcher": ["$gcc"],
 			"presentation": {
@@ -178,7 +186,15 @@
 		{
 			"label": "Build with ThreadSanitizer",
 			"type": "shell",
-			"command": "cmake --preset=tsan && cmake --build --preset=tsan --target JucePlugin_Standalone",
+			"windows": {
+				"command": "echo Sanitizer builds require Clang on Linux/macOS"
+			},
+			"linux": {
+				"command": "cmake --preset=tsan && cmake --build --preset=tsan --target JucePlugin_Standalone"
+			},
+			"osx": {
+				"command": "cmake --preset=tsan && cmake --build --preset=tsan --target JucePlugin_Standalone"
+			},
 			"group": "build",
 			"problemMatcher": ["$gcc"],
 			"presentation": {
@@ -189,7 +205,15 @@
 		{
 			"label": "Build with UndefinedBehaviorSanitizer",
 			"type": "shell",
-			"command": "cmake --preset=ubsan && cmake --build --preset=ubsan --target JucePlugin_Standalone",
+			"windows": {
+				"command": "echo Sanitizer builds require Clang on Linux/macOS"
+			},
+			"linux": {
+				"command": "cmake --preset=ubsan && cmake --build --preset=ubsan --target JucePlugin_Standalone"
+			},
+			"osx": {
+				"command": "cmake --preset=ubsan && cmake --build --preset=ubsan --target JucePlugin_Standalone"
+			},
 			"group": "build",
 			"problemMatcher": ["$gcc"],
 			"presentation": {
@@ -200,7 +224,15 @@
 		{
 			"label": "Build with RealtimeSanitizer",
 			"type": "shell",
-			"command": "cmake --preset=rtsan && cmake --build --preset=rtsan --target JucePlugin_Standalone",
+			"windows": {
+				"command": "echo RealtimeSanitizer requires Clang 19+ on Linux/macOS"
+			},
+			"linux": {
+				"command": "cmake --preset=rtsan && cmake --build --preset=rtsan --target JucePlugin_Standalone"
+			},
+			"osx": {
+				"command": "cmake --preset=rtsan && cmake --build --preset=rtsan --target JucePlugin_Standalone"
+			},
 			"group": "build",
 			"problemMatcher": ["$gcc"],
 			"presentation": {

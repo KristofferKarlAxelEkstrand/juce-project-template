@@ -7,7 +7,7 @@
 #   asan  - AddressSanitizer: detects memory errors (use-after-free, buffer overflow)
 #   ubsan - UndefinedBehaviorSanitizer: detects undefined behavior
 #   tsan  - ThreadSanitizer: detects data races between threads
-#   rtsan - RealtimeSanitizer: detects allocations/locks in real-time callbacks (Clang 18+)
+#   rtsan - RealtimeSanitizer: detects allocations/locks in real-time callbacks (Clang 19+)
 
 set -euo pipefail
 
@@ -26,7 +26,7 @@ show_help() {
     echo "  asan   AddressSanitizer: memory errors (default)"
     echo "  ubsan  UndefinedBehaviorSanitizer: undefined behavior"
     echo "  tsan   ThreadSanitizer: data races"
-    echo "  rtsan  RealtimeSanitizer: real-time violations (Clang 18+)"
+    echo "  rtsan  RealtimeSanitizer: real-time violations (Clang 19+)"
     echo ""
     echo "Options:"
     echo "  -h, --help      Show this help message"
@@ -110,16 +110,24 @@ if [[ ! -f "$EXECUTABLE" ]]; then
     exit 1
 fi
 
-# Set up sanitizer environment
-export ASAN_OPTIONS="detect_leaks=1:abort_on_error=1:print_stats=1"
-export UBSAN_OPTIONS="print_stacktrace=1:halt_on_error=1"
-export TSAN_OPTIONS="second_deadlock_stack=1"
-export RTSAN_OPTIONS="halt_on_error=1:print_stats_on_exit=1"
-
-# Find symbolizer for better error messages
-if command -v llvm-symbolizer &>/dev/null; then
-    export ASAN_SYMBOLIZER_PATH="$(command -v llvm-symbolizer)"
-fi
+# Set up sanitizer-specific environment variables
+case "$SANITIZER" in
+    asan)
+        export ASAN_OPTIONS="detect_leaks=1:abort_on_error=1:print_stats=1"
+        if command -v llvm-symbolizer &>/dev/null; then
+            export ASAN_SYMBOLIZER_PATH="$(command -v llvm-symbolizer)"
+        fi
+        ;;
+    ubsan)
+        export UBSAN_OPTIONS="print_stacktrace=1:halt_on_error=1"
+        ;;
+    tsan)
+        export TSAN_OPTIONS="second_deadlock_stack=1"
+        ;;
+    rtsan)
+        export RTSAN_OPTIONS="halt_on_error=1:print_stats_on_exit=1"
+        ;;
+esac
 
 echo "Running: ${EXECUTABLE} ${APP_ARGS[*]:-}"
 echo ""

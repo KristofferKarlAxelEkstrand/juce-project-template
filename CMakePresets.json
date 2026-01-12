@@ -148,12 +148,14 @@
 				"CMAKE_CXX_FLAGS": "-fsanitize=thread -fno-omit-frame-pointer -g",
 				"CMAKE_C_FLAGS": "-fsanitize=thread -fno-omit-frame-pointer -g",
 				"CMAKE_EXE_LINKER_FLAGS": "-fsanitize=thread",
-				"CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=thread"
+				"CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=thread",
+				"CMAKE_MODULE_LINKER_FLAGS": "-fsanitize=thread"
 			}
 		},
 		{
 			"name": "rtsan",
-			"displayName": "RealtimeSanitizer Build",
+			"displayName": "RealtimeSanitizer Build (Clang 19+ required)",
+			"description": "Requires Clang 19 or later. Dev container provides Clang 20.",
 			"inherits": "ninja",
 			"binaryDir": "${sourceDir}/build/rtsan",
 			"cacheVariables": {
