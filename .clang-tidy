@@ -46,7 +46,7 @@ CheckOptions:
   - key: readability-identifier-naming.LocalConstantCase
     value: camelBack
   - key: readability-identifier-naming.ConstexprVariableCase
-    value: aNy_CasE
+    value: camelBack
   # Parameter naming
   - key: readability-identifier-naming.ParameterCase
     value: camelBack

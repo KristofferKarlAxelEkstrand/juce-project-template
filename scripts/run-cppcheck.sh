@@ -82,7 +82,7 @@ cppcheck \
     --inline-suppr \
     --std=c++20 \
     --error-exitcode=1 \
-    $VERBOSE \
+    ${VERBOSE:+"$VERBOSE"} \
     "${DIRS[@]}" 2>&1
 
 echo ""

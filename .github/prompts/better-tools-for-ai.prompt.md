@@ -27,12 +27,14 @@ AI assistants (and developers) write better and safer C++ audio code.
 
 ### Sanitizer Builds
 
-| Sanitizer                  | Command                                 | Detects                         |
-| -------------------------- | --------------------------------------- | ------------------------------- |
-| AddressSanitizer           | `./scripts/run-with-sanitizer.sh asan`  | Memory errors, buffer overflows |
-| UndefinedBehaviorSanitizer | `./scripts/run-with-sanitizer.sh ubsan` | Undefined behavior              |
-| ThreadSanitizer            | `./scripts/run-with-sanitizer.sh tsan`  | Data races                      |
-| RealtimeSanitizer          | `./scripts/run-with-sanitizer.sh rtsan` | Real-time violations            |
+| Sanitizer                  | Command                                 | Detects                         | Clang Version |
+| -------------------------- | --------------------------------------- | ------------------------------- | ------------- |
+| AddressSanitizer           | `./scripts/run-with-sanitizer.sh asan`  | Memory errors, buffer overflows | 3.1+          |
+| UndefinedBehaviorSanitizer | `./scripts/run-with-sanitizer.sh ubsan` | Undefined behavior              | 3.3+          |
+| ThreadSanitizer            | `./scripts/run-with-sanitizer.sh tsan`  | Data races                      | 3.2+          |
+| RealtimeSanitizer          | `./scripts/run-with-sanitizer.sh rtsan` | Real-time violations            | 18+ required  |
+
+**Note**: RealtimeSanitizer (rtsan) requires Clang 18 or later. The dev container provides Clang 20.
 
 ### VS Code Tasks
 

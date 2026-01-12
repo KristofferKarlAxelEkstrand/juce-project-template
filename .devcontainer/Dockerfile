@@ -46,8 +46,10 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get autoremove -y && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
-# Install LLVM 20 from official repository for modern C++ tooling
+# Install LLVM 20 from official LLVM repository for modern C++ tooling
+# Note: Uses development snapshot repository (llvm-toolchain-bookworm-20)
 # Clang 20 includes RealtimeSanitizer and full Function Effect Analysis
+# When LLVM 20 is released as stable, update to use the release repository
 RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor -o /usr/share/keyrings/llvm.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] https://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-20 main" \
     > /etc/apt/sources.list.d/llvm.list \
