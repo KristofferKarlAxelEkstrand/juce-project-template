@@ -39,11 +39,41 @@ fi
 # This enables features like command decorations, navigation, and sticky scroll
 # See: https://code.visualstudio.com/docs/terminal/shell-integration
 ZSHRC="$HOME/.zshrc"
-if [ -f "$ZSHRC" ] && ! grep -q "TERM_PROGRAM.*vscode" "$ZSHRC"; then
+if [ -f "$ZSHRC" ] && ! grep -q "VSCODE_SHELL_INTEGRATION" "$ZSHRC"; then
     echo "" >> "$ZSHRC"
-    echo "# VS Code shell integration" >> "$ZSHRC"
-    echo '[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"' >> "$ZSHRC"
+    echo "# VS Code shell integration for improved command detection" >> "$ZSHRC"
+    echo "# Provides command decorations, navigation between commands, and sticky scroll" >> "$ZSHRC"
+    cat >> "$ZSHRC" << 'EOF'
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+    if [[ -n "${VSCODE_SHELL_INTEGRATION:-}" ]]; then
+        # VS Code automatically injects shell integration script path
+        . "$VSCODE_SHELL_INTEGRATION"
+    elif command -v code &>/dev/null; then
+        # Fallback: locate shell integration via code CLI
+        VSCODE_ZSH_INTEGRATION="$(code --locate-shell-integration-path zsh 2>/dev/null)"
+        [[ -f "$VSCODE_ZSH_INTEGRATION" ]] && . "$VSCODE_ZSH_INTEGRATION"
+    fi
+fi
+EOF
     echo "Added VS Code shell integration to .zshrc"
+fi
+
+# Also configure bash shell integration for users who prefer bash
+BASHRC="$HOME/.bashrc"
+if [ -f "$BASHRC" ] && ! grep -q "VSCODE_SHELL_INTEGRATION" "$BASHRC"; then
+    echo "" >> "$BASHRC"
+    echo "# VS Code shell integration for improved command detection" >> "$BASHRC"
+    cat >> "$BASHRC" << 'EOF'
+if [[ "$TERM_PROGRAM" == "vscode" ]]; then
+    if [[ -n "${VSCODE_SHELL_INTEGRATION:-}" ]]; then
+        . "$VSCODE_SHELL_INTEGRATION"
+    elif command -v code &>/dev/null; then
+        VSCODE_BASH_INTEGRATION="$(code --locate-shell-integration-path bash 2>/dev/null)"
+        [[ -f "$VSCODE_BASH_INTEGRATION" ]] && . "$VSCODE_BASH_INTEGRATION"
+    fi
+fi
+EOF
+    echo "Added VS Code shell integration to .bashrc"
 fi
 
 # Update npm to latest version
@@ -80,6 +110,17 @@ echo ""
 echo "Dev container setup complete."
 echo ""
 echo "Build commands:"
-echo "  cmake --build --preset=ninja"
+echo "  cmake --build --preset=ninja         # Fast debug build"
+echo "  cmake --build --preset=ninja-release # Release build"
+echo ""
+echo "Static analysis:"
+echo "  ./scripts/run-clang-tidy.sh          # Run clang-tidy"
+echo "  ./scripts/run-cppcheck.sh            # Run cppcheck"
+echo "  ./scripts/run-static-analysis.sh     # Run all analysis"
+echo ""
+echo "Sanitizer builds (runtime error detection):"
+echo "  ./scripts/run-with-sanitizer.sh asan # AddressSanitizer"
+echo "  ./scripts/run-with-sanitizer.sh ubsan # UndefinedBehaviorSanitizer"
+echo "  ./scripts/run-with-sanitizer.sh tsan # ThreadSanitizer"
 echo ""
 echo "Note: Windows builds require GitHub Actions CI or a Windows machine with Visual Studio."

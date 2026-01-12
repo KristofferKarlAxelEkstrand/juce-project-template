@@ -157,6 +157,16 @@ void getStateInformation(juce::MemoryBlock &destData) override {
 ```bash
 clang-format -i src/*.cpp src/*.h  # Format before committing
 cmake --build --preset=default    # Validate builds successfully
+
+# Static analysis (run before committing)
+./scripts/run-static-analysis.sh  # Run clang-tidy and cppcheck
+./scripts/run-clang-tidy.sh       # Run clang-tidy only
+./scripts/run-cppcheck.sh         # Run cppcheck only
+
+# Sanitizer builds (for memory/thread safety testing)
+./scripts/run-with-sanitizer.sh asan   # AddressSanitizer
+./scripts/run-with-sanitizer.sh tsan   # ThreadSanitizer
+./scripts/run-with-sanitizer.sh ubsan  # UndefinedBehaviorSanitizer
 ```
 
 **Git Workflow Conventions:**

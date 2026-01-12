@@ -73,6 +73,41 @@ npm run lint:md:fix
 npm test
 ```
 
+### 6. Static Analysis (Before Committing)
+
+Run static analysis to catch bugs early:
+
+```bash
+# Run all static analysis tools
+./scripts/run-static-analysis.sh
+
+# Or run individual tools
+./scripts/run-clang-tidy.sh           # Detailed C++ analysis
+./scripts/run-cppcheck.sh             # Fast supplementary check
+```
+
+Fix any warnings before committing. Common issues:
+
+- Uninitialized variables
+- Redundant code
+- Thread safety problems
+- Memory management issues
+
+### 7. Sanitizer Testing (For Complex Changes)
+
+For changes involving memory, threads, or undefined behavior:
+
+```bash
+# Test with AddressSanitizer (memory errors)
+./scripts/run-with-sanitizer.sh asan
+
+# Test with ThreadSanitizer (data races)
+./scripts/run-with-sanitizer.sh tsan
+
+# Test with UndefinedBehaviorSanitizer
+./scripts/run-with-sanitizer.sh ubsan
+```
+
 ## Code Modification Guidelines
 
 ### C++ Source Files (`src/**/*.cpp`, `src/**/*.h`)
