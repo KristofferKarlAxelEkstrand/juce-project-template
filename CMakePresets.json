@@ -2,8 +2,16 @@
 	"version": 3,
 	"configurePresets": [
 		{
+			"name": "base",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+			}
+		},
+		{
 			"name": "default",
 			"displayName": "Default Build (Debug)",
+			"inherits": "base",
 			"generator": "Unix Makefiles",
 			"binaryDir": "${sourceDir}/build/default",
 			"cacheVariables": {
@@ -18,6 +26,7 @@
 		{
 			"name": "release",
 			"displayName": "Release Build",
+			"inherits": "base",
 			"generator": "Unix Makefiles",
 			"binaryDir": "${sourceDir}/build/release",
 			"cacheVariables": {
@@ -31,6 +40,7 @@
 		},
 		{
 			"name": "vs2019",
+			"inherits": "base",
 			"displayName": "Visual Studio 2019 (Windows)",
 			"generator": "Visual Studio 16 2019",
 			"condition": {
@@ -46,6 +56,7 @@
 		},
 		{
 			"name": "vs2022",
+			"inherits": "base",
 			"displayName": "Visual Studio 2022 (Windows)",
 			"generator": "Visual Studio 17 2022",
 			"condition": {
@@ -61,6 +72,7 @@
 		},
 		{
 			"name": "vs2026",
+			"inherits": "base",
 			"displayName": "Visual Studio 2026 (Windows)",
 			"generator": "Visual Studio 18 2026",
 			"condition": {
@@ -77,6 +89,7 @@
 		{
 			"name": "ninja",
 			"displayName": "Ninja Build (Debug)",
+			"inherits": "base",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/ninja",
 			"cacheVariables": {
@@ -86,6 +99,7 @@
 		{
 			"name": "ninja-release",
 			"displayName": "Ninja Build (Release)",
+			"inherits": "base",
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/ninja-release",
 			"cacheVariables": {
@@ -93,8 +107,68 @@
 			}
 		},
 		{
+			"name": "asan",
+			"displayName": "AddressSanitizer Build",
+			"inherits": "ninja",
+			"binaryDir": "${sourceDir}/build/asan",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "clang",
+				"CMAKE_CXX_COMPILER": "clang++",
+				"CMAKE_CXX_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g",
+				"CMAKE_C_FLAGS": "-fsanitize=address -fno-omit-frame-pointer -g",
+				"CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address",
+				"CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=address",
+				"CMAKE_MODULE_LINKER_FLAGS": "-fsanitize=address",
+				"JUCE_BUILD_EXTRAS": "OFF"
+			}
+		},
+		{
+			"name": "ubsan",
+			"displayName": "UndefinedBehaviorSanitizer Build",
+			"inherits": "ninja",
+			"binaryDir": "${sourceDir}/build/ubsan",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "clang",
+				"CMAKE_CXX_COMPILER": "clang++",
+				"CMAKE_CXX_FLAGS": "-fsanitize=undefined -fno-omit-frame-pointer -g",
+				"CMAKE_C_FLAGS": "-fsanitize=undefined -fno-omit-frame-pointer -g",
+				"CMAKE_EXE_LINKER_FLAGS": "-fsanitize=undefined",
+				"CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=undefined",
+				"CMAKE_MODULE_LINKER_FLAGS": "-fsanitize=undefined"
+			}
+		},
+		{
+			"name": "tsan",
+			"displayName": "ThreadSanitizer Build",
+			"inherits": "ninja",
+			"binaryDir": "${sourceDir}/build/tsan",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "clang",
+				"CMAKE_CXX_COMPILER": "clang++",
+				"CMAKE_CXX_FLAGS": "-fsanitize=thread -fno-omit-frame-pointer -g",
+				"CMAKE_C_FLAGS": "-fsanitize=thread -fno-omit-frame-pointer -g",
+				"CMAKE_EXE_LINKER_FLAGS": "-fsanitize=thread",
+				"CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=thread"
+			}
+		},
+		{
+			"name": "rtsan",
+			"displayName": "RealtimeSanitizer Build",
+			"inherits": "ninja",
+			"binaryDir": "${sourceDir}/build/rtsan",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "clang",
+				"CMAKE_CXX_COMPILER": "clang++",
+				"CMAKE_CXX_FLAGS": "-fsanitize=realtime -fno-omit-frame-pointer -g",
+				"CMAKE_C_FLAGS": "-fsanitize=realtime -fno-omit-frame-pointer -g",
+				"CMAKE_EXE_LINKER_FLAGS": "-fsanitize=realtime",
+				"CMAKE_SHARED_LINKER_FLAGS": "-fsanitize=realtime"
+			}
+		},
+		{
 			"name": "xcode",
 			"displayName": "Xcode (macOS)",
+			"inherits": "base",
 			"generator": "Xcode",
 			"condition": {
 				"type": "equals",
@@ -150,6 +224,22 @@
 		{
 			"name": "ninja-release",
 			"configurePreset": "ninja-release"
+		},
+		{
+			"name": "asan",
+			"configurePreset": "asan"
+		},
+		{
+			"name": "ubsan",
+			"configurePreset": "ubsan"
+		},
+		{
+			"name": "tsan",
+			"configurePreset": "tsan"
+		},
+		{
+			"name": "rtsan",
+			"configurePreset": "rtsan"
 		},
 		{
 			"name": "xcode-debug",

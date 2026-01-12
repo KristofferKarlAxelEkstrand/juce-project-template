@@ -31,7 +31,7 @@ DSPJuceAudioProcessor::DSPJuceAudioProcessor()
 //==============================================================================
 void DSPJuceAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
     // Initialize DSP processing specs
-    juce::dsp::ProcessSpec spec;
+    juce::dsp::ProcessSpec spec{};
     spec.sampleRate = sampleRate;
     spec.maximumBlockSize = static_cast<juce::uint32>(samplesPerBlock);
     spec.numChannels = static_cast<juce::uint32>(getTotalNumOutputChannels());
@@ -53,10 +53,7 @@ void DSPJuceAudioProcessor::releaseResources() {
 
 bool DSPJuceAudioProcessor::isBusesLayoutSupported(const BusesLayout &layouts) const {
     // Support stereo output only
-    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-        return false;
-
-    return true;
+    return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
 }
 
 void DSPJuceAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages) {
@@ -101,7 +98,6 @@ void DSPJuceAudioProcessor::setStateInformation(const void *data, int sizeInByte
     // APVTS handles state restore automatically via ValueTree
     std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
 
-    if (xmlState.get() != nullptr)
-        if (xmlState->hasTagName(parameters.state.getType()))
-            parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
+    if (xmlState != nullptr && xmlState->hasTagName(parameters.state.getType()))
+        parameters.replaceState(juce::ValueTree::fromXml(*xmlState));
 }

@@ -1,111 +1,212 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Build Standalone (Ninja Debug)",
-            "type": "shell",
-            "windows": {
-                "command": "${workspaceFolder}\\scripts\\build-ninja.bat"
-            },
-            "linux": {
-                "command": "${workspaceFolder}/scripts/build-ninja.sh"
-            },
-            "osx": {
-                "command": "${workspaceFolder}/scripts/build-ninja.sh"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": ["$gcc"],
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Run Standalone",
-            "type": "shell",
-            "windows": {
-                "command": "${workspaceFolder}\\scripts\\run-standalone.bat"
-            },
-            "linux": {
-                "command": "${workspaceFolder}/scripts/run-standalone.sh"
-            },
-            "osx": {
-                "command": "${workspaceFolder}/scripts/run-standalone.sh"
-            },
-            "dependsOn": "Build Standalone (Ninja Debug)",
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            },
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Configure Ninja",
-            "type": "shell",
-            "windows": {
-                "command": "${workspaceFolder}\\scripts\\configure-ninja.bat"
-            },
-            "linux": {
-                "command": "${workspaceFolder}/scripts/configure-ninja.sh"
-            },
-            "osx": {
-                "command": "${workspaceFolder}/scripts/configure-ninja.sh"
-            },
-            "problemMatcher": [],
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Build Standalone (Ninja Release)",
-            "type": "shell",
-            "windows": {
-                "command": "${workspaceFolder}\\scripts\\build-ninja.bat",
-                "args": ["--config", "Release"]
-            },
-            "linux": {
-                "command": "${workspaceFolder}/scripts/build-ninja.sh",
-                "args": ["--config", "Release"]
-            },
-            "osx": {
-                "command": "${workspaceFolder}/scripts/build-ninja.sh",
-                "args": ["--config", "Release"]
-            },
-            "group": "build",
-            "problemMatcher": ["$gcc"],
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            }
-        },
-        {
-            "label": "Run Standalone (Release)",
-            "type": "shell",
-            "windows": {
-                "command": "${workspaceFolder}\\scripts\\run-standalone.bat",
-                "args": ["Release"]
-            },
-            "linux": {
-                "command": "${workspaceFolder}/scripts/run-standalone.sh",
-                "args": ["Release"]
-            },
-            "osx": {
-                "command": "${workspaceFolder}/scripts/run-standalone.sh",
-                "args": ["Release"]
-            },
-            "dependsOn": "Build Standalone (Ninja Release)",
-            "group": "test",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            }
-        }
-    ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build Standalone (Ninja Debug)",
+			"type": "shell",
+			"windows": {
+				"command": "${workspaceFolder}\\scripts\\build-ninja.bat"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/build-ninja.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/build-ninja.sh"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Standalone",
+			"type": "shell",
+			"windows": {
+				"command": "${workspaceFolder}\\scripts\\run-standalone.bat"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/run-standalone.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/run-standalone.sh"
+			},
+			"dependsOn": "Build Standalone (Ninja Debug)",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Configure Ninja",
+			"type": "shell",
+			"windows": {
+				"command": "${workspaceFolder}\\scripts\\configure-ninja.bat"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/configure-ninja.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/configure-ninja.sh"
+			},
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build Standalone (Ninja Release)",
+			"type": "shell",
+			"windows": {
+				"command": "${workspaceFolder}\\scripts\\build-ninja.bat",
+				"args": ["--config", "Release"]
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/build-ninja.sh",
+				"args": ["--config", "Release"]
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/build-ninja.sh",
+				"args": ["--config", "Release"]
+			},
+			"group": "build",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Standalone (Release)",
+			"type": "shell",
+			"windows": {
+				"command": "${workspaceFolder}\\scripts\\run-standalone.bat",
+				"args": ["Release"]
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/run-standalone.sh",
+				"args": ["Release"]
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/run-standalone.sh",
+				"args": ["Release"]
+			},
+			"dependsOn": "Build Standalone (Ninja Release)",
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run Static Analysis",
+			"type": "shell",
+			"windows": {
+				"command": "echo Static analysis not supported on Windows"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/run-static-analysis.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/run-static-analysis.sh"
+			},
+			"group": "test",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run clang-tidy",
+			"type": "shell",
+			"windows": {
+				"command": "echo clang-tidy not supported on Windows"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/run-clang-tidy.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/run-clang-tidy.sh"
+			},
+			"group": "test",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Run cppcheck",
+			"type": "shell",
+			"windows": {
+				"command": "echo cppcheck not supported on Windows"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/scripts/run-cppcheck.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/scripts/run-cppcheck.sh"
+			},
+			"group": "test",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build with AddressSanitizer",
+			"type": "shell",
+			"command": "cmake --preset=asan && cmake --build --preset=asan --target JucePlugin_Standalone",
+			"group": "build",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build with ThreadSanitizer",
+			"type": "shell",
+			"command": "cmake --preset=tsan && cmake --build --preset=tsan --target JucePlugin_Standalone",
+			"group": "build",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build with UndefinedBehaviorSanitizer",
+			"type": "shell",
+			"command": "cmake --preset=ubsan && cmake --build --preset=ubsan --target JucePlugin_Standalone",
+			"group": "build",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Build with RealtimeSanitizer",
+			"type": "shell",
+			"command": "cmake --preset=rtsan && cmake --build --preset=rtsan --target JucePlugin_Standalone",
+			"group": "build",
+			"problemMatcher": ["$gcc"],
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			}
+		}
+	]
 }

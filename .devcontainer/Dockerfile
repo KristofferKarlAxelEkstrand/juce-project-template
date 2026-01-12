@@ -33,18 +33,46 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     # Build tools
     ninja-build \
     pkg-config \
-    clang-format \
-    clangd \
+    # Static analysis (cppcheck from Debian, LLVM tools installed separately)
+    cppcheck \
+    # Build acceleration and debugging
     ccache \
-    lldb \
     gdb \
     # Headless GUI testing
     xvfb \
+    # Required for LLVM repository setup
+    wget \
+    gnupg \
+    && apt-get autoremove -y && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install LLVM 20 from official repository for modern C++ tooling
+# Clang 20 includes RealtimeSanitizer and full Function Effect Analysis
+RUN wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | gpg --dearmor -o /usr/share/keyrings/llvm.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/llvm.gpg] https://apt.llvm.org/bookworm/ llvm-toolchain-bookworm-20 main" \
+    > /etc/apt/sources.list.d/llvm.list \
+    && apt-get update && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get install -y --no-install-recommends \
+    clang-20 \
+    clang-format-20 \
+    clang-tidy-20 \
+    clangd-20 \
+    lldb-20 \
+    lld-20 \
+    libclang-rt-20-dev \
     && apt-get autoremove -y && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
-    # Set Clang as default compiler (matches JuceDevMachine pattern)
-    && update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 \
-    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100
+    # Set LLVM 20 as default
+    && update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 100 \
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 100 \
+    && update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-20 100 \
+    && update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20 100 \
+    && update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-20 100 \
+    && update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-20 100 \
+    && update-alternatives --install /usr/bin/lld lld /usr/bin/lld-20 100 \
+    # Set Clang as default compiler
+    && update-alternatives --install /usr/bin/cc cc /usr/bin/clang-20 100 \
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-20 100
 
 # Enable ccache for faster rebuilds
 ENV PATH="/usr/lib/ccache:${PATH}"
