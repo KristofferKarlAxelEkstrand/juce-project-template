@@ -1,4 +1,5 @@
 {
+	"workbench.colorTheme": "AK Jucebox",
 	// GitHub Copilot auto-approval settings
 	"chat.agent.maxRequests": 100,
 	"github.copilot.chat.agent.runTasks": true,
