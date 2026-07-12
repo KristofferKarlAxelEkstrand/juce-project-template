@@ -1,11 +1,14 @@
-# JUCE Framework (external dependency - never commit)
+# JUCE framework and external dependencies
 JUCE/
 _deps/
 **/JUCE/
 **/_deps/
+# Keep the vendored JUCE submodule tracked.
+!third_party/JUCE/
+!third_party/JUCE/**
 !docs/JUCE/
 
-# Dev container local environment (contains user-specific settings)
+# Local development configuration
 .devcontainer/.env
 
 # Build directory (root-anchored to avoid hiding source under scripts/build/)
@@ -17,8 +20,10 @@ CMakeFiles/
 cmake_install.cmake
 *.cmake
 !CMakeLists.txt
+!cmake/*.cmake
+!cmake/**/*.cmake
 
-# Visual Studio files
+# Visual Studio project files
 *.sln
 *.vcxproj
 *.vcxproj.filters
@@ -41,13 +46,7 @@ cmake_install.cmake
 **/JuceLibraryCode/
 **/*_artefacts/
 
-# IDE specific files
-#.vscode/settings.json
-#.vscode/launch.json
-#.vscode/tasks.json
-#.vscode/.ropeproject
-
-# OS specific files
+# OS-generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -56,12 +55,12 @@ cmake_install.cmake
 ehthumbs.db
 Thumbs.db
 
-# Temporary files
+# Logs and temp files
 *.tmp
 *.temp
 *.log
 
-# Temporary PR review response documents
+# PR review temp documents
 .temp-pr-reviews-docs/
 
 # Plugin builds
@@ -69,13 +68,13 @@ Thumbs.db
 *.au
 *.aax
 
-# Node.js dependencies (for documentation tooling)
+# Node.js dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Backup files
+# Editor backups
 *~
 *.bak
 *.swp
