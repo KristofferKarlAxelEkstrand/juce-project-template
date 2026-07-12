@@ -8,10 +8,8 @@ _deps/
 # Dev container local environment (contains user-specific settings)
 .devcontainer/.env
 
-# Build directories
-build/
-*/build/
-**/build/
+# Build directory (root-anchored to avoid hiding source under scripts/build/)
+/build/
 
 # CMake generated files
 CMakeCache.txt
