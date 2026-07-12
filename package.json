@@ -1,20 +1,5 @@
 {
-	"name": "juce-project-template-docs",
-	"version": "0.0.2",
 	"description": "Documentation and tooling for the JUCE Project Template project.",
-	"scripts": {
-		"format": "prettier --write \"**/*.md\" && npm run format:cpp",
-		"format:cpp": "bash scripts/format-cpp.sh",
-		"format:check": "prettier --check \"**/*.md\"",
-		"test": "npm run lint:md",
-		"test:build": "bash scripts/validate-builds.sh",
-		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
-		"lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
-		"fix": "npm run format && npm run lint:md:fix",
-		"prepare": "husky",
-		"update-npm-packages": "npm install -g npm@latest && rm -rf node_modules package-lock.json && npm install && npm audit fix || true && npm outdated || true",
-		"update-npm-packages:check": "npm outdated || true"
-	},
 	"devDependencies": {
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.6",
@@ -32,5 +17,20 @@
 		"*.{json,jsonc}": [
 			"prettier --write"
 		]
-	}
+	},
+	"name": "juce-project-template-docs",
+	"scripts": {
+		"fix": "npm run format && npm run lint:md:fix",
+		"format": "prettier --write \"**/*.md\" && npm run format:cpp",
+		"format:check": "prettier --check \"**/*.md\"",
+		"format:cpp": "bash scripts/format-cpp.sh",
+		"lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
+		"lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\" \"#build\" \"#third_party\" \"#.temp-pr-reviews-docs\"",
+		"prepare": "husky",
+		"test": "npm run lint:md",
+		"test:build": "bash scripts/validate-builds.sh",
+		"update-npm-packages": "npm install -g npm@latest && rm -rf node_modules package-lock.json && npm install && npm audit fix || true && npm outdated || true",
+		"update-npm-packages:check": "npm outdated || true"
+	},
+	"version": "0.0.2"
 }
